@@ -45,36 +45,36 @@ export default function AuthForm() {
             <Tabs defaultValue="login" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="login" onClick={() => setIsLogin(true)}>
-                  Login
+                  Konekte
                 </TabsTrigger>
                 <TabsTrigger value="register" onClick={() => setIsLogin(false)}>
-                  Register
+                  Anrejistre
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="login">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="login-email">Email</Label>
+                    <Label htmlFor="login-email">Imel</Label>
                     <Input
                       id="login-email"
                       type="email"
-                      placeholder="m@example.com"
+                      placeholder="m@egzanp.com"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="login-password">Password</Label>
+                    <Label htmlFor="login-password">Modpas</Label>
                     <Input id="login-password" type="password" required />
                   </div>
                   <Button type="submit" className="w-full">
-                    Login
+                    Konekte
                   </Button>
                 </form>
               </TabsContent>
               <TabsContent value="register">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="register-email">Email</Label>
+                    <Label htmlFor="register-email">Imel</Label>
                     <Input
                       id="register-email"
                       type="email"
@@ -83,7 +83,7 @@ export default function AuthForm() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="register-password">Password</Label>
+                    <Label htmlFor="register-password">Modpas</Label>
                     <Input id="register-password" type="password" required />
                   </div>
                   <div className="space-y-2">
@@ -91,7 +91,7 @@ export default function AuthForm() {
                     <Input id="confirm-password" type="password" required />
                   </div>
                   <Button type="submit" className="w-full">
-                    Register
+                    Anrejistre
                   </Button>
                 </form>
               </TabsContent>
@@ -103,7 +103,7 @@ export default function AuthForm() {
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
                   <span className="bg-background px-2 text-muted-foreground">
-                    Or continue with
+                    Oubyen Konekte Avek
                   </span>
                 </div>
               </div>
