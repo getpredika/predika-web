@@ -170,7 +170,7 @@ export default function AuthForm() {
         <Card className="flex-1">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 font-inter text-mainText">
-              <EnvelopeOpenIcon className="w-6 h-6" />
+              {/* <EnvelopeOpenIcon className="w-6 h-6" /> */}
               Byenvini sou PREDIKA
             </CardTitle>
             <CardDescription className="text-bodyText">
