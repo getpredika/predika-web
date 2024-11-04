@@ -167,31 +167,26 @@ export default function AuthForm() {
           </CardFooter>
         </Card>
 
-        <Card className="flex-1">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 font-inter text-mainText">
-              {/* <EnvelopeOpenIcon className="w-6 h-6" /> */}
-              Byenvini sou PREDIKA
-            </CardTitle>
-            <CardDescription className="text-bodyText">
-              Mèsi paske ou te vin jwenn nou.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4 text-bodyText">
-              <p>
-                Mèsi paske ou te vin jwenn nou. Ou ka kòmanse eksplore
-                karakteristik nou yo ak amelyore konpetans ou nan ekriti. Nou la
-                pou sipòte ou nan chak etap. Pa ezite sèvi ak zouti nou yo pou
-                korije erè, jwenn sijesyon pou nouvo mo, ak aprann plis sou
-                gramè Kreyòl Ayisyen.
-              </p>
-              <p>
-                Nou swete ou yon bèl eksperyans pandan w ap itilize platfòm nan!
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+        <Card className="flex-1 bg-[#f0faf7] border border-lightGray rounded-lg shadow-lg p-6">
+  <CardHeader>
+    <CardTitle className="flex items-center gap-2 font-sans text-2xl text-[#2d2d5f]">
+      Byenvini sou PREDIKA
+    </CardTitle>
+    <CardDescription className="text-[#6b7280] text-lg">
+      Mèsi paske ou te vin jwenn nou.
+    </CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="space-y-4 text-[#6b7280] text-base leading-relaxed">
+      <p>
+        Mèsi paske ou te vin jwenn nou. Ou ka kòmanse eksplore karakteristik nou yo ak amelyore konpetans ou nan ekriti. Nou la pou sipòte ou nan chak etap. Pa ezite sèvi ak zouti nou yo pou korije erè, jwenn sijesyon pou nouvo mo, ak aprann plis sou gramè Kreyòl Ayisyen.
+      </p>
+      <p>
+        Nou swete ou yon bèl eksperyans pandan w ap itilize platfòm nan!
+      </p>
+    </div>
+  </CardContent>
+</Card>
       </div>
     </div>
   );
