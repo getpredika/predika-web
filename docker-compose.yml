@@ -1,0 +1,10 @@
+services:
+  # Application service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: predika-web
+    ports:
+      - "8080:8080"
+
