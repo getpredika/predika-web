@@ -87,7 +87,7 @@ export default function AuthForm() {
                     <Input id="register-password" type="password" required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="confirm-password">Confirm Password</Label>
+                    <Label htmlFor="confirm-password">Konfime Modpas</Label>
                     <Input id="confirm-password" type="password" required />
                   </div>
                   <Button type="submit" className="w-full">
@@ -170,7 +170,7 @@ export default function AuthForm() {
         <Card className="flex-1 bg-[#f0faf7] border border-lightGray rounded-lg shadow-lg p-6">
   <CardHeader>
     <CardTitle className="flex items-center gap-2 font-sans text-2xl text-[#2d2d5f]">
-      Byenvini sou PREDIKA
+      Byenvini sou PREDIKA!
     </CardTitle>
     <CardDescription className="text-[#6b7280] text-lg">
       Mèsi paske ou te vin jwenn nou.
