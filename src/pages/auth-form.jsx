@@ -22,25 +22,53 @@ export default function AuthForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle form submission logic here
     console.log("Form submitted");
   };
 
   const handleSocialLogin = (provider) => {
-    // Handle social login logic here
     console.log(`Logging in with ${provider}`);
   };
+
+  const PasswordInput = ({ id }) => {
+    const [isVisible, setIsVisible] = useState(false);
+  
+    return (
+      <div className="relative">
+        <Input
+          id={id}
+          type={isVisible ? "text" : "password"}
+          required
+          className="pr-10" // Ensure there's padding on the right
+        />
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center justify-center"
+          onClick={() => setIsVisible(!isVisible)}
+          aria-label={isVisible ? "Hide password" : "Show password"}
+        >
+          {isVisible ? (
+            <EyeOff className="h-4 w-4" />
+          ) : (
+            <Eye className="h-4 w-4" />
+          )}
+        </Button>
+      </div>
+    );
+  };
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
       <div className="flex flex-col lg:flex-row w-full max-w-4xl gap-8">
         <Card className="flex-1">
           <CardHeader>
-            <CardTitle>{isLogin ? "Login" : "Register"}</CardTitle>
+            <CardTitle>{isLogin ? "Konekte" : "Anrejistre"}</CardTitle>
             <CardDescription>
               {isLogin
-                ? "Enter your credentials to login."
-                : "Create an account to get started."}
+                ? "Antre imel ak modpas ou pou ou konekte."
+                : "Kreye yon kont pou ou komanse."}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -64,20 +92,13 @@ export default function AuthForm() {
                       required
                     />
                   </div>
-                  <div className="space-y-8 relative">
+                  <div className="space-y-2 relative">
                     <Label htmlFor="login-password">Modpas</Label>
-                    <Input
+                    <PasswordInput
                       id="login-password"
-                      type={showPassword ? "text" : "password"}
-                      required
+                      showPassword={showPassword}
+                      setShowPassword={setShowPassword}
                     />
-                    <button
-                      type="button"
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600"
-                      onClick={() => setShowPassword((prev) => !prev)}
-                    >
-                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                    </button>
                   </div>
                   <Button type="submit" className="w-full">
                     Konekte
@@ -86,48 +107,30 @@ export default function AuthForm() {
               </TabsContent>
               <TabsContent value="register">
                 <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="space-y-8">
+                  <div className="space-y-2">
                     <Label htmlFor="register-email">Imel</Label>
                     <Input
                       id="register-email"
                       type="email"
-                      placeholder="m@example.com"
+                      placeholder="m@egzanp.com"
                       required
                     />
                   </div>
-                  <div className="space-y-8 relative">
+                  <div className="space-y-2 relative">
                     <Label htmlFor="register-password">Modpas</Label>
-                    <Input
+                    <PasswordInput
                       id="register-password"
-                      type={showPassword ? "text" : "password"}
-                      required
+                      showPassword={showPassword}
+                      setShowPassword={setShowPassword}
                     />
-                    <button
-                      type="button"
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600"
-                      onClick={() => setShowPassword((prev) => !prev)}
-                    >
-                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                    </button>
                   </div>
-                  <div className="space-y-8 relative">
-                    <Label htmlFor="confirm-password">Confirm Password</Label>
-                    <Input
+                  <div className="space-y-2 relative">
+                    <Label htmlFor="confirm-password">Konfime modpas</Label>
+                    <PasswordInput
                       id="confirm-password"
-                      type={showConfirmPassword ? "text" : "password"}
-                      required
+                      showPassword={showConfirmPassword}
+                      setShowPassword={setShowConfirmPassword}
                     />
-                    <button
-                      type="button"
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600"
-                      onClick={() => setShowConfirmPassword((prev) => !prev)}
-                    >
-                      {showConfirmPassword ? (
-                        <EyeOff size={20} />
-                      ) : (
-                        <Eye size={20} />
-                      )}
-                    </button>
                   </div>
                   <Button type="submit" className="w-full">
                     Anrejistre
