@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom"
 import { HoverEffect } from "@/components/ui/card-hover-effect"
 import { Button } from "@/components/ui/button"
-import { Sparkles, Sun, Menu, X } from "lucide-react"
-import React, { useEffect, useState } from "react"
+import { Sparkles, Menu, X } from "lucide-react"
+import { useEffect, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 
 const navItems = [

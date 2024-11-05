@@ -1,7 +1,6 @@
 'use client'
 
 import { Button } from "@/components/ui/button"
-import React from "react"
 import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision"
 import {useTypingEffect} from "@/hooks/use-typing-effect";
 import Header from "@/components/header";
@@ -11,9 +10,9 @@ import HowItWorksSection from "@/components/how-it-works-section";
 import Footer from "@/components/footer";
 
 export default function LandingPage() {
-    const animatedText1 = useTypingEffect("Koreksyon Tèks Kreyòl")
-    const animatedText2 = useTypingEffect("Ak Entèlijans Atifisyèl", 50, 1000)
-    const animatedText3 = useTypingEffect("nan yon segond.", 50, 2000)
+    const animatedText1 = useTypingEffect("Kooreksyon Tèks Kreyòl", 50)
+    const animatedText2 = useTypingEffect("AAk Entèlijans Atifisyèl", 50)
+    const animatedText3 = useTypingEffect("nnan yon segond.", 50)
 
     return (
         <div className="min-h-screen bg-[#f0faf7]">
