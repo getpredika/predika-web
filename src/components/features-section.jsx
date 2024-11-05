@@ -1,29 +1,29 @@
 import {Link} from "react-router-dom";
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card"
-import {  MessageSquare, Clock, Pencil, ArrowRight } from "lucide-react"
+import {ArrowRight, CircleCheck, BookOpen, UserCheck} from "lucide-react"
 
 const features = [
     {
-        icon: Clock,
-        title: "Write blogs 10× faster",
-        description: "Our AI-powered platform helps you write high-quality Creole content in a fraction of the time, maintaining authenticity and cultural nuance.",
+        icon: CircleCheck,
+        title: "Koreksyon Enstantane",
+        description: "AI nou an rapidman idantifye ak korije erè gramè ak òtograf nan tèks ou, asire ke mesaj ou klè ak pwofesyonèl.",
         link: "#",
-        linkText: "Try Blog Writers",
+        linkText: "Wè Kijan Sa Fonksyone",
     },
     {
-        icon: Pencil,
-        title: "Write higher converting posts",
-        description: "Create compelling Creole content that resonates with your audience and drives engagement, powered by cultural-aware AI.",
+        icon: BookOpen,
+        title: "Zouti Aprantisaj",
+        description: "Amelyore konpetans lang ou ak zouti aprantisaj sa ki eksplike koreksyon yo ak ofri konsèy pou pi bon sentaks nan Kreyòl.",
         link: "#",
-        linkText: "Try Social Media Managers",
+        linkText: "Eksplore Zouti Aprantisaj",
     },
     {
-        icon: MessageSquare,
-        title: "Write more engaging emails",
-        description: "Craft professional Creole emails that maintain cultural authenticity while delivering your message effectively.",
+        icon: UserCheck,
+        title: "Sijesyon Pèsonalize",
+        description: "AI nou an konprann nyans ak tradisyon Kreyòl, bay ou koreksyon ak sijesyon ki respekte kilti a.",
         link: "#",
-        linkText: "Email Marketers",
+        linkText: "Dekouvri Karakteristik Pèsonalize",
     }
 ]
 
@@ -34,14 +34,13 @@ export default function FeaturesSection() {
                 <div className="grid gap-12 lg:gap-16">
                     <div className="space-y-4 text-center">
             <span className="text-sm font-medium text-[#40c4a7]">
-              GET STARTED FOR FREE
+              KÒMANSE GRATIS
             </span>
                         <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-[#2d2d5f]">
-                            AI Generate content in seconds
+                            Verifye Gramè ak Òtograf
                         </h2>
                         <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl">
-                            Give our AI a few descriptions and we'll automatically create blog articles, product
-                            descriptions and more for you within just few second.
+                            Bay AI nou an tèks ou a, e li ap otomatikman korije li pou ou nan sèlman kèk segond.
                         </p>
                     </div>
                     <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
