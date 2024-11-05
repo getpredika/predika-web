@@ -5,20 +5,22 @@ export default function HowItWorksSection() {
     const steps = [
         {
             number: "1",
-            title: "Select writing template",
-            description: "Simply choose a template from available list to write content for blog posts, landing page, website content etc."
+            title: "Chwazi yon modèl AI",
+            description: "Senpleman chwazi yon modèl ki adapte ak bezwen ou yo nan lis ki disponib la pou korije tèks ou a."
         },
         {
             number: "2",
-            title: "Describe your topic",
-            description: "Provide our AI content writer with few sentences on what you want to write, and it will start writing for you."
+            title: "Ekri tèks ou a",
+            description: "Antre tèks ou a nan bwat ki endike a."
         },
         {
             number: "3",
-            title: "Generate quality content",
-            description: "Our powerful AI tools will generate content in few second, then you can export it to wherever you need."
+            title: "Koreksyon",
+            description: "AI la ap analize tèks ou a, kòmanse korije erè yo, epi montre ou tout fot yo."
         }
     ]
+
+
 
     return (
         <section className="w-full py-12 md:py-24 relative bg-white">
@@ -30,13 +32,14 @@ export default function HowItWorksSection() {
             <div className="px-4 md:px-6 relative">
                 <div className="flex flex-col items-center text-center space-y-4 mb-12">
           <span className="text-sm font-medium text-[#40c4a7]">
-            HOW IT WORKS
+            KIJAN SA FONKSYONE
           </span>
                     <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-[#2d2d5f]">
-                        Instruct to our AI and generate copy
+                        Pi Bon Fason Pou Korije Tèks
                     </h2>
                     <p className="mx-auto max-w-[800px] text-gray-500 md:text-lg">
-                        Give our AI a few descriptions and we'll automatically create blog articles, product descriptions and more for you within just few second.
+                        Dekouvri kijan AI nou an fonksyone pou ofri ou koreksyon presi ak rapid.
+
                     </p>
                 </div>
 

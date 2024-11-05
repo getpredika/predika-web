@@ -3,9 +3,8 @@ import { ArrowRight, Check } from "lucide-react"
 
 export default function CTASection() {
   const features = [
-    "No credit card required",
-    "Cancel anytime",
-    "10+ tools to explore"
+    "Pa bezwen ka kredi",
+    "Plizyè zouti pou dekouvri",
   ]
 
   return (
@@ -21,19 +20,19 @@ export default function CTASection() {
         <div className="flex flex-col items-center text-center space-y-8">
           <div className="space-y-6">
             <span className="text-sm font-medium text-[#40c4a7] bg-[#40c4a7]/10 px-4 py-1.5 rounded-full">
-              BOOST YOUR WRITING PRODUCTIVITY
+              AMELYORE FASON OU EKRI
             </span>
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-[#2d2d5f]">
-              End writer's block today
+              Fini Fot Gramè
             </h2>
             <p className="mx-auto max-w-[600px] text-gray-500 md:text-xl">
-              It's like having access to a team of copywriting experts writing powerful copy for you in 1-click.
+              Se tankou gen aksè a yon ekip ekspè ki ap korije tèks pou ou nan yon moman.
             </p>
           </div>
           <Button
             className="bg-[#40c4a7] text-white hover:bg-[#40c4a7]/90 h-12 px-8 rounded-full text-base"
           >
-            Start writing for free
+            Kòmanse
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
           <div className="flex flex-wrap justify-center gap-4 mt-8">
