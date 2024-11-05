@@ -1,5 +1,4 @@
 import {Link} from "react-router-dom";
-import React from "react";
 import { Card, CardContent } from "@/components/ui/card"
 import {ArrowRight, CircleCheck, BookOpen, UserCheck} from "lucide-react"
 

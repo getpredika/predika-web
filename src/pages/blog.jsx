@@ -3,7 +3,6 @@
 import { Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import Header from "@/components/header";
-import React from "react";
 
 export default function Blog() {
     return (
