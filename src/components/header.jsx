@@ -91,12 +91,15 @@ export default function Header() {
                                     {item.title}
                                 </Link>
                             ))}
+                            <Link to="/koneksyon">
                             <Button
                                 className="text-sm font-medium text-[#2d2d5f] border border-gray-200 hover:bg-[#2d2d5f]/90 hover:text-white hover:border-[#2d2d5f]/90"
                                 variant="ghost"
                             >
                                 Konekte
                             </Button>
+                            </Link>
+                           
                             <Button
                                 className="bg-[#40c4a7] text-white hover:bg-[#40c4a7]/90 w-full"
                             >

@@ -22,7 +22,9 @@ export const Tabs = ({ children, defaultValue, className }) => {
 };
 
 export const TabsList = ({ children, className }) => (
-  <div className={`flex ${className}`}>{children}</div>
+  <div className={`grid grid-cols-2 border border-lightGray rounded-lg overflow-hidden ${className}`}>
+    {children}
+  </div>
 );
 
 export const TabsTrigger = ({ children, value, className }) => {
