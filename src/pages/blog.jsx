@@ -19,21 +19,20 @@ export default function Blog() {
                     <div className="flex flex-col items-center text-center space-y-8">
                         <div className="space-y-6">
             <span className="text-sm font-medium text-[#40c4a7] bg-[#40c4a7]/10 px-4 py-1.5 rounded-full">
-              BLOG
+              ATIK
             </span>
                             <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl md:text-6xl/none text-[#2d2d5f] max-w-3xl mx-auto">
-                                News, tips and resources
+                                Nouvèl, konsèy ak resous
                                 <br/>
-                                about PredikaAI
+                                sou PredikaAI
                             </h1>
                         </div>
                         <div className="w-full max-w-2xl mx-auto">
                             <div className="relative">
-                                <Search
-                                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5"/>
+                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                                 <Input
                                     type="search"
-                                    placeholder="Search for articles"
+                                    placeholder="Chèche atik"
                                     className="w-full pl-10 py-6 text-base rounded-xl border-gray-200 bg-white/80 backdrop-blur-sm"
                                 />
                             </div>

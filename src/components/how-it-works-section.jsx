@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button"
-import { Play } from "lucide-react"
 
 export default function HowItWorksSection() {
     const steps = [
@@ -59,14 +58,13 @@ export default function HowItWorksSection() {
                     <Button
                         className="bg-[#40c4a7] text-white hover:bg-[#40c4a7]/90 h-11 px-6 rounded-full text-base"
                     >
-                        Start free trial today
+                        Kòmanse jodia
                     </Button>
                     <Button
                         variant="outline"
                         className="h-11 px-6 rounded-full border-[#40c4a7] text-[#40c4a7] hover:bg-[#40c4a7] hover:text-white"
                     >
-                        <Play className="w-4 h-4 mr-2" />
-                        See action in video
+                        Kreyon kont
                     </Button>
                 </div>
             </div>
