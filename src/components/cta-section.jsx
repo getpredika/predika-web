@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Check } from "lucide-react"
+import {Link} from "react-router-dom";
 
 export default function CTASection() {
   const features = [
@@ -29,12 +30,14 @@ export default function CTASection() {
               Se tankou gen aksè a yon ekip ekspè ki ap korije tèks pou ou nan yon moman.
             </p>
           </div>
+          <Link to="koreksyon-grame">
           <Button
             className="bg-[#40c4a7] text-white hover:bg-[#40c4a7]/90 h-12 px-8 rounded-full text-base"
           >
             Kòmanse
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
+          </Link>
           <div className="flex flex-wrap justify-center gap-4 mt-8">
             {features.map((feature, i) => (
               <div

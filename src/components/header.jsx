@@ -7,7 +7,6 @@ import { AnimatePresence, motion } from "framer-motion"
 
 const navItems = [
     { title: "Koreksyon Gramè", link: "/koreksyon-grame" },
-    { title: "Karakteristik", link: "#Karakteristik" },
     { title: "Atik", link: "/atik" },
 ]
 
@@ -49,12 +48,16 @@ export default function Header() {
                     className="text-sm font-medium text-[#2d2d5f] border border-gray-200 hover:bg-[#2d2d5f]/90 hover:text-white hover:border-[#2d2d5f]/90"
                     variant="ghost"
                 >
-                    Konekte
+                    <Link to="/koneksyon">
+                        Konekte
+                    </Link>
                 </Button>
                 <Button
                     className="bg-[#40c4a7] text-white hover:bg-[#40c4a7]/90"
                 >
-                    Kòmanse
+                    <Link to="/anregistre">
+                        Kòmanse
+                    </Link>
                 </Button>
             </nav>
             <div className="ml-auto md:hidden">
@@ -99,12 +102,14 @@ export default function Header() {
                                 Konekte
                             </Button>
                             </Link>
-                           
+
+                            <Link to="/anregistre">
                             <Button
                                 className="bg-[#40c4a7] text-white hover:bg-[#40c4a7]/90 w-full"
                             >
                                 Kòmanse
                             </Button>
+                            </Link>
                         </nav>
                     </motion.div>
                 )}

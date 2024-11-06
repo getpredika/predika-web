@@ -8,6 +8,7 @@ import FeaturesSection from "@/components/features-section";
 import CTASection from "@/components/cta-section";
 import HowItWorksSection from "@/components/how-it-works-section";
 import Footer from "@/components/footer";
+import {Link} from "react-router-dom";
 
 export default function LandingPage() {
     const animatedText1 = useTypingEffect("Kooreksyon Tèks Kreyòl", 50)
@@ -33,13 +34,17 @@ export default function LandingPage() {
                                     Optimize tèks ou avèk yon zouti ki konprann kilti ak nyans lang Kreyòl la pou bon jan presizyon ak efikasite.
                                 </p>
                                 <div className="space-x-4">
+                                    <Link to="/anregistre">
                                     <Button className="bg-[#2d2d5f] text-white hover:bg-[#2d2d5f]/90 px-8">
                                         Kreye Kont
                                     </Button>
+                                    </Link>
+                                    <Link to="/atik">
                                     <Button variant="outline"
                                             className="border-[#40c4a7] text-[#40c4a7] hover:bg-[#40c4a7] hover:text-white px-8">
                                         Aprann Plis
                                     </Button>
+                                </Link>
                                 </div>
                             </div>
                         </div>

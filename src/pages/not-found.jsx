@@ -27,12 +27,12 @@ export default function NotFound() {
                         transition={{ delay: 0.2, duration: 0.5 }}
                         className="flex flex-wrap justify-center gap-4"
                     >
-                        <Link href="/">
+                        <Link to="/">
                             <Button className="bg-[#40c4a7] text-white hover:bg-[#40c4a7]/90">
                                 <ArrowLeft className="mr-2 h-4 w-4" /> Retounen nan paj akèy la
                             </Button>
                         </Link>
-                        <Link href="/">
+                        <Link to="#">
                             <Button variant="outline" className="border-[#40c4a7] text-[#40c4a7] hover:bg-[#40c4a7] hover:text-white">
                                 Kontakte nou
                             </Button>
@@ -48,7 +48,7 @@ export default function NotFound() {
             >
                 <p className="text-sm text-gray-500">
                     Si ou panse sa a se yon erè, tanpri{" "}
-                    <Link href="/" className="text-[#40c4a7] hover:underline">
+                    <Link to="#" className="text-[#40c4a7] hover:underline">
                         fè nou konnen
                     </Link>
                     .

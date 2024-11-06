@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import {Link} from "react-router-dom";
 
 export default function HowItWorksSection() {
     const steps = [
@@ -55,17 +56,21 @@ export default function HowItWorksSection() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <Link to="/koreksyon-grame">
                     <Button
                         className="bg-[#40c4a7] text-white hover:bg-[#40c4a7]/90 h-11 px-6 rounded-full text-base"
                     >
                         Kòmanse jodia
                     </Button>
+                    </Link>
+                    <Link to="/anregistre">
                     <Button
                         variant="outline"
                         className="h-11 px-6 rounded-full border-[#40c4a7] text-[#40c4a7] hover:bg-[#40c4a7] hover:text-white"
                     >
                         Kreyon kont
                     </Button>
+                    </Link>
                 </div>
             </div>
         </section>

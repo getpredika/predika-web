@@ -28,11 +28,11 @@ export default function TextCorrectionPage() {
         setIsChecking(true)
         setIsEditing(false)
         setOriginalText(text)
-        // Simulate grammar check
+
         setTimeout(() => {
             console.log("Grammar check completed with model:", model)
             setIsChecking(false)
-        }, 3000) // 3 seconds delay to simulate processing
+        }, 3000)
     }
 
     const handleClearText = useCallback(() => {

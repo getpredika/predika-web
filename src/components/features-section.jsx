@@ -54,7 +54,7 @@ export default function FeaturesSection() {
                                         <h3 className="text-xl font-bold text-[#2d2d5f]">{feature.title}</h3>
                                         <p className="text-gray-500 flex-grow">{feature.description}</p>
                                         <Link
-                                            href={feature.link}
+                                            to={feature.link}
                                             className="inline-flex items-center text-[#40c4a7] hover:text-[#2d2d5f] transition-colors"
                                         >
                                             {feature.linkText}
