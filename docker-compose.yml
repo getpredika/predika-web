@@ -1,10 +1,78 @@
 services:
-  # Application service
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: predika-web
+  traefik:
+    image: traefik:v2.3
+    networks:
+      - traefik
+      - inbound
     ports:
-      - "8080:8080"
+      - '80:80'
+      - '443:443'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.yml:/etc/traefik/traefik.yml
+      - ./letsencrypt/acme.json:/letsencrypt/acme.json
+    healthcheck:
+      test: ['CMD', 'traefik', 'healthcheck']
+      interval: 10s
+      timeout: 2s
+      retries: 3
+      start_period: 5s
+    environment:
+      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
+      - CF_API_EMAIL=${CF_API_EMAIL}
+    deploy:
+      labels:
+        - 'traefik.enable=false'
 
+
+  # The web service
+  web:
+    image: predika/web:latest
+    networks:
+      - inbound
+    env_file:
+      - .env
+    deploy:
+      labels:
+        - 'traefik.enable=true'
+        - 'traefik.http.routers.web.rule=Host(`predika.app`)'
+        - 'traefik.http.routers.web.entrypoints=web'
+        - 'traefik.http.routers.web.middlewares=redirectscheme'
+        - 'traefik.http.routers.web-secure.rule=Host(`predika.app`)'
+        - 'traefik.http.routers.web-secure.entrypoints=websecure'
+        - 'traefik.http.routers.web-secure.tls.certresolver=myresolver'
+        - 'traefik.http.services.web-secure.loadbalancer.server.port=80'
+        - 'traefik.http.middlewares.redirectscheme.redirectscheme.scheme=https'
+        - 'traefik.http.middlewares.redirectscheme.redirectscheme.permanent=true'
+        - 'traefik.docker.network=inbound'
+      restart_policy:
+        condition: on-failure
+
+  # The api service
+  api:
+    image: predika/api:latest
+    networks:
+      - inbound
+    deploy:
+      labels:
+        - 'traefik.enable=true'
+        - 'traefik.http.routers.api.rule=Host(`api.predika.app`)'
+        - 'traefik.http.routers.api.entrypoints=web'
+        - 'traefik.http.routers.api.middlewares=redirectscheme'
+        - 'traefik.http.routers.api-secure.rule=Host(`api.predika.app`)'
+        - 'traefik.http.routers.api-secure.entrypoints=websecure'
+        - 'traefik.http.routers.api-secure.tls.certresolver=myresolver'
+        - 'traefik.http.services.api-secure.loadbalancer.server.port=3333'
+        - 'traefik.http.middlewares.redirectscheme.redirectscheme.scheme=https'
+        - 'traefik.http.middlewares.redirectscheme.redirectscheme.permanent=true'
+        - 'traefik.docker.network=inbound'
+      restart_policy:
+        condition: on-failure
+
+networks:
+  traefik:
+    driver: overlay
+    name: traefik
+  inbound:
+    driver: overlay
+    name: inbound

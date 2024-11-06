@@ -1,14 +1,14 @@
-name: CI/CD
+name: CI/CD for Web
 
 on:
   push:
     branches:
-      - production
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-24.04
-    name: Continuous Integration
+    name: Build and Push Frontend Image
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -36,11 +36,14 @@ jobs:
           context: .
           file: Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
-          tags: predika/web:latest
+          tags: |
+            predika/web:latest
+            predika/web:${{ github.sha }}
+            predika/web:${{ github.ref_name }}
 
   deploy:
     runs-on: ubuntu-24.04
-    name: Continuous Deployment
+    name: Deploy Frontend
     needs: [build]
     steps:
       - name: Deploy to VPS using ssh
@@ -51,4 +54,4 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             cd /home/stacks
-            docker service update --image predika/web:latest traefik_frontend
+#            docker service update --image  predika/web:latest traefik_web
