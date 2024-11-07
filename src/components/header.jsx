@@ -44,22 +44,22 @@ export default function Header() {
             </Link>
             <nav className="ml-auto hidden md:flex gap-6 sm:gap-8 items-center">
                 <HoverEffect items={navItems}/>
+                <Link to="/koneksyon">
                 <Button
                     className="text-sm font-medium text-[#2d2d5f] border border-gray-200 hover:bg-[#2d2d5f]/90 hover:text-white hover:border-[#2d2d5f]/90"
                     variant="ghost"
                 >
-                    <Link to="/koneksyon">
                         Konekte
-                    </Link>
                 </Button>
+                </Link>
+                <Link to="/anregistre">
                 <Button
                     className="bg-[#40c4a7] text-white hover:bg-[#40c4a7]/90"
                 >
-                    <Link to="/anregistre">
                         Kòmanse
-                    </Link>
                 </Button>
-            </nav>
+            </Link>
+        </nav>
             <div className="ml-auto md:hidden">
                 <Button
                     variant="ghost"

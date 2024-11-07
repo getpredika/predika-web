@@ -36,7 +36,7 @@ export default function LandingPage() {
                                 <div className="space-x-4">
                                     <Link to="/anregistre">
                                     <Button className="bg-[#2d2d5f] text-white hover:bg-[#2d2d5f]/90 px-8">
-                                        Kreye Kont
+                                        Kreye Yon Kont
                                     </Button>
                                     </Link>
                                     <Link to="/atik">

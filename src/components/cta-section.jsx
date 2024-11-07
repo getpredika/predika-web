@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 
 export default function CTASection() {
   const features = [
-    "Pa bezwen ka kredi",
+    "Pa bezwen kat kredi",
     "Plizyè zouti pou dekouvri",
   ]
 

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Sparkles } from "lucide-react"
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom"
 import { Card } from "@/components/ui/card"
 
 export default function ResetPasswordPage() {
@@ -26,11 +26,11 @@ export default function ResetPasswordPage() {
                         <Sparkles className="h-6 w-6 text-[#40c4a7]" />
                         <span className="font-bold text-xl text-[#2d2d5f]">Predika</span>
                     </Link>
-                    <h1 className="text-2xl font-semibold text-[#2d2d5f]">Chanje modpas ou</h1>
-                    <p className="text-sm text-gray-500">Antre imèl ou pou w ka chanje modpas ou.</p>
+                    <h1 className="text-2xl font-semibold text-[#2d2d5f]">Reyinisyalize modpas ou</h1>
+                    <p className="text-sm text-gray-500">Antre imèl ou pou w ka reyinisyalize modpas ou.</p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-8">
                     <div className="space-y-2">
                         <Label htmlFor="email">Imèl</Label>
                         <Input
@@ -42,19 +42,17 @@ export default function ResetPasswordPage() {
                             className="border-gray-200 focus:border-[#40c4a7] focus:ring-0"
                         />
                     </div>
-                    <Link to="/verifikasyon">
                     <Button
                         type="submit"
                         className="w-full bg-[#2d2d5f] hover:bg-[#2d2d5f]/90 text-white"
                     >
                         Voye kòd reyinisyalizasyon
                     </Button>
-                    </Link>
                 </form>
 
                 <p className="mt-6 text-center text-sm text-gray-500">
                     Sonje modpas ou? {" "}
-                    <Link href="/login" className="text-[#40c4a7] hover:underline">
+                    <Link to="/login" className="text-[#40c4a7] hover:underline">
                         Konekte
                     </Link>
                 </p>

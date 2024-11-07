@@ -7,6 +7,7 @@ import RegisterPage from "@/pages/register";
 import ResetPasswordPage from "@/pages/reset-password-page";
 import OTPVerificationPage from "@/pages/otp-verification-page";
 import NewPasswordPage from "@/pages/new-password-page";
+import PasswordChangeSuccessPage from "@/pages/password-change-success-page";
 import TextCorrectionPage from "@/pages/text-correction-page";
 import {AuthProvider} from "@/context/auth-context";
 import PrivateRoute from "@/router/private-route";
@@ -21,6 +22,7 @@ function App() {
                 <Route path="/chanje-modpas" element={<ResetPasswordPage />} />
                 <Route path="/verifikasyon" element={<OTPVerificationPage />} />
                 <Route path="/nouvo-modpas" element={<NewPasswordPage />} />
+                <Route path="/modpas-chanje-sikse" element={<PasswordChangeSuccessPage />} />
                 <Route path="/atik" element={<Blog />} />
                 <Route path="/*" element={<NotFound />} />
                 <Route

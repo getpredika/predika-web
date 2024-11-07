@@ -23,7 +23,7 @@ export default function HowItWorksSection() {
 
 
     return (
-        <section className="w-full py-12 md:py-24 relative bg-white">
+        <section className="w-full py-12 relative bg-white">
             <div className="absolute inset-0" style={{
                 backgroundImage: 'radial-gradient(circle at center, #40c4a7 1px, transparent 1px)',
                 backgroundSize: '24px 24px',
@@ -68,7 +68,7 @@ export default function HowItWorksSection() {
                         variant="outline"
                         className="h-11 px-6 rounded-full border-[#40c4a7] text-[#40c4a7] hover:bg-[#40c4a7] hover:text-white"
                     >
-                        Kreyon kont
+                        Kreye yon kont
                     </Button>
                     </Link>
                 </div>

@@ -100,56 +100,56 @@ export default function TextCorrectionPage() {
                                     value={text}
                                     onChange={(e) => setText(e.target.value)}
                                     placeholder="Tape oubyen kole tèks la isit la"
-                                    className="min-h-[300px] p-4 text-lg text-gray-600 border-2 border-gray-200 rounded-lg focus:border-gray-200 pr-10 transition-colors"
+                                    className="min-h-[200px] sm:min-h-[300px] p-3 sm:p-4 text-base sm:text-lg text-gray-600 border-2 border-gray-200 rounded-lg focus:border-gray-200 pr-10 transition-colors resize-none"
                                     disabled={!isEditing}
                                 />
                                 {text && isEditing && (
                                     <button
                                         onClick={handleClearText}
-                                        className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+                                        className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition-colors p-1"
                                         aria-label="Efase"
                                     >
-                                        <X className="h-5 w-5"/>
+                                        <X className="h-5 w-5" />
                                     </button>
                                 )}
                             </div>
 
-                            <div className="flex items-center justify-between">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                                 {isEditing ? (
-                                    <p className="text-sm text-gray-500" aria-live="polite">
+                                    <p className="text-sm text-gray-500 order-2 sm:order-1" aria-live="polite">
                                         {characterCount} karaktè, {wordCount} mo
                                     </p>
                                 ) : (
-                                    <div className="flex space-x-2">
+                                    <div className="flex flex-wrap gap-2 order-2 sm:order-1 w-full sm:w-auto">
                                         <Button
                                             onClick={handleEdit}
                                             variant="outline"
                                             size="sm"
-                                            className="flex items-center text-[#2d2d5f] bg-white hover:bg-gray-100 hover:text-[#2d2d5f] border-gray-300"
+                                            className="flex-1 sm:flex-none items-center text-[#2d2d5f] bg-white hover:bg-gray-100 hover:text-[#2d2d5f] border-gray-300"
                                         >
-                                            <Edit className="h-4 w-4 mr-2"/>
+                                            <Edit className="h-4 w-4 mr-2" />
                                             Modifye
                                         </Button>
                                         <Button
                                             onClick={handleRevert}
                                             variant="outline"
                                             size="sm"
-                                            className="flex items-center text-[#2d2d5f] bg-white hover:bg-gray-100 hover:text-[#2d2d5f] border-gray-300"
+                                            className="flex-1 sm:flex-none items-center text-[#2d2d5f] bg-white hover:bg-gray-100 hover:text-[#2d2d5f] border-gray-300"
                                         >
-                                            <RotateCcw className="h-4 w-4 mr-2"/>
+                                            <RotateCcw className="h-4 w-4 mr-2" />
                                             Retounen
                                         </Button>
                                     </div>
                                 )}
                                 <Button
                                     onClick={handleGrammarCheck}
-                                    className="bg-[#2d2d5f] text-white hover:bg-[#2d2d5f]/90 px-6 py-2 rounded-md"
+                                    className="w-full sm:w-auto bg-[#2d2d5f] text-white hover:bg-[#2d2d5f]/90 order-1 sm:order-2"
                                     disabled={isChecking || !isEditing}
                                 >
                                     {isChecking ? (
                                         <motion.div
-                                            initial={{scale: 0.5, opacity: 0}}
-                                            animate={{scale: 1, opacity: 1}}
+                                            initial={{ scale: 0.5, opacity: 0 }}
+                                            animate={{ scale: 1, opacity: 1 }}
                                             className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"
                                         />
                                     ) : (
@@ -175,14 +175,14 @@ export default function TextCorrectionPage() {
                                             />
                                         </svg>
                                     )}
-                                    {isChecking ? 'Tann...' : 'Tcheke'}
+                                    {isChecking ? 'Tann...' : 'Korije'}
                                 </Button>
                             </div>
                         </div>
                     </Card>
                 </div>
             </main>
-            <Footer/>
+            <Footer />
         </div>
     )
 }
