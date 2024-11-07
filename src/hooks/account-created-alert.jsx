@@ -1,28 +1,14 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { useState, useEffect } from "react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-import { CheckCircle2Icon, XIcon } from "lucide-react"
-import { Button } from '@/components/ui/button'
+import { CheckCircle2Icon, XIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 
-export default function AccountCreatedAlert() {
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    if (isVisible) {
-      const timer = setTimeout(() => {
-        setIsVisible(false)
-      }, 5000)
-
-      return () => clearTimeout(timer)
-    }
-  }, [isVisible])
-
-  const showAlert = () => {
-    setIsVisible(true)
-  }
-
+export default function AccountCreatedAlert({ isVisible, onClose }) {
+  if (!isVisible) return null;
 
   return (
     <Alert className="mb-4 bg-green-50 border-green-200">
@@ -35,10 +21,10 @@ export default function AccountCreatedAlert() {
         variant="ghost"
         size="icon"
         className="absolute top-2 right-2 text-green-600 hover:text-green-800 hover:bg-green-100"
-        
+        onClick={onClose}
       >
-        <XIcon className="h-4 w-4" />
+        <X className="h-4 w-4" />
       </Button>
     </Alert>
-  )
+  );
 }

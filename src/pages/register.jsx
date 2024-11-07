@@ -36,9 +36,14 @@ export default function RegisterPage() {
     setAccountCreated(true);
   };
 
+
+  const closeAlert = () => {
+    setAccountCreated(false);
+  };
+
   return (
     <div className="min-h-screen bg-[#f0faf7] flex flex-col items-center justify-center p-4">
-        {isAccountCreated && <AccountCreatedAlert />}
+      <AccountCreatedAlert isVisible={isAccountCreated} onClose={closeAlert} />
       <Card className="w-full max-w-md bg-white p-8 rounded-xl shadow-sm">
         <div className="flex flex-col items-center space-y-2 mb-8">
           <Link to="/" className="flex items-center space-x-2">
