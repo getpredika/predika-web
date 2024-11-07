@@ -1,26 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-
-import { CheckCircle2Icon, XIcon } from "lucide-react";
+import { CheckCircle2Icon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
 
 export default function AccountCreatedAlert({ isVisible, onClose }) {
-  if (!isVisible) return null;
+  if (!isVisible) return null; // Only render if visible
 
   return (
-    <Alert className="mb-4 bg-green-50 border-green-200 relative max-w-xs w-full mx-auto">
-      <CheckCircle2Icon className="h-4 w-4 text-green-600" />
-      <AlertTitle className="text-green-800">Success</AlertTitle>
-      <AlertDescription className="text-green-700">
-        kont ou an kreye avek sikse
+    <Alert className="mb-4 bg-[#f0faf7] border border-[#28A745] relative max-w-xs w-full mx-auto rounded-md p-4 font-inter shadow-sm">
+      <CheckCircle2Icon className="h-5 w-5 text-[#28A745]" />
+      <AlertTitle className="text-[#2d2d5f] font-semibold">Success</AlertTitle>
+      <AlertDescription className="text-[#6b7280]">
+        Kont ou an kreye avèk siksè.
       </AlertDescription>
       <Button
         variant="ghost"
         size="icon"
-        className="absolute top-2 right-2 text-green-600 hover:text-green-800 hover:bg-green-100"
+        className="absolute top-2 right-2 text-[#28A745] hover:text-[#2d2d5f] hover:bg-[#f8fafc]"
         onClick={onClose}
       >
         <X className="h-4 w-4" />
