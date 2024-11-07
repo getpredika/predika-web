@@ -11,7 +11,7 @@ export default function AccountCreatedAlert({ isVisible, onClose }) {
   if (!isVisible) return null;
 
   return (
-    <Alert className="mb-4 bg-green-50 border-green-200">
+    <Alert className="mb-4 bg-green-50 border-green-200 relative max-w-xs w-full mx-auto">
       <CheckCircle2Icon className="h-4 w-4 text-green-600" />
       <AlertTitle className="text-green-800">Success</AlertTitle>
       <AlertDescription className="text-green-700">
