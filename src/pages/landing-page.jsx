@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision"
 import {useTypingEffect} from "@/hooks/use-typing-effect";
-import Header from "@/components/header";
+import MainHeader from "@/components/main-header.jsx";
 import FeaturesSection from "@/components/features-section";
 import CTASection from "@/components/cta-section";
 import HowItWorksSection from "@/components/how-it-works-section";
@@ -17,7 +17,7 @@ export default function LandingPage() {
 
     return (
         <div className="min-h-screen bg-[#f0faf7]">
-            <Header/>
+            <MainHeader/>
             <BackgroundBeamsWithCollision>
                 <main className="relative z-10 flex-1">
                     <section className="w-full pt-40 md:pt-32 pb-24 md:py-24 lg:py-32 xl:py-48">

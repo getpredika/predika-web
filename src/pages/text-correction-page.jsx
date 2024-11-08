@@ -13,8 +13,7 @@ import {
 } from "@/components/ui/select"
 import { Card } from "@/components/ui/card"
 import { motion } from "framer-motion"
-import Footer from "@/components/footer.jsx";
-import Header from "@/components/header.jsx";
+import SecondaryHeader from "@/components/secondary-header.jsx";
 
 export default function TextCorrectionPage() {
     const [text, setText] = useState("")
@@ -60,17 +59,17 @@ export default function TextCorrectionPage() {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <Header/>
+            <SecondaryHeader/>
             <main className="flex-grow bg-[#f0faf7] px-4 py-16 pt-40">
                 <div className="container mx-auto">
-                    <div className="text-center mb-8">
-                        <h1 className="text-4xl font-bold text-[#2d2d5f] mb-3">
-                            Korije Gramè & Òtograf
-                        </h1>
-                        <p className="text-lg text-gray-600">
-                            Zouti ki baze sou AI pou korije òtograf ak gramè nan lang kreyòl
-                        </p>
-                    </div>
+                    {/*<div className="text-center mb-8">*/}
+                    {/*    <h1 className="text-4xl font-bold text-[#2d2d5f] mb-3">*/}
+                    {/*        Korije Gramè & Òtograf*/}
+                    {/*    </h1>*/}
+                    {/*    <p className="text-lg text-gray-600">*/}
+                    {/*        Zouti ki baze sou AI pou korije òtograf ak gramè nan lang kreyòl*/}
+                    {/*    </p>*/}
+                    {/*</div>*/}
 
                     <Card className="w-full max-w-4xl mx-auto bg-white shadow-xl">
                         <div className="p-6 relative">
@@ -182,7 +181,6 @@ export default function TextCorrectionPage() {
                     </Card>
                 </div>
             </main>
-            <Footer />
         </div>
     )
 }

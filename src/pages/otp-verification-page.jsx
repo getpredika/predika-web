@@ -4,8 +4,9 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Sparkles } from "lucide-react"
-import { Link } from "react-router-dom"
+import {Link, useLocation, useNavigate} from "react-router-dom"
 import { Card } from "@/components/ui/card"
+import {useAuth} from "@/context/auth-context";
 
 export default function OTPVerificationPage() {
     const [otp, setOtp] = useState(['', '', '', '', '', ''])
@@ -13,6 +14,9 @@ export default function OTPVerificationPage() {
     const [canResend, setCanResend] = useState(false)
     const [error, setError] = useState("")
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const { verifyOtp, sendOtp} = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         if (timeLeft > 0) {
@@ -63,27 +67,30 @@ export default function OTPVerificationPage() {
         setError("")
 
         try {
-            await new Promise(resolve => setTimeout(resolve, 1000))
-
-            if (otpString === "123456") { // Replace with actual verification
-                window.location.href = "/nouvo-modpas"
-            } else {
-                setError("Kòd OTP pa kòrèk. Tanpri, eseye ankò.")
+            await verifyOtp({ otp: otpString, type: location.state.type });
+            if (location.state.type === 'PASSWORD_RESET'){
+                navigate('/nouvo-modpas', {state: location.state.email})
+            }else {
+                navigate('/');
             }
-        } catch (err) {
-            setError("Gen yon erè ki pase. Tanpri eseye ankò.")
-        } finally {
+        } catch (responseError) {
+            setError(responseError)
             setIsSubmitting(false)
         }
     }
 
-    const handleResendCode = () => {
+    const handleResendCode = async () => {
         if (canResend) {
             setTimeLeft(60)
             setCanResend(false)
             setOtp(['', '', '', '', '', ''])
             setError("")
-            // Implement resend logic here
+
+            try {
+                await sendOtp({ email: location.state.email, type: location.state.type });
+            } catch (responseError) {
+                setError(responseError)
+            }
         }
     }
 

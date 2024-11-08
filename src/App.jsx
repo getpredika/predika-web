@@ -16,7 +16,7 @@ function App() {
     return (
         <AuthProvider>
             <Routes>
-                <Route path="/" element={<LandingPage />} />
+                <Route path="/" index={true} element={<LandingPage />} />
                 <Route path="/koneksyon" element={<LoginPage />} />
                 <Route path="/anregistre" element={<RegisterPage />} />
                 <Route path="/chanje-modpas" element={<ResetPasswordPage />} />
