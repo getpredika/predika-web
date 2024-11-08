@@ -1,18 +1,22 @@
+'use client'
+
 import { Link } from "react-router-dom"
 import { HoverEffect } from "@/components/ui/card-hover-effect"
 import { Button } from "@/components/ui/button"
 import { Sparkles, Menu, X } from "lucide-react"
 import { useEffect, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
+import { useAuth } from "@/context/auth-context"
 
 const navItems = [
     { title: "Koreksyon Gramè", link: "/koreksyon-grame" },
     { title: "Atik", link: "/atik" },
 ]
 
-export default function Header() {
+export default function MainHeader() {
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+    const { user } = useAuth()
 
     useEffect(() => {
         const handleScroll = () => {
@@ -44,22 +48,24 @@ export default function Header() {
             </Link>
             <nav className="ml-auto hidden md:flex gap-6 sm:gap-8 items-center">
                 <HoverEffect items={navItems}/>
-                <Link to="/koneksyon">
-                <Button
-                    className="text-sm font-medium text-[#2d2d5f] border border-gray-200 hover:bg-[#2d2d5f]/90 hover:text-white hover:border-[#2d2d5f]/90"
-                    variant="ghost"
-                >
-                        Konekte
-                </Button>
-                </Link>
-                <Link to="/anregistre">
-                <Button
-                    className="bg-[#40c4a7] text-white hover:bg-[#40c4a7]/90"
-                >
+                {!user && (
+                    <Link to="/koneksyon">
+                        <Button
+                            className="text-sm font-medium text-[#2d2d5f] border border-gray-200 hover:bg-[#2d2d5f]/90 hover:text-white hover:border-[#2d2d5f]/90"
+                            variant="ghost"
+                        >
+                            Konekte
+                        </Button>
+                    </Link>
+                )}
+                <Link to="/koreksyon-grame">
+                    <Button
+                        className="bg-[#40c4a7] text-white hover:bg-[#40c4a7]/90"
+                    >
                         Kòmanse
-                </Button>
-            </Link>
-        </nav>
+                    </Button>
+                </Link>
+            </nav>
             <div className="ml-auto md:hidden">
                 <Button
                     variant="ghost"
@@ -94,21 +100,22 @@ export default function Header() {
                                     {item.title}
                                 </Link>
                             ))}
-                            <Link to="/koneksyon">
-                            <Button
-                                className="text-sm font-medium text-[#2d2d5f] border border-gray-200 hover:bg-[#2d2d5f]/90 hover:text-white hover:border-[#2d2d5f]/90"
-                                variant="ghost"
-                            >
-                                Konekte
-                            </Button>
-                            </Link>
-
-                            <Link to="/anregistre">
-                            <Button
-                                className="bg-[#40c4a7] text-white hover:bg-[#40c4a7]/90 w-full"
-                            >
-                                Kòmanse
-                            </Button>
+                            {!user && (
+                                <Link to="/koneksyon">
+                                    <Button
+                                        className="text-sm font-medium text-[#2d2d5f] border border-gray-200 hover:bg-[#2d2d5f]/90 hover:text-white hover:border-[#2d2d5f]/90 w-full"
+                                        variant="ghost"
+                                    >
+                                        Konekte
+                                    </Button>
+                                </Link>
+                            )}
+                            <Link to="/koreksyon-grame">
+                                <Button
+                                    className="bg-[#40c4a7] text-white hover:bg-[#40c4a7]/90 w-full"
+                                >
+                                    Kòmanse
+                                </Button>
                             </Link>
                         </nav>
                     </motion.div>

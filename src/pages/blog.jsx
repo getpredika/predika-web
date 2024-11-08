@@ -2,12 +2,12 @@
 
 import { Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
-import Header from "@/components/header";
+import MainHeader from "@/components/main-header.jsx";
 
 export default function Blog() {
     return (
         <div className="min-h-screen bg-white">
-            <Header/>
+            <MainHeader/>
             <section className="w-full py-12 md:py-24 lg:py-32 relative">
                 <div className="absolute inset-0" style={{
                     backgroundImage: 'radial-gradient(circle at center, #40c4a7 1px, transparent 1px)',

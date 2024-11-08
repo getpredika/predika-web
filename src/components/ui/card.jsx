@@ -5,7 +5,7 @@ export const Card = ({ children, className }) => (
   </div>
 );
 
-// Card Header
+// Card MainHeader
 export const CardHeader = ({ children, className }) => (
   <div className={`p-4 border-b border-[#f8fafc] bg-[#f0faf7] ${className}`}>
     {children}

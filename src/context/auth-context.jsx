@@ -1,28 +1,33 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { api } from '@/services/api/auth-service.js';
+const API_URL = import.meta.env.VITE_API_URL;
+
+const handleResponse = async (response) => {
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
+    return response.json();
+};
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [message, setMessage] = useState(null);
-
-    const handleError = (err) => {
-        const errorMessage = err.message;
-        setError(errorMessage);
-        setMessage(null);
-    };
 
     useEffect(() => {
         const checkAuthStatus = async () => {
             try {
-                const userData = await api.getUserInfo();
+                const response = await fetch(`${API_URL}/auth/me`, {
+                    method: "GET",
+                    credentials: 'include',
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                const userData = await handleResponse(response);
                 setUser(userData.data);
-            } catch (err) {
-                handleError(err);
-            } finally {
+            } catch (err) { /* empty */ } finally {
                 setLoading(false);
             }
         };
@@ -30,97 +35,138 @@ export const AuthProvider = ({ children }) => {
         checkAuthStatus();
     }, []);
 
-    const register = async (credentials) => {
-        setLoading(true);
+    // Register function
+    const register = async (userData) => {
         try {
-            const userData = await api.register(credentials);
-            setUser(userData.data);
-            setMessage(null);
-            setError(null);
+            const response = await fetch(`${API_URL}/auth/register`, {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(userData),
+            });
+
+            const data = await handleResponse(response);
+            setUser(data.data.user);
         } catch (err) {
-            handleError(err);
-        } finally {
-            setLoading(false);
+            throw err.message;
         }
     };
 
-    const login = async (credentials) => {
-        setLoading(true);
+    // Login function
+    const login = async (userData) => {
         try {
-            const userData = await api.login(credentials);
-            setUser(userData.data);
-            setMessage(null);
-            setError(null);
+            const response = await fetch(`${API_URL}/auth/login`, {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(userData),
+            });
+
+            const data = await handleResponse(response);
+            setUser(data.data);
         } catch (err) {
-            handleError(err);
-        } finally {
-            setLoading(false);
+            throw err.message;
         }
     };
 
+    // Logout function
     const logout = async () => {
-        setLoading(true);
         try {
-            await api.logout();
+            const response = await fetch(`${API_URL}/auth/logout`, {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            await handleResponse(response);
             setUser(null);
-            setMessage(null);
-            setError(null);
         } catch (err) {
-            handleError(err);
-        } finally {
-            setLoading(false);
+            throw err.message;
         }
     };
 
-    const verifyOtp = async (credentials) => {
+    // Verify OTP function
+    const verifyOtp = async (data) => {
         try {
-            const data = await api.verifyOtp(credentials);
-            setMessage(data.message);
-            setError(null);
+            const response = await fetch(`${API_URL}/auth/verify-email`, {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            await handleResponse(response);
         } catch (err) {
-            handleError(err);
+            throw err.message;
         }
     };
 
-    const sendOtp = async (credentials) => {
+    // Send OTP function
+    const sendOtp = async (data) => {
         try {
-            const data = await api.sendOtp(credentials);
-            setMessage(data.message);
-            setError(null);
+            const response = await fetch(`${API_URL}/auth/otp/send`, {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            await handleResponse(response);
         } catch (err) {
-            handleError(err);
+            throw err.message;
         }
     };
 
-    const resetPassword = async (credentials) => {
+    // Reset Password function
+    const resetPassword = async (data) => {
         try {
-            const data = await api.resetPassword(credentials);
-            setMessage(data.message);
-            setError(null);
+            const response = await fetch(`${API_URL}/auth/password/reset`, {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+console.log(JSON.stringify(data))
+            await handleResponse(response);
         } catch (err) {
-            handleError(err);
+            throw err.message;
         }
     };
 
-    const forgotPassword = async (credentials) => {
+    // Forgot Password function
+    const forgotPassword = async (data) => {
         try {
-            const data = await api.forgotPassword(credentials);
-            setMessage(data.message);
-            setError(null);
+            const response = await fetch(`${API_URL}/auth/password/forgot`, {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            await handleResponse(response);
         } catch (err) {
-            handleError(err);
+            throw err.message;
         }
     };
-
-    const clearMessage = () => setMessage(null);
-    const clearError = () => setError(null);
 
     return (
         <AuthContext.Provider value={{
             user,
             loading,
-            error,
-            message,
             login,
             logout,
             register,
@@ -128,8 +174,6 @@ export const AuthProvider = ({ children }) => {
             sendOtp,
             resetPassword,
             forgotPassword,
-            clearMessage,
-            clearError
         }}>
             {children}
         </AuthContext.Provider>

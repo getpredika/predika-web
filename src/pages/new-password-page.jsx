@@ -6,22 +6,43 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Sparkles, Eye, EyeOff } from "lucide-react"
 import { Card } from "@/components/ui/card"
-import {Link} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
+import {useAuth} from "@/context/auth-context";
+import * as Yup from "yup";
+import {useFormik} from "formik";
+
+const validationSchema = Yup.object().shape({
+    password: Yup.string()
+        .min(8, "Modpas la dwe gen omwen 8 karaktè")
+        .required("Modpas obligatwa"),
+    confirmPassword: Yup.string()
+        .oneOf([Yup.ref("password"), null], "Modpas yo pa menm")
+        .required("Konfime modpas obligatwa"),
+})
 
 export default function NewPasswordPage() {
     const [showPassword, setShowPassword] = useState(false)
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
+    const [error, setError] = useState(null)
+    const { resetPassword} = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        if (password !== confirmPassword) {
-            alert("Modpas yo pa menm. Tanpri, eseye ankò.")
-            return
-        }
-        // Handle password reset
-        console.log('New password set:', password)
-    }
+    const formik = useFormik({
+        initialValues: {
+            password: "",
+            confirmPassword: "",
+        },
+        validationSchema: validationSchema,
+        onSubmit: async (values) => {
+            try {
+                const data = {email:location.state, password: values.password, password_confirmation:values.confirmPassword}
+                await resetPassword(data);
+                navigate('/modpas-chanje-sikse');
+            } catch (responseError) {
+                setError(responseError)
+            }
+        },
+    })
 
     return (
         <div className="min-h-screen bg-[#f0faf7] flex flex-col items-center justify-center p-4">
@@ -35,16 +56,19 @@ export default function NewPasswordPage() {
                     <p className="text-sm text-gray-500">Antre nouvo modpas ou.</p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={formik.handleSubmit} className="space-y-4">
                     <div className="space-y-2">
-                        <Label htmlFor="password">Nouvo Modpas</Label>
+                        <Label htmlFor="password">Modpas</Label>
                         <div className="relative">
                             <Input
                                 id="password"
+                                name="password"
                                 type={showPassword ? "text" : "password"}
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="border-gray-200 focus:border-[#40c4a7] focus:ring-0 pr-10"
+                                placeholder="antre modpas ou"
+                                {...formik.getFieldProps('password')}
+                                className={`border-gray-200 focus:border-[#40c4a7] focus:ring-0 pr-10 ${
+                                    formik.errors.password && formik.touched.password ? "border-red-500" : ""
+                                }`}
                             />
                             <button
                                 type="button"
@@ -52,22 +76,28 @@ export default function NewPasswordPage() {
                                 className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
                             >
                                 {showPassword ? (
-                                    <EyeOff className="h-5 w-5" />
+                                    <EyeOff className="h-5 w-5"/>
                                 ) : (
-                                    <Eye className="h-5 w-5" />
+                                    <Eye className="h-5 w-5"/>
                                 )}
                             </button>
                         </div>
+                        {formik.errors.password && formik.touched.password && (
+                            <p className="text-red-500 text-xs mt-1">{formik.errors.password}</p>
+                        )}
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="confirmPassword">Konfime Nouvo Modpas</Label>
+                        <Label htmlFor="confirmPassword">Konfime Modpas</Label>
                         <div className="relative">
                             <Input
                                 id="confirmPassword"
+                                name="confirmPassword"
                                 type={showPassword ? "text" : "password"}
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                className="border-gray-200 focus:border-[#40c4a7] focus:ring-0 pr-10"
+                                placeholder="konfime modpas ou"
+                                {...formik.getFieldProps('confirmPassword')}
+                                className={`border-gray-200 focus:border-[#40c4a7] focus:ring-0 pr-10 ${
+                                    formik.errors.confirmPassword && formik.touched.confirmPassword ? "border-red-500" : ""
+                                }`}
                             />
                             <button
                                 type="button"
@@ -75,18 +105,27 @@ export default function NewPasswordPage() {
                                 className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
                             >
                                 {showPassword ? (
-                                    <EyeOff className="h-5 w-5" />
+                                    <EyeOff className="h-5 w-5"/>
                                 ) : (
-                                    <Eye className="h-5 w-5" />
+                                    <Eye className="h-5 w-5"/>
                                 )}
                             </button>
                         </div>
+                        {formik.errors.confirmPassword && formik.touched.confirmPassword && (
+                            <p className="text-red-500 text-xs mt-1">{formik.errors.confirmPassword}</p>
+                        )}
                     </div>
+
+                    {error && (
+                        <p className="text-red-500 text-xs mt-4 text-center">{error}</p>
+                    )}
+
                     <Button
                         type="submit"
+                        disabled={formik.isSubmitting}
                         className="w-full bg-[#2d2d5f] hover:bg-[#2d2d5f]/90 text-white"
                     >
-                        Mete nouvo modpas
+                        {formik.isSubmitting ? "Tann..." : "Chanje Modpas"}
                     </Button>
                 </form>
             </Card>
