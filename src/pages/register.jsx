@@ -6,10 +6,10 @@ import * as Yup from "yup"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Sparkles, Eye, EyeOff } from "lucide-react"
+import { Eye, EyeOff } from "lucide-react"
 import { Card } from "@/components/ui/card"
-import {useAuth} from "@/context/auth-context";
-import {Link, useNavigate} from "react-router-dom";
+import { useAuth } from "@/context/auth-context";
+import { Link, useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object().shape({
     email: Yup.string().email("Imèl la pa valid").required("Imèl obligatwa"),
@@ -49,7 +49,20 @@ export default function RegisterPage() {
             <Card className="w-full max-w-md bg-white p-8 rounded-xl shadow-sm">
                 <div className="flex flex-col items-center space-y-2 mb-8">
                     <div className="flex items-center space-x-2">
-                        <Sparkles className="h-6 w-6 text-[#40c4a7]" />
+                        <div className="w-6 h-6">
+                            <svg
+                                viewBox="0 0 100 100"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-full h-full"
+                            >
+                                <circle cx="50" cy="50" r="50" className="fill-[#2d2d5f]" />
+                                <path
+                                    d="M30 25H55C67.1503 25 77 34.8497 77 47C77 59.1503 67.1503 69 55 69H45V75H30V25ZM45 54H55C58.866 54 62 50.866 62 47C62 43.134 58.866 40 55 40H45V54Z"
+                                    className="fill-[#40c4a7]"
+                                />
+                            </svg>
+                        </div>
                         <span className="font-bold text-xl text-[#2d2d5f]">Predika</span>
                     </div>
                     <h1 className="text-2xl font-semibold text-[#2d2d5f]">Kreye yon kont</h1>
@@ -99,9 +112,8 @@ export default function RegisterPage() {
                             type="email"
                             placeholder="non@egzanp.com"
                             {...formik.getFieldProps('email')}
-                            className={`border-gray-200 focus:border-[#40c4a7] focus:ring-0 ${
-                                formik.errors.email && formik.touched.email ? "border-red-500" : ""
-                            }`}
+                            className={`border-gray-200 focus:border-[#40c4a7] focus:ring-0 ${formik.errors.email && formik.touched.email ? "border-red-500" : ""
+                                }`}
                         />
                         {formik.errors.email && formik.touched.email && (
                             <p className="text-red-500 text-xs mt-1">{formik.errors.email}</p>
@@ -116,9 +128,8 @@ export default function RegisterPage() {
                                 type={showPassword ? "text" : "password"}
                                 placeholder="antre modpas ou"
                                 {...formik.getFieldProps('password')}
-                                className={`border-gray-200 focus:border-[#40c4a7] focus:ring-0 pr-10 ${
-                                    formik.errors.password && formik.touched.password ? "border-red-500" : ""
-                                }`}
+                                className={`border-gray-200 focus:border-[#40c4a7] focus:ring-0 pr-10 ${formik.errors.password && formik.touched.password ? "border-red-500" : ""
+                                    }`}
                             />
                             <button
                                 type="button"
@@ -145,9 +156,8 @@ export default function RegisterPage() {
                                 type={showPassword ? "text" : "password"}
                                 placeholder="konfime modpas ou"
                                 {...formik.getFieldProps('confirmPassword')}
-                                className={`border-gray-200 focus:border-[#40c4a7] focus:ring-0 pr-10 ${
-                                    formik.errors.confirmPassword && formik.touched.confirmPassword ? "border-red-500" : ""
-                                }`}
+                                className={`border-gray-200 focus:border-[#40c4a7] focus:ring-0 pr-10 ${formik.errors.confirmPassword && formik.touched.confirmPassword ? "border-red-500" : ""
+                                    }`}
                             />
                             <button
                                 type="button"

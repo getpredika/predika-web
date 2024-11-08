@@ -1,6 +1,6 @@
 'use client'
 
-import {Link, useNavigate} from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { HoverEffect } from "@/components/ui/card-hover-effect"
 import { Button } from "@/components/ui/button"
 import { Sparkles, Menu, X, UserCircle } from "lucide-react"
@@ -30,10 +30,10 @@ export default function SecondaryHeader() {
         setIsMobileMenuOpen(!isMobileMenuOpen)
     }
 
-    const handleLogout = async ()=>{
+    const handleLogout = async () => {
         try {
             await logout();
-            if (isMobileMenuOpen){
+            if (isMobileMenuOpen) {
                 setIsMobileMenuOpen(false);
             }
             navigate('/');
@@ -44,11 +44,24 @@ export default function SecondaryHeader() {
         <header
             className={`fixed top-0 left-0 right-0 z-50 px-4 lg:px-6 h-16 flex items-center transition-all duration-300 mx-4 lg:mx-6 mt-4 bg-white/70 backdrop-blur-md backdrop-filter border border-white/20 shadow-lg rounded-full`}>
             <Link className="flex items-center justify-center space-x-2" to="/">
-                <Sparkles className="h-6 w-6 text-[#40c4a7]" />
+                <div className="w-6 h-6">
+                    <svg
+                        viewBox="0 0 100 100"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-full h-full"
+                    >
+                        <circle cx="50" cy="50" r="50" className="fill-[#2d2d5f]" />
+                        <path
+                            d="M30 25H55C67.1503 25 77 34.8497 77 47C77 59.1503 67.1503 69 55 69H45V75H30V25ZM45 54H55C58.866 54 62 50.866 62 47C62 43.134 58.866 40 55 40H45V54Z"
+                            className="fill-[#40c4a7]"
+                        />
+                    </svg>
+                </div>
                 <span className="font-bold text-2xl text-[#2d2d5f]">Predika</span>
             </Link>
             <nav className="ml-auto hidden md:flex gap-6 sm:gap-8 items-center">
-                <HoverEffect items={navItems}/>
+                <HoverEffect items={navItems} />
                 {user && (
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
