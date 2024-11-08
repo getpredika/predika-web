@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-const API_URL = 'http://localhost:3333';
+const API_URL = 'https://api.predika.app';
 
 const handleResponse = async (response) => {
     if (!response.ok) {
