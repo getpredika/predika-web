@@ -1,5 +1,5 @@
 import { Sparkles } from "lucide-react"
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
     return (
@@ -52,10 +52,10 @@ export default function Footer() {
                         </Link>
                     </p>
                     <div className="flex space-x-6">
-                        <Link to="#" className="text-gray-500 hover:text-[#40c4a7] text-sm">
+                        <Link to="/tem" className="text-gray-500 hover:text-[#40c4a7] text-sm">
                             Tèm
                         </Link>
-                        <Link href="#" className="text-gray-500 hover:text-[#40c4a7] text-sm">
+                        <Link to="/politik-konfidansyalite" className="text-gray-500 hover:text-[#40c4a7] text-sm">
                             Politik sou Konfidansyalite
                         </Link>
                     </div>

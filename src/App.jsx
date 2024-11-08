@@ -1,4 +1,4 @@
-import {Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import LandingPage from "@/pages/landing-page";
 import Blog from "@/pages/blog";
 import NotFound from "@/pages/not-found";
@@ -9,7 +9,9 @@ import OTPVerificationPage from "@/pages/otp-verification-page";
 import NewPasswordPage from "@/pages/new-password-page";
 import PasswordChangeSuccessPage from "@/pages/password-change-success-page";
 import TextCorrectionPage from "@/pages/text-correction-page";
-import {AuthProvider} from "@/context/auth-context";
+import TermsOfService from "@/pages/terms-of-service";
+import PrivacyPolicy from "@/pages/privacy-policy";
+import { AuthProvider } from "@/context/auth-context";
 import PrivateRoute from "@/router/private-route";
 
 function App() {
@@ -25,12 +27,14 @@ function App() {
                 <Route path="/modpas-chanje-sikse" element={<PasswordChangeSuccessPage />} />
                 <Route path="/atik" element={<Blog />} />
                 <Route path="/*" element={<NotFound />} />
+                <Route path="/politik-konfidansyalite" element={<PrivacyPolicy />} />
+                <Route path="/tem" element={<TermsOfService />} />
                 <Route
                     path="koreksyon-grame"
                     element={
-                       <PrivateRoute>
-                           <TextCorrectionPage />
-                       </PrivateRoute>
+                        <PrivateRoute>
+                            <TextCorrectionPage />
+                        </PrivateRoute>
                     }
                 />
             </Routes>
