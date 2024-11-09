@@ -164,7 +164,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const googleRedirect = () => {
-        window.location.href = `https://api.predika.app/auth/google`;
+        window.location.href = `${API_URL}/auth/google`;
     };
 
     return (
