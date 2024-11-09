@@ -6,9 +6,9 @@ import { motion, AnimatePresence } from "framer-motion"
 import React from "react"
 
 const BackgroundBeamsWithCollision = ({
-                                          children,
-                                          className
-                                      }) => {
+    children,
+    className
+}) => {
     const containerRef = useRef(null)
     const parentRef = useRef(null)
 
@@ -93,10 +93,10 @@ const BackgroundBeamsWithCollision = ({
 }
 
 const CollisionMechanism = React.forwardRef(({
-                                                 parentRef,
-                                                 containerRef,
-                                                 beamOptions = {}
-                                             }, ref) => {
+    parentRef,
+    containerRef,
+    beamOptions = {}
+}, ref) => {
     const beamRef = useRef(null)
     const [collision, setCollision] = useState({
         detected: false,
