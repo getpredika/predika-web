@@ -163,42 +163,8 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // Google Redirect function
-    // const googleRedirect = async () => {
-    //     try {
-    //         const a = await fetch(`${API_URL}/auth/google`, {
-    //             method: "GET",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //             },
-    //         });
-    //         const c = await a.json()
-    //         console.log(c)
-    //     } catch (err) {
-    //         console.log(err)
-    //         throw err.message;
-    //     }
-    // };
-
     const googleRedirect = () => {
         window.location.href = `${API_URL}/auth/google`;
-    };
-
-    // Google Callback function
-    const googleCallback = async () => {
-        try {
-            const response = await fetch(`${API_URL}/auth/google/callback`, {
-                method: "GET",
-                credentials: 'include',
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-            const data = await handleResponse(response);
-            setUser(data.data);
-        } catch (err) {
-            throw err.message;
-        }
     };
 
     return (
@@ -213,7 +179,6 @@ export const AuthProvider = ({ children }) => {
             resetPassword,
             forgotPassword,
             googleRedirect,
-            googleCallback,
         }}>
             {children}
         </AuthContext.Provider>

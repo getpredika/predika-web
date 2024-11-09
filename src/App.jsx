@@ -13,6 +13,7 @@ import TermsOfService from "@/pages/terms-of-service";
 import PrivacyPolicy from "@/pages/privacy-policy";
 import { AuthProvider } from "@/context/auth-context";
 import PrivateRoute from "@/router/private-route";
+import GoogleCallback from "./pages/google-callback";
 
 function App() {
     return (
@@ -29,6 +30,7 @@ function App() {
                 <Route path="/*" element={<NotFound />} />
                 <Route path="/politik-konfidansyalite" element={<PrivacyPolicy />} />
                 <Route path="/tem" element={<TermsOfService />} />
+                <Route path="/auth/google/callback" element={<GoogleCallback />} />
                 <Route
                     path="koreksyon-grame"
                     element={
