@@ -23,7 +23,7 @@ const validationSchema = Yup.object().shape({
 
 export default function RegisterPage() {
     const [showPassword, setShowPassword] = useState(false)
-    const { register } = useAuth();
+    const { register, googleRedirect } = useAuth();
     const navigate = useNavigate();
     const [error, setError] = useState(null)
 
@@ -43,6 +43,10 @@ export default function RegisterPage() {
             }
         },
     })
+
+    const handleGoogleAuth = async () => {
+        await googleRedirect();
+    }
 
     return (
         <div className="min-h-screen bg-[#f0faf7] flex flex-col items-center justify-center p-4">
@@ -70,6 +74,7 @@ export default function RegisterPage() {
                 </div>
 
                 <Button
+                    onClick={handleGoogleAuth}
                     variant="outline"
                     className="w-full mb-6 text-gray-600 font-normal"
                 >
