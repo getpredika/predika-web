@@ -13,6 +13,7 @@ export default function GoogleCallback() {
         const name = queryParams.get("name")
 
         if (email && name) {
+            console.log(email, name);
             setUser({ email, fullName: name });
             navigate("/koreksyon-grame");
         } else {
