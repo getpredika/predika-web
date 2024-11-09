@@ -66,7 +66,7 @@ export default function OTPVerificationPage() {
         setError("")
 
         try {
-            await verifyOtp({ otp: otpString, type: location.state.type });
+            await verifyOtp({ otp: otpString, type: location.state.type || 'VERIFY_EMAIL' });
             if (location.state.type === 'PASSWORD_RESET') {
                 navigate('/nouvo-modpas', { state: location.state.email })
             } else {
