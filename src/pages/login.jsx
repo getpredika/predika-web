@@ -41,12 +41,7 @@ export default function Login() {
   })
 
   const handleGoogleAuth = async () => {
-    try {
-      await googleRedirect();
-      navigate('/koreksyon-grame');
-    } catch (responseError) {
-      setError(responseError)
-    }
+    await googleRedirect();
   }
 
   return (

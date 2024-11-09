@@ -1,22 +1,22 @@
+import { useAuth } from "@/context/auth-context";
 import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "@/context/auth-context";
 
 export default function GoogleCallback() {
     const navigate = useNavigate();
-    const { search } = useLocation();
     const { setUser } = useAuth();
+    const { search } = useLocation();
 
     useEffect(() => {
-        const queryParams = new URLSearchParams(search);
-        const email = queryParams.get("email");
-        const name = queryParams.get("name");
+        const queryParams = new URLSearchParams(search)
+        const email = queryParams.get("email")
+        const name = queryParams.get("name")
 
-        if (email) {
-            setUser({ email: email, fullName: name });
+        if (email && name) {
+            setUser({ email, fullName: name });
             navigate("/koreksyon-grame");
         } else {
-            navigate("/login");
+            navigate("/koneksyon");
         }
     }, [search, setUser, navigate]);
 
