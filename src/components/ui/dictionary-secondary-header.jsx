@@ -21,7 +21,7 @@ export default function DictionarySecondaryHeader({ searchTerm, onSearchChange }
               DIKSYONÈ
             </span>
             <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl md:text-6xl/none text-[#2d2d5f] max-w-3xl mx-auto">
-              Cheche Nenpot Mo kreyol
+              Chèche Nenpòt Mo kreyòl
             </h1>
           </div>
 
@@ -31,7 +31,7 @@ export default function DictionarySecondaryHeader({ searchTerm, onSearchChange }
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#6b7280] h-5 w-5" />
               <Input
                 type="search"
-                placeholder="Cheche yon mo"
+                placeholder="Chèche yon mo"
                 value={searchTerm}
                 onChange={onSearchChange}
                 className="w-full pl-10 py-6 text-base rounded-xl border-gray-200 bg-white/80 backdrop-blur-sm"
