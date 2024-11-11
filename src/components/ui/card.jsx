@@ -1,3 +1,5 @@
+import React from 'react';
+
 // Main Card Container
 export const Card = ({ children, className }) => (
   <div className={`bg-white rounded-lg shadow-md border border-[#f8fafc] ${className}`}>
@@ -5,7 +7,7 @@ export const Card = ({ children, className }) => (
   </div>
 );
 
-// Card MainHeader
+// Card Header
 export const CardHeader = ({ children, className }) => (
   <div className={`p-4 border-b border-[#f8fafc] bg-[#f0faf7] ${className}`}>
     {children}
