@@ -14,6 +14,7 @@ import PrivacyPolicy from "@/pages/privacy-policy";
 import { AuthProvider } from "@/context/auth-context";
 import PrivateRoute from "@/router/private-route";
 import GoogleCallback from "./pages/google-callback";
+import DictionaryPage from "./pages/dictionary-page";
 
 function App() {
     return (
@@ -31,6 +32,7 @@ function App() {
                 <Route path="/politik-konfidansyalite" element={<PrivacyPolicy />} />
                 <Route path="/tem" element={<TermsOfService />} />
                 <Route path="/auth/google/callback" element={<GoogleCallback />} />
+                <Route path="/diksyonè" element={<DictionaryPage />} />
                 <Route
                     path="koreksyon-grame"
                     element={
