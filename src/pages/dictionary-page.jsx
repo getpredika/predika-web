@@ -32,9 +32,9 @@ function DictionaryPage() {
       const filtered = Object.keys(dictionaryData).filter((word) =>
         word.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      setFilteredWords(filtered.slice(0, 10));
+      setFilteredWords(filtered.slice(0, 7));
     } else {
-      setFilteredWords(Object.keys(dictionaryData).slice(0, 10));
+      setFilteredWords(Object.keys(dictionaryData).slice(0, 7));
     }
   }, [searchTerm, dictionaryData]);
 
