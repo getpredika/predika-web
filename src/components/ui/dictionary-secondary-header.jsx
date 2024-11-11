@@ -31,7 +31,7 @@ export default function DictionarySecondaryHeader({ searchTerm, onSearchChange }
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#6b7280] h-5 w-5" />
               <Input
                 type="search"
-                placeholder="Entrez un mot"
+                placeholder="Cheche yon mo"
                 value={searchTerm}
                 onChange={onSearchChange}
                 className="w-full pl-10 py-6 text-base rounded-xl border-gray-200 bg-white/80 backdrop-blur-sm"
