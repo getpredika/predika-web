@@ -9,14 +9,23 @@ function DictionaryPage() {
   const [filteredWords, setFilteredWords] = useState([]);
   const [selectedDefinition, setSelectedDefinition] = useState(null);
 
-
   useEffect(() => {
     fetch("/creole_dictionary.json")
       .then((response) => response.json())
-      .then((data) => setDictionaryData(data))
+      .then((data) => {
+        setDictionaryData(data);
+
+        const words = Object.keys(data);
+        if (words.length > 0) {
+          const randomWord = words[Math.floor(Math.random() * words.length)];
+          setSelectedDefinition({
+            word: randomWord,
+            definition: data[randomWord],
+          });
+        }
+      })
       .catch((error) => console.error("Error loading dictionary:", error));
   }, []);
-
 
   useEffect(() => {
     if (searchTerm) {
@@ -36,11 +45,11 @@ function DictionaryPage() {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    setSelectedDefinition(null); 
+    setSelectedDefinition(null);
   };
 
   const handleWordClick = (word) => {
-    setSelectedDefinition(dictionaryData[word]);
+    setSelectedDefinition({ word, definition: dictionaryData[word] });
   };
 
   return (
@@ -51,7 +60,7 @@ function DictionaryPage() {
         onSearchChange={handleSearchChange}
         onSearchSubmit={handleSearchSubmit}
       />
-      
+
       <main className="max-w-screen-xl mx-auto p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-white p-6 rounded-lg shadow-md overflow-hidden">
@@ -71,8 +80,10 @@ function DictionaryPage() {
 
           {selectedDefinition && (
             <div className="bg-white p-6 rounded-lg shadow-md overflow-hidden">
-              <h2 className="text-2xl font-semibold mb-4">Definisyon</h2>
-              <p className="text-lg">{selectedDefinition}</p>
+              <h2 className="text-2xl font-semibold mb-4">
+                Definisyon: <span>{selectedDefinition.word}</span>
+              </h2>
+              <p className="text-lg">{selectedDefinition.definition}</p>
             </div>
           )}
         </div>
