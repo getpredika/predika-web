@@ -88,12 +88,12 @@ export default function LandingPage() {
                                     animate="visible"
                                     transition={{ delay: 1.2 }}
                                 >
-                                    <Link href="/anregistre">
+                                    <Link to="/anregistre">
                                         <Button className="bg-[#2d2d5f] text-white hover:bg-[#2d2d5f]/90 px-8">
                                             Kreye Yon Kont
                                         </Button>
                                     </Link>
-                                    <Link href="/atik">
+                                    <Link to="/atik">
                                         <Button
                                             variant="outline"
                                             className="border-[#40c4a7] text-[#40c4a7] hover:bg-[#40c4a7] hover:text-white px-8"
