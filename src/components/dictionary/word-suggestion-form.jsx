@@ -1,5 +1,5 @@
 // src/components/dictionary/WordSuggestionForm.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -14,8 +14,8 @@ const WordSuggestionForm = ({ isSuggesting, onSuggestWord }) => {
     e.preventDefault();
     if (!suggestionWord.trim() || suggestionWord.length < 2) {
       addToast({
-        title: "Error",
-        description: "Please enter a valid word suggestion.",
+        title: "Erè",
+        description: "Tanpri antre yon sijesyon mo ki valab.",
       });
       return;
     }
@@ -43,18 +43,18 @@ const WordSuggestionForm = ({ isSuggesting, onSuggestWord }) => {
         </div>
         <div>
           <label htmlFor="suggestion-description" className="block text-sm font-medium text-gray-700 mb-1">
-            Deskripsyon mo an
+            Definisyon mo an
           </label>
           <Textarea
             id="suggestion-description"
             value={suggestionDescription}
             onChange={(e) => setSuggestionDescription(e.target.value)}
-            placeholder="Ba nou yon kout deskripsyon de mo an"
+            placeholder="Ba nou definisyon mo an"
             rows={3}
           />
         </div>
         <Button type="submit" className="w-full" disabled={isSuggesting}>
-          {isSuggesting ? "Sijere'l..." : "Sijere'l"}
+          {isSuggesting ? "Tann..." : "Sijere"}
         </Button>
       </form>
     </div>

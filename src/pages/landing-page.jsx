@@ -9,6 +9,7 @@ import HowItWorksSection from "@/components/how-it-works-section";
 import Footer from "@/components/footer";
 import { Link } from "react-router-dom";
 import { motion } from 'framer-motion'
+import SEOHelmet from "@/components/seo-helmet.jsx";
 
 export default function LandingPage() {
     const containerVariants = {
@@ -47,16 +48,25 @@ export default function LandingPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#f0faf7]">
-            <MainHeader />
-            <BackgroundBeamsWithCollision>
-                <main className="relative z-10 flex-1">
-                    <section className="w-full pt-40 md:pt-32 pb-24 md:py-24 lg:py-32 xl:py-48">
-                        <div className="px-4 md:px-6">
-                            <div className="flex flex-col items-center space-y-8 text-center">
-                                <div className="relative">
-                                    <motion.h1
-                                        className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl/none lg:text-7xl/none text-[#2d2d5f] max-w-3xl mx-auto"
+        <>
+            <SEOHelmet
+                title="Koreksyon Tèks Kreyòl - Predika"
+                description="Koreksyon tèks Kreyòl fasil e rapid ak zouti entèlijans atifisyèl ki adapte ak kilti lang Kreyòl Ayisyen."
+                keywords="Koreksyon Tèks Kreyòl, Entèlijans Atifisyèl, zouti koreksyon, lang kreyòl"
+                imageUrl="https://predika.app/public/predika-logo.png"
+                url="https://predika.app/"
+            />
+
+            <div className="min-h-screen bg-[#f0faf7]">
+                <MainHeader/>
+                <BackgroundBeamsWithCollision>
+                    <main className="relative z-10 flex-1">
+                        <section className="w-full pt-40 md:pt-32 pb-24 md:py-24 lg:py-32 xl:py-48">
+                            <div className="px-4 md:px-6">
+                                <div className="flex flex-col items-center space-y-8 text-center">
+                                    <div className="relative">
+                                        <motion.h1
+                                            className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl/none lg:text-7xl/none text-[#2d2d5f] max-w-3xl mx-auto"
                                         variants={containerVariants}
                                         initial="hidden"
                                         animate="visible"
@@ -112,5 +122,6 @@ export default function LandingPage() {
             <CTASection />
             <Footer />
         </div>
+        </>
     )
 }

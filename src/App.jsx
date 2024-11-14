@@ -15,10 +15,12 @@ import { AuthProvider } from "@/context/auth-context";
 import PrivateRoute from "@/router/private-route";
 import GoogleCallback from "./pages/google-callback";
 import DictionaryPage from "./pages/dictionary-page";
+import {HelmetProvider} from "react-helmet-async";
 
 function App() {
     return (
-        <AuthProvider>
+        <HelmetProvider>
+            <AuthProvider>
             <Routes>
                 <Route path="/" index={true} element={<LandingPage />} />
                 <Route path="/koneksyon" element={<LoginPage />} />
@@ -43,6 +45,7 @@ function App() {
                 />
             </Routes>
         </AuthProvider>
+        </HelmetProvider>
     );
 }
 
