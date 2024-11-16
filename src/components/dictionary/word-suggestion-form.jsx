@@ -15,7 +15,7 @@ const WordSuggestionForm = ({ isSuggesting, onSuggestWord }) => {
     if (!suggestionWord.trim() || suggestionWord.length < 2) {
       addToast({
         title: "Error",
-        description: "Please enter a valid word suggestion.",
+        description: "Silvouplè antre yon mo ki korèk.",
       });
       return;
     }
@@ -27,7 +27,7 @@ const WordSuggestionForm = ({ isSuggesting, onSuggestWord }) => {
 
   return (
     <div className="mt-8 bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold mb-4">Sijere Nou Yon Nouvo Mo</h2>
+      <h2 className="text-2xl font-semibold mb-4">Sijere Yon Nouvo Mo</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="suggestion-word" className="block text-sm font-medium text-gray-700 mb-1">

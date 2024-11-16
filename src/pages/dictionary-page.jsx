@@ -62,13 +62,13 @@ function DictionaryPage() {
 
     try {
       addToast({
-        title: "Word Suggested",
-        description: `Thank you for suggesting "${word}". Our team will review it.`,
+        title: "Mo ou a sijere",
+        description: `Mesi pou nouvo mo : "${word}". ekip nou an ap verifye li.`,
       });
     } catch (error) {
       addToast({
-        title: "Error",
-        description: "There was an error submitting your suggestion.",
+        title: "Ere",
+        description: "Gen yon ere pandan uap voye mo an.",
       });
     } finally {
       setIsSuggesting(false);
