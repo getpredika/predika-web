@@ -63,15 +63,7 @@ function DictionaryPage() {
 
     try {
       addToast({
-<<<<<<< HEAD
-        title: "Mo ou a sijere",
-        description: `Mesi pou nouvo mo : "${word}". ekip nou an ap verifye li.`,
-      });
-    } catch (error) {
-      addToast({
-        title: "Ere",
-        description: "Gen yon ere pandan uap voye mo an.",
-=======
+
         title: "Mo Sijere",
         description: `Mèsi paske ou sijere "${word}". Ekip nou an pral revize li.`,
       });
@@ -79,7 +71,7 @@ function DictionaryPage() {
       addToast({
         title: "Erè",
         description: "Te gen yon pwoblèm pandan nou te ap voye sijesyon ou a.",
->>>>>>> f7046ed1b97335f20db4ffb0cbf04ae6cbd83e97
+
       });
     } finally {
       setIsSuggesting(false);

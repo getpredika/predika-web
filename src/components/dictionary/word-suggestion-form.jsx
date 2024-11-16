@@ -14,13 +14,8 @@ const WordSuggestionForm = ({ isSuggesting, onSuggestWord }) => {
     e.preventDefault();
     if (!suggestionWord.trim() || suggestionWord.length < 2) {
       addToast({
-<<<<<<< HEAD
-        title: "Error",
-        description: "Silvouplè antre yon mo ki korèk.",
-=======
         title: "Erè",
         description: "Tanpri antre yon sijesyon mo ki valab.",
->>>>>>> f7046ed1b97335f20db4ffb0cbf04ae6cbd83e97
       });
       return;
     }
