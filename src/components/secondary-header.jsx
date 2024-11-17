@@ -69,17 +69,26 @@ export default function SecondaryHeader() {
         {user && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-full">
-                <UserCircle className="h-5 w-5 text-[#2d2d5f]" />
-              </Button>
+              <button className="rounded-full p-2 hover:bg-[#40c4a7]/10 transition">
+                <UserCircle className="h-6 w-6 text-[#2d2d5f]" />
+              </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuLabel className="flex items-center gap-2">
-                <UserCircle className="h-4 w-4 text-[#2d2d5f]" />
-                {user.email}
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+            <DropdownMenuContent
+              align="end"
+              className="w-56 bg-white shadow-lg border border-gray-200 rounded-lg p-2 space-y-1"
+            >
+              <div className="flex items-center gap-2 px-2 py-1 text-[#2d2d5f] font-semibold">
+                <UserCircle className="h-5 w-5 text-[#40c4a7]" />
+                <span>{user?.email}</span>
+              </div>
+              <div className="border-t border-gray-200 my-1"></div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 w-full px-2 py-2 text-[#6b7280] hover:text-[#40c4a7] hover:bg-[#40c4a7]/10 rounded-md transition-colors"
+              >
+                <X className="h-4 w-4" />
+                Logout
+              </button>
             </DropdownMenuContent>
           </DropdownMenu>
         )}
