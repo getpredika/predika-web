@@ -2,7 +2,7 @@ const BASE_URL = "https://api.predika.app";
 
 export const fetchDictionaryWords = async () => {
   const response = await fetch(`${BASE_URL}/dictionary`, {
-    method: "GET",
+
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
@@ -16,7 +16,7 @@ export const fetchDictionaryWords = async () => {
 
 export const fetchWordDefinition = async (word) => {
   const response = await fetch(`${BASE_URL}/dictionary/${word}`, {
-    method: "GET",
+
     credentials: "include",
     headers: {
       "Content-Type": "application/json",

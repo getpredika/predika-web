@@ -41,8 +41,10 @@ function DictionaryPage() {
     if (searchTerm) {
       setFilteredWords(
         words.filter((wordObj) =>
-          wordObj.word.toLowerCase().includes(searchTerm.toLowerCase())
-        )
+          wordObj.word
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+        ).slice(0, 7)
       );
     } else {
       setFilteredWords(words.slice(0, 7));
@@ -63,7 +65,7 @@ function DictionaryPage() {
       const response = await fetchWordDefinition(word);
       const definitionText = response.data.definition;
       console.log(definitionText);
-      setSelectedDefinition({ word, definitionText }); 
+      setSelectedDefinition({ word, definitionText });
     } catch (error) {
       console.error("Error fetching word definition:", error);
     }
@@ -112,7 +114,7 @@ function DictionaryPage() {
           {!noResultsFound && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <WordList words={filteredWords} onWordClick={handleWordClick} />
-              <WordDefinition definition={selectedDefinition}/>
+              <WordDefinition definition={selectedDefinition} />
             </div>
           )}
 

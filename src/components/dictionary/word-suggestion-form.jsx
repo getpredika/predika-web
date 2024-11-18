@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,8 @@ const WordSuggestionForm = ({
   const [word, setWord] = useState(defaultWord);
   const [description, setDescription] = useState("");
   const { addToast } = useToast();
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,6 +44,12 @@ const WordSuggestionForm = ({
     }
   };
 
+  useEffect(() => {
+    setWord(defaultWord);
+  }, [defaultWord]);
+
+  
+
   return (
     <div className="mt-8 bg-white p-6 rounded-lg shadow-md">
       <h2 className="text-2xl font-semibold mb-4 text-[#2d2d5f]">
@@ -58,7 +66,7 @@ const WordSuggestionForm = ({
           <Input
             id="suggestion-word"
             value={word}
-            onChange={(e) => setSuggestionWord(e.target.value)}
+            onChange={(e) => setWord(e.target.value)}
             placeholder="Antre mo ou ta vle nou ajoute an"
             required
           />
