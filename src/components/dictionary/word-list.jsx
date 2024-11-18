@@ -1,5 +1,3 @@
-import React from "react";
-
 const WordList = ({ words, onWordClick }) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md overflow-hidden">

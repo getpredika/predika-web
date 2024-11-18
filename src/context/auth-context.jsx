@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, {createContext, useState, useEffect} from 'react';
 const API_URL = 'https://api.predika.app';
 
 const handleResponse = async (response) => {
@@ -27,7 +27,9 @@ export const AuthProvider = ({ children }) => {
                 });
                 const userData = await handleResponse(response);
                 setUser(userData.data);
-            } catch (err) { /* empty */ } finally {
+            } catch (err) {
+                setUser(null);
+            } finally {
                 setLoading(false);
             }
         };

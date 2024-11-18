@@ -36,7 +36,7 @@ function App() {
                 <Route path="/auth/google/callback" element={<GoogleCallback />} />
                 <Route path="/diksyonè" element={<DictionaryPage />} />
                 <Route
-                    path="koreksyon-grame"
+                    path="/koreksyon-grame"
                     element={
                         <PrivateRoute>
                             <TextCorrectionPage />

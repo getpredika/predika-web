@@ -1,8 +1,5 @@
-import React from "react";
-
 const WordDefinition = ({ definition }) => {
   if (!definition) {
-    console.warn("No definition provided to WordDefinition component.");
     return (
       <div className="bg-white p-6 rounded-lg shadow-md text-center">
         <p className="text-lg text-[#6b7280]">

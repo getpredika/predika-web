@@ -103,14 +103,14 @@ export default function LandingPage() {
                                             Kreye Yon Kont
                                         </Button>
                                     </Link>
-                                    <Link to="/atik">
+                                    <a href="#features">
                                         <Button
                                             variant="outline"
                                             className="border-[#40c4a7] text-[#40c4a7] hover:bg-[#40c4a7] hover:text-white px-8"
                                         >
                                             Aprann Plis
                                         </Button>
-                                    </Link>
+                                    </a>
                                 </motion.div>
                             </div>
                         </div>

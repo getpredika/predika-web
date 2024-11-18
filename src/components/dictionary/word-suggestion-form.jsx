@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { suggestNewWord } from "@/utils/api";
 
 const WordSuggestionForm = ({
   isSuggesting,
@@ -15,14 +14,13 @@ const WordSuggestionForm = ({
   const { addToast } = useToast();
 
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!word.trim() || !description.trim()) {
       addToast({
-        title: "Champs obligatwa",
-        description: "Tou de mo ak deskripsyon yo dwe ranpli.",
+        title: "Fòm obligatwa",
+        description: "Tou mo ak definisyon yo dwe ranpli.",
       });
       return;
     }
@@ -76,13 +74,13 @@ const WordSuggestionForm = ({
             htmlFor="suggestion-description"
             className="block text-sm font-medium text-gray-700 mb-1"
           >
-            Deskripsyon mo an
+            Definisyon mo an
           </label>
           <Textarea
             id="suggestion-description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Ba nou deskripsyon mo an"
+            placeholder="Ba nou definisyon mo an"
             rows={3}
           />
         </div>

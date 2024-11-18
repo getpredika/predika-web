@@ -63,7 +63,7 @@ export default function FeaturesSection() {
         visible: {
             transition: {
                 staggerChildren: 0.2,
-                delayChildren: 0.3, // Add a slight delay before starting animations
+                delayChildren: 0.3,
             },
         },
     }
@@ -90,7 +90,7 @@ export default function FeaturesSection() {
                 type: "spring",
                 damping: 10,
                 stiffness: 100,
-                delay: 0.2, // Add a slight delay to the icon animation
+                delay: 0.2,
             },
         },
     }
