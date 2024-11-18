@@ -6,13 +6,13 @@ const WordList = ({ words, onWordClick }) => {
     <div className="bg-white p-6 rounded-lg shadow-md overflow-hidden">
       <h2 className="text-2xl font-semibold mb-4">List Mo</h2>
       <ul className="space-y-2 max-h-96 overflow-y-auto">
-        {words.map((word) => (
+        {words.map((wordObj) => (
           <li
-            key={word}
-            onClick={() => onWordClick(word)}
+            key={wordObj}
+            onClick={() => onWordClick(wordObj.word)}
             className="cursor-pointer hover:bg-[#40c4a7] p-3 rounded transition-colors"
           >
-            {word}
+            {wordObj.word}
           </li>
         ))}
       </ul>
