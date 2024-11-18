@@ -1,7 +1,6 @@
 import React from "react";
 
 const WordDefinition = ({ definition }) => {
-  // Return early if no definition is provided
   if (!definition) {
     console.warn("No definition provided to WordDefinition component.");
     return (
@@ -13,7 +12,7 @@ const WordDefinition = ({ definition }) => {
     );
   }
 
-  // Destructure definition safely
+
   const { word, definitionText } = definition;
 
   return (

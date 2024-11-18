@@ -45,7 +45,7 @@ function DictionaryPage() {
         )
       );
     } else {
-      setFilteredWords(words.slice(0, 7)); // Assuming words is an array of objects
+      setFilteredWords(words.slice(0, 7));
     }
   }, [searchTerm, words]);
 
@@ -63,7 +63,7 @@ function DictionaryPage() {
       const response = await fetchWordDefinition(word);
       const definitionText = response.data.definition;
       console.log(definitionText);
-      setSelectedDefinition({ word, definitionText }); // Adjust as needed
+      setSelectedDefinition({ word, definitionText }); 
     } catch (error) {
       console.error("Error fetching word definition:", error);
     }

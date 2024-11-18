@@ -1,4 +1,3 @@
-// src/components/dictionary/WordSuggestionForm.jsx
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -32,8 +31,8 @@ const WordSuggestionForm = ({
         title: "Siksè",
         description: "Sijesyon ou an te voye avèk siksè pou revizyon.",
       });
-      setWord(""); // Reset word input
-      setDescription(""); // Reset description input
+      setWord("");
+      setDescription(""); 
     } catch (error) {
       console.error("Error suggesting word:", error);
       addToast({

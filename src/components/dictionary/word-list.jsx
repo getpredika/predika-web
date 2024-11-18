@@ -1,4 +1,3 @@
-// src/components/dictionary/WordList.jsx
 import React from "react";
 
 const WordList = ({ words, onWordClick }) => {
