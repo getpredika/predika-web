@@ -47,9 +47,9 @@ export default function TextCorrectionPage() {
             const responseData = response.data
             console.log(responseData)
 
-            if (response && response.corrected_text) {
-                setCorrections(response.modifications)
-                setText(response.corrected_text)
+            if (responseData && responseData.corrected_text) {
+                setCorrections(responseData.modifications)
+                setText(responseData.corrected_text)
                 setError(null);
             }else {
                 setError("Yon erè fèt pandan nap korije tèks ou a.");
