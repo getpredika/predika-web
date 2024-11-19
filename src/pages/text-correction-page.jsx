@@ -45,7 +45,6 @@ export default function TextCorrectionPage() {
         try {
             const response = await correctText(text)
             const responseData = response.data
-            console.log(responseData)
 
             if (responseData && responseData.corrected_text) {
                 setCorrections(responseData.modifications)
