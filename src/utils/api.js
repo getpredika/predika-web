@@ -45,3 +45,21 @@ export const suggestNewWord = async (word, description) => {
   }
   return response.json();
 };
+
+
+export const correctText = async (text) => {
+  const response = await fetch(`${BASE_URL}/api/correct`, {
+    method: "POST",
+    credentials: 'include',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ text }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message);
+  }
+  return response.json();
+}

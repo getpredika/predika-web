@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react'
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { X, Copy, Check, Edit, RotateCcw } from "lucide-react"
+import { X, Copy, Check, Edit, RotateCcw, Zap } from 'lucide-react'
 import {
     Select,
     SelectContent,
@@ -11,31 +11,60 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { Card } from "@/components/ui/card"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import {Card, CardContent} from "@/components/ui/card"
 import { motion } from "framer-motion"
-import SecondaryHeader from "@/components/secondary-header.jsx";
+import SecondaryHeader from "@/components/secondary-header.jsx"
+import {correctText} from "@/utils/api.js";
 
 export default function TextCorrectionPage() {
     const [text, setText] = useState("")
     const [originalText, setOriginalText] = useState("")
+    const [corrections, setCorrections] = useState([])
     const [model, setModel] = useState("hairobert-1.0")
     const [isChecking, setIsChecking] = useState(false)
     const [isCopied, setIsCopied] = useState(false)
     const [isEditing, setIsEditing] = useState(true)
+    const [activeCorrection, setActiveCorrection] = useState(null)
+    const [error, setError] = useState(null)
 
-    const handleGrammarCheck = () => {
+    const handleGrammarCheck = useCallback(async () => {
+        if (!text.trim()) {
+            setError("Tanpri antre yon tèks pou korije.");
+            return;
+        }
+
         setIsChecking(true)
         setIsEditing(false)
         setOriginalText(text)
 
-        setTimeout(() => {
-            console.log("Grammar check completed with model:", model)
+        try {
+            const response = await correctText(text)
+            const responseData = response.data
+            console.log(responseData)
+
+            if (response && response.corrected_text) {
+                setCorrections(response.modifications)
+                setText(response.corrected_text)
+                setError(null);
+            }else {
+                setError("Yon erè fèt pandan nap korije tèks ou a.");
+            }
+        } catch (error) {
+            setError(error || "Yon erè fèt pandan nap korije tèks ou a.")
+            setIsEditing(true);
+        } finally {
             setIsChecking(false)
-        }, 3000)
-    }
+        }
+    }, [text, model])
 
     const handleClearText = useCallback(() => {
         setText("")
+        setCorrections([])
     }, [])
 
     const handleCopyText = useCallback(() => {
@@ -45,42 +74,109 @@ export default function TextCorrectionPage() {
         })
     }, [text])
 
-    const handleEdit = () => {
+    const handleEdit = useCallback(() => {
         setIsEditing(true)
-    }
+    }, [])
 
-    const handleRevert = () => {
+    const handleRevert = useCallback(() => {
         setText(originalText)
+        setCorrections([])
         setIsEditing(true)
-    }
+    }, [originalText])
+
+    const handleUndo = useCallback((original) => {
+        setText(text.replace(corrections.find(c => c.original === original).corrected, original))
+        setCorrections(corrections.filter(c => c.original !== original))
+        setActiveCorrection(null)
+    }, [text, corrections])
 
     const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0
     const characterCount = text.length
 
-    return (
-        <div className="flex flex-col min-h-screen">
-            <SecondaryHeader/>
-            <main className="flex-grow bg-[#f0faf7] px-4 py-16 pt-40">
-                <div className="container mx-auto">
-                    {/*<div className="text-center mb-8">*/}
-                    {/*    <h1 className="text-4xl font-bold text-[#2d2d5f] mb-3">*/}
-                    {/*        Korije Gramè & Òtograf*/}
-                    {/*    </h1>*/}
-                    {/*    <p className="text-lg text-gray-600">*/}
-                    {/*        Zouti ki baze sou AI pou korije òtograf ak gramè nan lang kreyòl*/}
-                    {/*    </p>*/}
-                    {/*</div>*/}
+    const HighlightedText = () => {
+        if (corrections.length === 0) return <p>{text}</p>
 
+        let result = []
+        let lastIndex = 0
+
+        corrections.forEach((correction, index) => {
+            const startIndex = text.indexOf(correction.corrected, lastIndex)
+            if (startIndex !== -1) {
+                result.push(text.slice(lastIndex, startIndex))
+                result.push(
+                    <Popover key={index} open={activeCorrection === correction.original} onOpenChange={(open) => setActiveCorrection(open ? correction.original : null)}>
+                        <PopoverTrigger asChild>
+                            <button
+                                className="inline-flex text-[#40c4a7] underline decoration-wavy decoration-[#40c4a7] underline-offset-4 hover:text-[#40c4a7]/70 focus:outline-none focus:ring-2 focus:ring-[#40c4a7]/70 focus:ring-offset-2 rounded px-1 -mx-1"
+                            >
+                                {correction.corrected}
+                            </button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-80 p-0" align="start">
+                            <Card>
+                                <CardContent className="p-0">
+                                    <div className="p-4 space-y-3">
+                                        <div className="flex items-center gap-2 text-sm font-medium text-[#40c4a7] uppercase">
+                                            <Zap className="h-4 w-4" />
+                                            erè òtograf
+                                        </div>
+                                        <div className="flex items-center gap-2 text-base">
+                                            <span className="line-through text-gray-500">{correction.original}</span>
+                                            <span className="text-gray-400">→</span>
+                                            <span className="text-[#40c4a7] font-medium">{correction.corrected}</span>
+                                        </div>
+                                        <p className="text-sm text-gray-600">{correction.explanation}</p>
+                                    </div>
+                                    <div className="border-t p-2 bg-gray-50">
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            className="w-full justify-start text-gray-600 hover:text-gray-900"
+                                            onClick={() => handleUndo(correction.original)}
+                                        >
+                                            <svg
+                                                className="mr-2 h-4 w-4"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="2"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path d="M9 14L4 9l5-5" />
+                                                <path d="M20 20v-7a4 4 0 0 0-4-4H4" />
+                                            </svg>
+                                            Retounen a &#39;{correction.original}&#39;
+                                        </Button>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </PopoverContent>
+                    </Popover>
+                )
+                lastIndex = startIndex + correction.corrected.length
+            }
+        })
+
+        result.push(text.slice(lastIndex))
+        return <>{result}</>
+    }
+
+    return (
+        <div className="flex flex-col min-h-screen bg-[#f0faf7]">
+            <SecondaryHeader />
+            <main className="flex-grow px-4 py-16 pt-40">
+                <div className="container mx-auto">
                     <Card className="w-full max-w-4xl mx-auto bg-white shadow-xl">
-                        <div className="p-6 relative">
-                            <div className="flex justify-between items-center mb-4 text-gray-600">
+                        <CardContent className="p-6 relative">
+                            <div className="flex justify-between items-center mb-4">
                                 <Select defaultValue={model} onValueChange={setModel}>
                                     <SelectTrigger className="w-[180px]">
-                                        <SelectValue placeholder="Select model"/>
+                                        <SelectValue placeholder="Select model" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="hairobert-1.0">HaiRobert-1.0</SelectItem>
-                                        <SelectItem value="hairobert-2.1">HaiRobert-2.1</SelectItem>
+                                        {/*<SelectItem value="hairobert-2.1">HaiRobert-2.1</SelectItem>*/}
                                     </SelectContent>
                                 </Select>
                                 <Button
@@ -95,24 +191,33 @@ export default function TextCorrectionPage() {
                             </div>
 
                             <div className="relative mb-4">
-                                <Textarea
-                                    value={text}
-                                    onChange={(e) => setText(e.target.value)}
-                                    placeholder="Tape oubyen kole tèks la isit la"
-                                    className="min-h-[200px] sm:min-h-[300px] p-3 sm:p-4 text-base sm:text-lg text-gray-600 border-2 border-gray-200 rounded-lg focus:border-gray-200 pr-10 transition-colors resize-none"
-                                    disabled={!isEditing}
-                                />
+                                {isEditing ? (
+                                    <Textarea
+                                        value={text}
+                                        onChange={(e) => setText(e.target.value)}
+                                        placeholder="Tape oubyen kole tèks la isit la"
+                                        className="min-h-[200px] sm:min-h-[300px] p-3 sm:p-4 text-base sm:text-lg text-gray-600 border-2 border-gray-200 rounded-lg focus:border-gray-200 pr-10 transition-colors resize-none"
+                                    />
+                                ) : (
+                                    <div className="min-h-[200px] sm:min-h-[300px] p-3 sm:p-4 text-base sm:text-lg border-2 border-gray-200 rounded-lg overflow-auto">
+                                        <HighlightedText />
+                                    </div>
+                                )}
                                 {text && isEditing && (
-                                    <button
+                                    <Button
                                         onClick={handleClearText}
-                                        className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition-colors p-1"
+                                        variant="ghost"
+                                        size="icon"
+                                        className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition-colors"
                                         aria-label="Efase"
                                     >
                                         <X className="h-5 w-5" />
-                                    </button>
+                                    </Button>
                                 )}
                             </div>
-
+                            {error && (
+                                <p className="text-red-500 text-sm">{error.toString()}</p>
+                            )}
                             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                                 {isEditing ? (
                                     <p className="text-sm text-gray-500 order-2 sm:order-1" aria-live="polite">
@@ -153,31 +258,22 @@ export default function TextCorrectionPage() {
                                         />
                                     ) : (
                                         <svg
-                                            className="mr-2 h-5 w-5 inline-block"
+                                            className="mr-2 h-5 w-5"
                                             viewBox="0 0 24 24"
                                             fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
                                         >
-                                            <path
-                                                d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                                                stroke="currentColor"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            />
-                                            <path
-                                                d="M8 12L11 15L16 9"
-                                                stroke="currentColor"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            />
+                                            <circle cx="12" cy="12" r="10" />
+                                            <path d="M8 12l2 2 4-4" />
                                         </svg>
                                     )}
                                     {isChecking ? 'Tann...' : 'Korije'}
                                 </Button>
                             </div>
-                        </div>
+                        </CardContent>
                     </Card>
                 </div>
             </main>
