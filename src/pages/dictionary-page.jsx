@@ -29,7 +29,6 @@ function DictionaryPage() {
   const [isSearching, setIsSearching] = useState(false);
   const searchDebounceTimeout = useRef(null);
 
-  // Load dictionary words for the initial list and pagination
   useEffect(() => {
     const loadWords = async () => {
       setIsLoading(true);
@@ -48,7 +47,7 @@ function DictionaryPage() {
     loadWords();
   }, [page, limit]);
 
-  // Handle word search using the fetchWordDefinition endpoint
+
   useEffect(() => {
     if (searchDebounceTimeout.current) {
       clearTimeout(searchDebounceTimeout.current);
@@ -64,7 +63,7 @@ function DictionaryPage() {
       setIsSearching(true);
       try {
         const response = await fetchWordDefinition(searchTerm.trim());
-        const definitionText = response.definition; // Assuming the API returns this
+        const definitionText = response.definition; 
         setFilteredWords([
           { word: searchTerm.trim(), definition: definitionText },
         ]);
@@ -74,7 +73,7 @@ function DictionaryPage() {
       } finally {
         setIsSearching(false);
       }
-    }, 300); // Debounce delay
+    }, 300); 
 
     return () => {
       clearTimeout(searchDebounceTimeout.current);
@@ -125,7 +124,7 @@ function DictionaryPage() {
     }
   };
 
-  const noResultsFound = filteredWords.length === 0;
+  const noResultsFound = filteredWords.length === 0 && searchTerm.trim() !=="";
 
   return (
     <>
