@@ -5,17 +5,21 @@ const BASE_URL = "https://api.predika.app";
  * @param {number} page - The page number to fetch.
  * @param {number} limit - The number of items per page.
  * @returns {Promise<Object>} The response containing the dictionary words and pagination metadata.
+ * @throws Will throw an error if the suggestion fails.
  */
 
 export const fetchDictionaryWords = async (page = 1, limit = 10) => {
-  const response = await fetch(`${BASE_URL}/dictionary?page=${page}&limit=${limit}`, {
-    method: "GET",
-    credentials: 'include',
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  
+  const response = await fetch(
+    `${BASE_URL}/dictionary?page=${page}&limit=${limit}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(errorData.message);
@@ -24,9 +28,9 @@ export const fetchDictionaryWords = async (page = 1, limit = 10) => {
 };
 
 export const fetchWordDefinition = async (word) => {
-  const response = await fetch(`${BASE_URL}/dictionary/${word}`, {
+  const response = await fetch(`${BASE_URL}/dictionary/${encodeURIComponent(word)}`, {
     method: "GET",
-    credentials: 'include',
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -41,7 +45,7 @@ export const fetchWordDefinition = async (word) => {
 export const suggestNewWord = async (word, description) => {
   const response = await fetch(`${BASE_URL}/dictionary/suggest`, {
     method: "POST",
-    credentials: 'include',
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -54,11 +58,10 @@ export const suggestNewWord = async (word, description) => {
   return response.json();
 };
 
-
 export const correctText = async (text) => {
   const response = await fetch(`${BASE_URL}/api/correct`, {
     method: "POST",
-    credentials: 'include',
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -70,4 +73,4 @@ export const correctText = async (text) => {
     throw new Error(errorData.message);
   }
   return response.json();
-}
+};
