@@ -35,6 +35,7 @@ function DictionaryPage() {
       try {
         const response = await fetchDictionaryWords(page, limit);
         const wordData = response.data.data;
+        console.log(wordData);
         setWords(wordData || []);
         setTotalPages(Math.ceil(response.data.meta.total / limit));
         setFilteredWords(wordData || []);
@@ -46,7 +47,6 @@ function DictionaryPage() {
     };
     loadWords();
   }, [page, limit]);
-
 
   useEffect(() => {
     if (searchDebounceTimeout.current) {
@@ -63,7 +63,7 @@ function DictionaryPage() {
       setIsSearching(true);
       try {
         const response = await fetchWordDefinition(searchTerm.trim());
-        const definitionText = response.definition; 
+        const definitionText = response.definition;
         setFilteredWords([
           { word: searchTerm.trim(), definition: definitionText },
         ]);
@@ -73,7 +73,7 @@ function DictionaryPage() {
       } finally {
         setIsSearching(false);
       }
-    }, 300); 
+    }, 300);
 
     return () => {
       clearTimeout(searchDebounceTimeout.current);
@@ -90,7 +90,6 @@ function DictionaryPage() {
     }
   };
 
-
   const handleSearchSubmit = (e) => {
     e.preventDefault();
   };
@@ -99,6 +98,7 @@ function DictionaryPage() {
     try {
       const response = await fetchWordDefinition(word);
       const definitionText = response.data.definition;
+      console.log(word);
       setSelectedDefinition({ word, definitionText });
     } catch (error) {
       console.error("Error fetching word definition:", error);
@@ -124,7 +124,8 @@ function DictionaryPage() {
     }
   };
 
-  const noResultsFound = filteredWords.length === 0 && searchTerm.trim() !=="";
+  const noResultsFound =
+    !isLoading && filteredWords.length === 0 && searchTerm.trim() !== "";
 
   return (
     <>
@@ -145,7 +146,11 @@ function DictionaryPage() {
         />
 
         <main className="max-w-screen-xl mx-auto p-6">
-          {!noResultsFound ? (
+          {isLoading || isSearching ? (
+            <div className="text-center">
+              <p>Chaje...</p>
+            </div>
+          ) : !noResultsFound ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <WordList words={filteredWords} onWordClick={handleWordClick} />
               <WordDefinition definition={selectedDefinition} />
