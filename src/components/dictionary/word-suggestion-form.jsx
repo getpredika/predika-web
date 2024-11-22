@@ -49,7 +49,7 @@ const WordSuggestionForm = ({
   
 
   return (
-    <div className="mt-8 bg-white p-6 rounded-lg shadow-md">
+    <div className="mt-8 bg-white p-6 rounded-lg shadow-md w-full max-w-md mx-auto sm:max-w-lg md:max-w-xl lg:max-w-2xl">
       <h2 className="text-2xl font-semibold mb-4 text-[#2d2d5f]">
         Sijere Yon Nouvo Mo
       </h2>

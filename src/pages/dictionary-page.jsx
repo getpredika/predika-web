@@ -105,10 +105,27 @@ function DictionaryPage() {
     }
   };
 
+  const validateInputs = (word, description) => {
+    if (!word || word.trim() === "") {
+      throw new Error("Word cannot be empty.");
+    }
+    if (word.length > 50) {
+      throw new Error("Word exceeds maximum length of 50 characters.");
+    }
+    if (!description || description.trim() === "") {
+      throw new Error("Description cannot be empty.");
+    }
+    if (description.length > 300) {
+      throw new Error("Description exceeds maximum length of 300 characters.");
+    }
+  };
+  
+
   const handleSuggestWord = async (word, description) => {
     setIsSuggesting(true);
 
     try {
+      validateInputs(word, description);
       await suggestNewWord(word, description);
       addToast({
         title: "Mo Sijere",
