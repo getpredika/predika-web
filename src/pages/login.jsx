@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Eye, EyeOff } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { useAuth } from "@/context/auth-context.jsx"
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Imèl la pa valid").required("Imèl obligatwa"),
@@ -21,6 +21,9 @@ export default function Login() {
   const { login, googleRedirect } = useAuth()
   const [error, setError] = useState(null)
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const redirectTo = location.state?.from || "/koreksyon-grame";
 
   const formik = useFormik({
     initialValues: {
@@ -31,7 +34,7 @@ export default function Login() {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         await login(values);
-        navigate('/koreksyon-grame');
+        navigate(redirectTo);
       } catch (responseError) {
         setError(responseError)
       } finally {

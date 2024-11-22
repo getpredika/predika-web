@@ -49,7 +49,7 @@ export const suggestNewWord = async (word, description) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ word, description }),
+    body: JSON.stringify({ word, defini }),
   });
   if (!response.ok) {
     const errorData = await response.json();

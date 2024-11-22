@@ -3,6 +3,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from "@/context/auth-context";
+import { useNavigate } from "react-router-dom";
 
 const WordSuggestionForm = ({
   isSuggesting,
@@ -12,10 +14,17 @@ const WordSuggestionForm = ({
   const [word, setWord] = useState(defaultWord);
   const [description, setDescription] = useState("");
   const { addToast } = useToast();
-
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+  
+    if (!user) {
+      navigate("/koneksyon", { state: { from: "/diksyonè" } });
+      return;
+    }
 
     if (!word.trim() || !description.trim()) {
       addToast({
@@ -32,7 +41,7 @@ const WordSuggestionForm = ({
         description: "Sijesyon ou an te voye avèk siksè pou revizyon.",
       });
       setWord("");
-      setDescription(""); 
+      setDescription("");
     } catch (error) {
       console.error("Error suggesting word:", error);
       addToast({
@@ -45,8 +54,6 @@ const WordSuggestionForm = ({
   useEffect(() => {
     setWord(defaultWord);
   }, [defaultWord]);
-
-  
 
   return (
     <div className="mt-8 bg-white p-6 rounded-lg shadow-md w-full max-w-md mx-auto sm:max-w-lg md:max-w-xl lg:max-w-2xl">
@@ -87,11 +94,7 @@ const WordSuggestionForm = ({
         <Button
           type="submit"
           className="w-full bg-[#40c4a7] text-white hover:bg-[#40c4a7]/90 transition-all"
-          disabled={
-            isSuggesting ||
-            !word.trim() ||
-            !description.trim()
-          }
+          disabled={isSuggesting || !word.trim() || !description.trim()}
         >
           {isSuggesting ? "Tann..." : "Sijere"}
         </Button>
