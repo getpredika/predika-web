@@ -35,7 +35,7 @@ function DictionaryPage() {
     try {
       const response = await fetchWordDefinition(word);
 
-      if (response.definition === null) {
+      if (response.data.definition === null) {
         setSelectedDefinition({
           word,
           definitionText: (
@@ -53,7 +53,7 @@ function DictionaryPage() {
       } else {
         setSelectedDefinition({
           word,
-          definitionText: response.definition,
+          definitionText: response.data.definition,
         });
       }
     } catch (error) {

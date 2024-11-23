@@ -40,7 +40,7 @@ export const fetchWordDefinition = async (word) => {
       }
     );
 
-    const data = response.json();
+    const data = await response.json();
     if (response.ok) {
       return data;
     }
