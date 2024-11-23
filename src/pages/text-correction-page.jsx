@@ -35,12 +35,13 @@ export default function TextCorrectionPage() {
     const fileInputRef = useRef(null)
 
     const handleGrammarCheck = useCallback(async () => {
+        setError(null)
         if (!text.trim()) {
             setError("Tanpri antre yon tèks pou korije.");
             return;
         }
 
-        if (text.trim().length > 500) {
+        if (text.trim().length > 700) {
             setError("Tèks la twò long. Nou pran premye 800 karaktè yo sèlman.");
             return;
         }
@@ -138,9 +139,9 @@ export default function TextCorrectionPage() {
                     return;
                 }
 
-                if (content.length > 500) {
-                    content = content.slice(0, 500);
-                    setError("Tèks la twò long. Nou pran premye 500 karaktè yo sèlman.");
+                if (content.length > 700) {
+                    content = content.slice(0, 700);
+                    setError("Tèks la twò long. Nou pran premye 700 karaktè yo sèlman.");
                 }
 
                 setText(content);
@@ -283,7 +284,7 @@ export default function TextCorrectionPage() {
                                         className={`text-gray-400 bg-white hover:bg-gray-100 hover:text-[#2d2d5f] border-gray-300 ${isCopied ? 'bg-gray-100' : ''}`}
                                         aria-label={isCopied ? "Copied" : "Copy text"}
                                     >
-                                        {isCopied ? <Check className="h-4 w-4"/> : <Copy className="h-4 w-4"/>}
+                                        {isCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                                     </Button>
                                 </div>
                             </div>
