@@ -40,7 +40,7 @@ export default function TextCorrectionPage() {
             return;
         }
 
-        if (text.trim().length > 270) {
+        if (text.trim().length > 500) {
             setError("Tèks la twò long. Nou pran premye 800 karaktè yo sèlman.");
             return;
         }
@@ -138,9 +138,9 @@ export default function TextCorrectionPage() {
                     return;
                 }
 
-                if (content.length > 270) {
-                    content = content.slice(0, 270);
-                    setError("Tèks la twò long. Nou pran premye 800 karaktè yo sèlman.");
+                if (content.length > 500) {
+                    content = content.slice(0, 500);
+                    setError("Tèks la twò long. Nou pran premye 500 karaktè yo sèlman.");
                 }
 
                 setText(content);
