@@ -35,7 +35,7 @@ function DictionaryPage() {
       try {
         const response = await fetchDictionaryWords(page, limit);
         const wordData = response.data.data;
-      
+
         setWords(wordData || []);
         setTotalPages(Math.ceil(response.data.meta.total / limit));
         setFilteredWords(wordData || []);
@@ -54,26 +54,23 @@ function DictionaryPage() {
     }
 
     searchDebounceTimeout.current = setTimeout(async () => {
-      if (searchTerm.trim() === "") {
+      if (searchTerm.trim()) {
+        setIsSearching(true);
+        try {
+          const response = await fetchWordDefinition(searchTerm.trim());
+          setFilteredWords([
+            { word: searchTerm.trim(), definition: response.definition },
+          ]);
+        } catch (error) {
+          console.error("Search error:", error);
+          setFilteredWords([]);
+        } finally {
+          setIsSearching(false);
+        }
+      } else {
         setFilteredWords(words);
-        setIsSearching(false);
-        return;
       }
-
-      setIsSearching(true);
-      try {
-        const response = await fetchWordDefinition(searchTerm.trim());
-        const definitionText = response.definition;
-        setFilteredWords([
-          { word: searchTerm.trim(), definition: definitionText },
-        ]);
-      } catch (error) {
-        console.error("Error searching for word:", error);
-        setFilteredWords([]);
-      } finally {
-        setIsSearching(false);
-      }
-    }, 300);
+    }, 500);
 
     return () => {
       clearTimeout(searchDebounceTimeout.current);
@@ -97,11 +94,31 @@ function DictionaryPage() {
   const handleWordClick = async (word) => {
     try {
       const response = await fetchWordDefinition(word);
-      const definitionText = response.data.definition;
-   
-      setSelectedDefinition({ word, definitionText });
+
+      if (response.definition === null) {
+        setSelectedDefinition({
+          word,
+          definitionText: (
+            <div>
+              Nou pa jwenn mo sa a nan diksyonè a. Ou vle <br />
+              <button
+                onClick={() => setIsSuggesting(true)}
+                className="text-blue-500 underline"
+              >
+                sijere mo a?
+              </button>
+            </div>
+          ),
+        });
+      } else {
+        setSelectedDefinition({
+          word,
+          definitionText: response.definition,
+        });
+      }
     } catch (error) {
       console.error("Error fetching word definition:", error);
+      setSelectedDefinition(null);
     }
   };
 
@@ -119,13 +136,13 @@ function DictionaryPage() {
       throw new Error("Description exceeds maximum length of 300 characters.");
     }
   };
-  
 
   const handleSuggestWord = async (word, description) => {
-    setIsSuggesting(true);
-
     try {
-      validateInputs(word, description);
+      if (!word.trim() || !description.trim()) {
+        throw new Error("Mo ak deskripsyon yo dwe ranpli.");
+      }
+
       await suggestNewWord(word, description);
       addToast({
         title: "Mo Sijere",
@@ -134,7 +151,9 @@ function DictionaryPage() {
     } catch (error) {
       addToast({
         title: "Erè",
-        description: "Te gen yon pwoblèm pandan nou te ap voye sijesyon ou a.",
+        description:
+          error.message ||
+          "Te gen yon pwoblèm pandan nou te ap voye sijesyon ou a.",
       });
     } finally {
       setIsSuggesting(false);
@@ -185,6 +204,14 @@ function DictionaryPage() {
                 onSuggestWord={handleSuggestWord}
               />
             </div>
+          )}
+
+          {isSuggesting && (
+            <WordSuggestionForm
+              isSuggesting={isSuggesting}
+              defaultWord={selectedDefinition?.word || ""}
+              onSuggestWord={handleSuggestWord}
+            />
           )}
 
           {/* Pagination Controls */}
