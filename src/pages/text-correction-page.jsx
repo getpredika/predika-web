@@ -115,7 +115,7 @@ export default function TextCorrectionPage() {
             try {
                 if (fileType === "application/pdf") {
                     const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf");
-                    pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).toString();
+                    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.8.69/pdf.worker.min.mjs";
 
                     const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(e.target.result) }).promise;
                     let extractedText = "";
@@ -134,6 +134,7 @@ export default function TextCorrectionPage() {
                     content = e.target.result;
                 } else {
                     setError("Nou pa sipòte tip fichye sa. Tanpri vini ak yon fichye .txt, .pdf oswa .docx.");
+                    setIsUploading(false);
                     return;
                 }
 
@@ -146,6 +147,7 @@ export default function TextCorrectionPage() {
                 setIsUploading(false);
             } catch (error) {
                 setError("Yon erè pase pandan nou ap trete fichye a. " + error.message);
+                setIsUploading(false);
             }
         };
 
