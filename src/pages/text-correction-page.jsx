@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { X, Copy, Check, Edit, RotateCcw, Zap } from 'lucide-react'
+import { X, Copy, Check, Edit, RotateCcw, Zap, Upload } from 'lucide-react'
 import {
     Select,
     SelectContent,
@@ -16,10 +16,10 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import {Card, CardContent} from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { motion } from "framer-motion"
-import SecondaryHeader from "@/components/secondary-header.jsx"
-import {correctText} from "@/utils/api.js";
+import SecondaryHeader from "@/components/secondary-header"
+import { correctText } from "@/utils/api"
 
 export default function TextCorrectionPage() {
     const [text, setText] = useState("")
@@ -31,10 +31,17 @@ export default function TextCorrectionPage() {
     const [isEditing, setIsEditing] = useState(true)
     const [activeCorrection, setActiveCorrection] = useState(null)
     const [error, setError] = useState(null)
+    const [isUploading, setIsUploading] = useState(false)
+    const fileInputRef = useRef(null)
 
     const handleGrammarCheck = useCallback(async () => {
         if (!text.trim()) {
             setError("Tanpri antre yon tèks pou korije.");
+            return;
+        }
+
+        if (text.trim().length > 800) {
+            setError("Tèks la twò long. Nou pran premye 800 karaktè yo sèlman.");
             return;
         }
 
@@ -50,7 +57,7 @@ export default function TextCorrectionPage() {
                 setCorrections(responseData.modifications)
                 setText(responseData.corrected_text)
                 setError(null);
-            }else {
+            } else {
                 setError("Yon erè fèt pandan nap korije tèks ou a.");
             }
         } catch (error) {
@@ -88,6 +95,70 @@ export default function TextCorrectionPage() {
         setCorrections(corrections.filter(c => c.original !== original))
         setActiveCorrection(null)
     }, [text, corrections])
+
+    const handleFileUpload = useCallback(async (event) => {
+        setError(null);
+        setIsUploading(true);
+
+        const file = event.target.files[0];
+        if (!file) {
+            setIsUploading(false);
+            return;
+        }
+
+        const fileType = file.type;
+        const reader = new FileReader();
+
+        reader.onload = async (e) => {
+            let content = "";
+
+            try {
+                if (fileType === "application/pdf") {
+                    const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf");
+                    pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).toString();
+
+                    const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(e.target.result) }).promise;
+                    let extractedText = "";
+
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i);
+                        const textContent = await page.getTextContent();
+                        extractedText += textContent.items.map((item) => item.str).join(" ");
+                    }
+                    content = extractedText;
+                } else if (fileType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+                    const mammoth = await import("mammoth");
+                    const result = await mammoth.extractRawText({ arrayBuffer: e.target.result });
+                    content = result.value;
+                } else if (fileType === "text/plain") {
+                    content = e.target.result;
+                } else {
+                    setError("Nou pa sipòte tip fichye sa. Tanpri vini ak yon fichye .txt, .pdf oswa .docx.");
+                    return;
+                }
+
+                if (content.length > 800) {
+                    content = content.slice(0, 800);
+                    setError("Tèks la twò long. Nou pran premye 800 karaktè yo sèlman.");
+                }
+
+                setText(content);
+                setIsUploading(false);
+            } catch (error) {
+                setError("Yon erè pase pandan nou ap trete fichye a. " + error.message);
+            }
+        };
+
+        if (fileType === "application/pdf" || fileType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+            reader.readAsArrayBuffer(file);
+        } else {
+            reader.readAsText(file);
+        }
+    }, []);
+
+    const triggerFileUpload = () => {
+        fileInputRef.current.click();
+    };
 
     const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0
     const characterCount = text.length
@@ -175,18 +246,44 @@ export default function TextCorrectionPage() {
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="hairobert-1.0">HaiRobert-1.0</SelectItem>
-                                        {/*<SelectItem value="hairobert-2.1">HaiRobert-2.1</SelectItem>*/}
                                     </SelectContent>
                                 </Select>
-                                <Button
-                                    onClick={handleCopyText}
-                                    variant="outline"
-                                    size="icon"
-                                    className={`ml-2 text-gray-400 bg-white hover:bg-gray-100 hover:text-[#2d2d5f] border-gray-300 ${isCopied ? 'bg-gray-100' : ''}`}
-                                    aria-label={isCopied ? "Copied" : "Copy text"}
-                                >
-                                    {isCopied ? <Check className="h-4 w-4"/> : <Copy className="h-4 w-4"/>}
-                                </Button>
+                                <div className="flex items-center">
+                                    <Button
+                                        onClick={triggerFileUpload}
+                                        variant="outline"
+                                        size="icon"
+                                        className="mr-2 text-gray-400 bg-white hover:bg-gray-100 hover:text-[#2d2d5f] border-gray-300"
+                                        aria-label="Upload file"
+                                        disabled={isUploading}
+                                    >
+                                        {isUploading ? (
+                                            <motion.div
+                                                initial={{ scale: 0.5, opacity: 0 }}
+                                                animate={{ scale: 1, opacity: 1 }}
+                                                className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"
+                                            />
+                                        ) : (
+                                            <Upload className="h-4 w-4" />
+                                        )}
+                                    </Button>
+                                    <input
+                                        type="file"
+                                        ref={fileInputRef}
+                                        onChange={handleFileUpload}
+                                        accept=".txt,.pdf,.doc,.docx"
+                                        className="hidden"
+                                    />
+                                    <Button
+                                        onClick={handleCopyText}
+                                        variant="outline"
+                                        size="icon"
+                                        className={`text-gray-400 bg-white hover:bg-gray-100 hover:text-[#2d2d5f] border-gray-300 ${isCopied ? 'bg-gray-100' : ''}`}
+                                        aria-label={isCopied ? "Copied" : "Copy text"}
+                                    >
+                                        {isCopied ? <Check className="h-4 w-4"/> : <Copy className="h-4 w-4"/>}
+                                    </Button>
+                                </div>
                             </div>
 
                             <div className="relative mb-4">
@@ -215,7 +312,7 @@ export default function TextCorrectionPage() {
                                 )}
                             </div>
                             {error && (
-                                <p className="text-red-500 text-sm">{error.toString()}</p>
+                                <p className="text-red-500 text-sm mb-4">{error.toString()}</p>
                             )}
                             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                                 {isEditing ? (
