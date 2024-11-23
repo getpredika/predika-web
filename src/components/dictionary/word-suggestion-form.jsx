@@ -12,7 +12,7 @@ const WordSuggestionForm = ({
   onSuggestWord,
 }) => {
   const [word, setWord] = useState(defaultWord);
-  const [description, setDescription] = useState("");
+  const [definition, setDefinition] = useState("");
   const { addToast } = useToast();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const WordSuggestionForm = ({
       return;
     }
 
-    if (!word.trim() || !description.trim()) {
+    if (!word.trim() || !definition.trim()) {
       addToast({
         title: "Fòm obligatwa",
         description: "Tou mo ak definisyon yo dwe ranpli.",
@@ -35,13 +35,13 @@ const WordSuggestionForm = ({
     }
 
     try {
-      await onSuggestWord(word, description);
+      await onSuggestWord(word, definition);
       addToast({
         title: "Siksè",
         description: "Sijesyon ou an te voye avèk siksè pou revizyon.",
       });
       setWord("");
-      setDescription("");
+      setDefinition("");
     } catch (error) {
       console.error("Error suggesting word:", error);
       addToast({
@@ -85,8 +85,8 @@ const WordSuggestionForm = ({
           </label>
           <Textarea
             id="suggestion-description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            value={definition}
+            onChange={(e) => setDefinition(e.target.value)}
             placeholder="Ba nou definisyon mo an"
             rows={3}
           />
@@ -94,7 +94,7 @@ const WordSuggestionForm = ({
         <Button
           type="submit"
           className="w-full bg-[#40c4a7] text-white hover:bg-[#40c4a7]/90 transition-all"
-          disabled={isSuggesting || !word.trim() || !description.trim()}
+          disabled={isSuggesting || !word.trim() || !definition.trim()}
         >
           {isSuggesting ? "Tann..." : "Sijere"}
         </Button>
