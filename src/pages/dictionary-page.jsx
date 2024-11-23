@@ -62,7 +62,7 @@ function DictionaryPage() {
         title: "Erè",
         description: "Nou pa ka jwenn definisyon mo a kounye a.",
       });
-      // setSelectedDefinition(null);
+      setSelectedDefinition(null);
     }
   };
 
@@ -100,7 +100,7 @@ function DictionaryPage() {
   };
 
   const noResultsFound =
-  !isLoading && filteredWords.length === 0 && searchTerm.trim() !== "";
+    !isLoading && filteredWords.length === 0 && searchTerm.trim() !== "";
 
   return (
     <>
@@ -128,13 +128,13 @@ function DictionaryPage() {
               </h2>
               <WordSuggestionForm
                 isSuggesting={isSuggesting}
-                defaultWord={selectedDefinition?.word || ""}
+                defaultWord={searchTerm || ""}
                 onSuggestWord={handleSuggestWord}
               />
               <button
                 onClick={() => setIsSuggesting(false)}
-                className="mt-4 block mx-auto text-blue-500 underline"
-              >
+                className="mt-4 block mx-auto text-[#40c4a7] underline px-4 py-2 rounded-md hover:bg-[#40c4a7] hover:text-white transition-all duration-200"
+                >
                 Tounen nan diksyonè a
               </button>
             </div>
@@ -153,27 +153,27 @@ function DictionaryPage() {
                   </p>
                   <button
                     onClick={() => setIsSuggesting(true)}
-                    className="text-blue-500 underline"
-                  >
+                    className="text-[#40c4a7] underline hover:text-white hover:bg-[#40c4a7] px-3 py-1 rounded-md transition-all duration-200 ease-in-out"
+                    >
                     Sijere yon mo
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <WordList
-                    words={filteredWords}
-                    onWordClick={handleWordClick}
+                <div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <WordList
+                      words={filteredWords}
+                      onWordClick={handleWordClick}
+                    />
+                    <WordDefinition definition={selectedDefinition} />
+                  </div>
+                  <Pagination
+                    currentPage={page}
+                    totalPages={totalPages}
+                    onPageChange={(newPage) => setPage(newPage)}
                   />
-                  <WordDefinition definition={selectedDefinition} />
                 </div>
               )}
-
-              {/* Pagination Controls */}
-              <Pagination
-                currentPage={page}
-                totalPages={totalPages}
-                onPageChange={(newPage) => setPage(newPage)}
-              />
             </>
           )}
         </main>
