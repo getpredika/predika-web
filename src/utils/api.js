@@ -45,9 +45,6 @@ export const fetchWordDefinition = async (word) => {
       return data;
     }
 
-    if (response.status === 404) {
-      return { definition: null };
-    }
 
     throw new Error(data.message || "Unexpected error occurred");
   } catch (error) {

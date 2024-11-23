@@ -62,7 +62,7 @@ function DictionaryPage() {
         title: "Erè",
         description: "Nou pa ka jwenn definisyon mo a kounye a.",
       });
-      setSelectedDefinition(null);
+      // setSelectedDefinition(null);
     }
   };
 
@@ -100,7 +100,7 @@ function DictionaryPage() {
   };
 
   const noResultsFound =
-    !isLoading && filteredWords.length === 0 && searchTerm.trim() !== "";
+  !isLoading && filteredWords.length === 0 && searchTerm.trim() !== "";
 
   return (
     <>
