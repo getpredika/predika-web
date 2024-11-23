@@ -35,7 +35,7 @@ function DictionaryPage() {
       try {
         const response = await fetchDictionaryWords(page, limit);
         const wordData = response.data.data;
-        console.log(wordData);
+      
         setWords(wordData || []);
         setTotalPages(Math.ceil(response.data.meta.total / limit));
         setFilteredWords(wordData || []);
@@ -98,7 +98,7 @@ function DictionaryPage() {
     try {
       const response = await fetchWordDefinition(word);
       const definitionText = response.data.definition;
-      console.log(word);
+   
       setSelectedDefinition({ word, definitionText });
     } catch (error) {
       console.error("Error fetching word definition:", error);
