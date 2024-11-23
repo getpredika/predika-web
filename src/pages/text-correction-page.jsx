@@ -40,7 +40,7 @@ export default function TextCorrectionPage() {
             return;
         }
 
-        if (text.trim().length > 800) {
+        if (text.trim().length > 270) {
             setError("Tèks la twò long. Nou pran premye 800 karaktè yo sèlman.");
             return;
         }
@@ -138,15 +138,15 @@ export default function TextCorrectionPage() {
                     return;
                 }
 
-                if (content.length > 800) {
-                    content = content.slice(0, 800);
+                if (content.length > 270) {
+                    content = content.slice(0, 270);
                     setError("Tèks la twò long. Nou pran premye 800 karaktè yo sèlman.");
                 }
 
                 setText(content);
                 setIsUploading(false);
             } catch (error) {
-                setError("Yon erè pase pandan nou ap trete fichye a. " + error.message);
+                setError("Yon erè pase pandan nou ap trete fichye a.");
                 setIsUploading(false);
             }
         };
