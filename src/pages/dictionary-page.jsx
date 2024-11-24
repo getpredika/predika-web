@@ -19,6 +19,7 @@ function DictionaryPage() {
   const { toasts, addToast, removeToast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDefinition, setSelectedDefinition] = useState(null);
+  const [isSuggestionFormVisible, setIsSuggestionFormVisible] = useState(false);
   const [isSuggesting, setIsSuggesting] = useState(false);
   const [page, setPage] = useState(1);
   const { user } = useAuth();
@@ -139,7 +140,7 @@ function DictionaryPage() {
         />
 
         <main className="max-w-screen-xl mx-auto p-6">
-          {isSuggesting ? (
+          {isSuggestionFormVisible ? (
             <div>
               <h2 className="text-2xl font-semibold mb-4 text-center">
                 Sijere yon nouvo mo

@@ -84,7 +84,7 @@ export default function SecondaryHeader() {
                 className="flex items-center gap-2 w-full px-2 py-2 text-[#6b7280] hover:text-[#40c4a7] hover:bg-[#40c4a7]/10 rounded-md transition-colors"
               >
                 <X className="h-4 w-4" />
-                Logout
+                Dekonekte
               </button>
             </DropdownMenuContent>
           </DropdownMenu>

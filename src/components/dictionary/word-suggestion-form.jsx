@@ -14,17 +14,9 @@ const WordSuggestionForm = ({
   const [word, setWord] = useState(defaultWord);
   const [definition, setDefinition] = useState("");
   const { addToast } = useToast();
-  const { user } = useAuth();
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-  
-    if (!user) {
-      navigate("/koneksyon", { state: { from: "/diksyonè" } });
-      return;
-    }
 
     if (!word.trim() || !definition.trim()) {
       addToast({
@@ -93,10 +85,40 @@ const WordSuggestionForm = ({
         </div>
         <Button
           type="submit"
-          className="w-full bg-[#40c4a7] text-white hover:bg-[#40c4a7]/90 transition-all"
+          className={`w-full px-4 py-2 font-medium text-white transition-all rounded-md ${
+            isSuggesting || !word.trim() || !definition.trim()
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-[#40c4a7] hover:bg-[#40c4a7]/90 focus:ring-2 focus:ring-[#40c4a7] focus:ring-offset-2"
+          }`}
           disabled={isSuggesting || !word.trim() || !definition.trim()}
         >
-          {isSuggesting ? "Tann..." : "Sijere"}
+          {isSuggesting ? (
+            <div className="flex items-center justify-center gap-2">
+              <svg
+                className="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.963 7.963 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              Tann...
+            </div>
+          ) : (
+            "Sijere"
+          )}
         </Button>
       </form>
     </div>
