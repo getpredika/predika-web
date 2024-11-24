@@ -115,7 +115,7 @@ function DictionaryPage() {
       });
       return;
     }
-    setIsSuggesting(true);
+    setIsSuggestionFormVisible(true);
   };
 
   const noResultsFound =
@@ -151,7 +151,7 @@ function DictionaryPage() {
                 onSuggestWord={handleSuggestWord}
               />
               <button
-                onClick={() => setIsSuggesting(false)}
+                onClick={() => setIsSuggestionFormVisible(false)}
                 className="mt-4 block mx-auto text-[#40c4a7] underline px-4 py-2 rounded-md hover:bg-[#40c4a7] hover:text-white transition-all duration-200"
               >
                 Tounen nan diksyonè a
