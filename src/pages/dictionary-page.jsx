@@ -12,6 +12,8 @@ import SEOHelmet from "@/components/seo-helmet.jsx";
 import { fetchWordDefinition, suggestNewWord } from "@/utils/api";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useDebounce } from "@/hooks/use-debounce";
+import { useAuth } from "@/context/auth-context";
+import { useNavigate } from "react-router-dom";
 
 function DictionaryPage() {
   const { toasts, addToast, removeToast } = useToast();
@@ -19,6 +21,8 @@ function DictionaryPage() {
   const [selectedDefinition, setSelectedDefinition] = useState(null);
   const [isSuggesting, setIsSuggesting] = useState(false);
   const [page, setPage] = useState(1);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
@@ -99,6 +103,14 @@ function DictionaryPage() {
     }
   };
 
+  const handleSuggestButtonClick = () => {
+    if (!user) {
+      navigate("/koneksyon", { state: { from: "/diksyonè" } });
+      return;
+    }
+    setIsSuggesting(true);
+  };
+
   const noResultsFound =
     !isLoading && filteredWords.length === 0 && searchTerm.trim() !== "";
 
@@ -134,7 +146,7 @@ function DictionaryPage() {
               <button
                 onClick={() => setIsSuggesting(false)}
                 className="mt-4 block mx-auto text-[#40c4a7] underline px-4 py-2 rounded-md hover:bg-[#40c4a7] hover:text-white transition-all duration-200"
-                >
+              >
                 Tounen nan diksyonè a
               </button>
             </div>
@@ -152,9 +164,9 @@ function DictionaryPage() {
                     sijere nouvo mo anba a!
                   </p>
                   <button
-                    onClick={() => setIsSuggesting(true)}
+                    onClick={handleSuggestButtonClick}
                     className="text-[#40c4a7] underline hover:text-white hover:bg-[#40c4a7] px-3 py-1 rounded-md transition-all duration-200 ease-in-out"
-                    >
+                  >
                     Sijere yon mo
                   </button>
                 </div>
