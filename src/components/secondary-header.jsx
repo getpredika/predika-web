@@ -131,7 +131,7 @@ export default function SecondaryHeader() {
                     variant="ghost"
                     className="text-[#2d2d5f] hover:text-[#40c4a7] justify-start p-0 h-auto hover:bg-transparent"
                   >
-                    Logout
+                    Dekonekte
                   </Button>
                 </>
               )}
