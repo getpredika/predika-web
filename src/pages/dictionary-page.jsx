@@ -105,7 +105,13 @@ function DictionaryPage() {
 
   const handleSuggestButtonClick = () => {
     if (!user) {
-      navigate("/koneksyon", { state: { from: "/diksyonè" } });
+      addToast({
+        title: "Ouvri sesyon",
+        description: "Tanpri konekte pou ou ka sijere yon mo.",
+      });
+      navigate("/koneksyon", {
+        state: { from: "/diksyonè", intent: "suggest-word" },
+      });
       return;
     }
     setIsSuggesting(true);
