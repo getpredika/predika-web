@@ -1,4 +1,4 @@
-import {Routes, Route, useLocation} from "react-router-dom";
+import {Routes, Route} from "react-router-dom";
 import LandingPage from "@/pages/landing-page";
 import Blog from "@/pages/blog";
 import NotFound from "@/pages/not-found";
@@ -16,8 +16,11 @@ import PrivateRoute from "@/router/private-route";
 import GoogleCallback from "./pages/google-callback";
 import DictionaryPage from "./pages/dictionary-page";
 import {HelmetProvider} from "react-helmet-async";
+import ReactGA from "react-ga4";
 
 function App() {
+    ReactGA.initialize("G-1WS9JS2T69");
+
     return (
         <HelmetProvider>
             <AuthProvider>
