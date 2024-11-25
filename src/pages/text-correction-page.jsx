@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useRef } from 'react'
+import {useState, useCallback, useRef, useEffect} from 'react'
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { X, Copy, Check, Edit, RotateCcw, Zap, Upload } from 'lucide-react'
@@ -20,6 +20,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { motion } from "framer-motion"
 import SecondaryHeader from "@/components/secondary-header"
 import { correctText } from "@/utils/api"
+import ReactGA from "react-ga4";
 
 export default function TextCorrectionPage() {
     const [text, setText] = useState("")
@@ -33,6 +34,10 @@ export default function TextCorrectionPage() {
     const [error, setError] = useState(null)
     const [isUploading, setIsUploading] = useState(false)
     const fileInputRef = useRef(null)
+
+    useEffect(() => {
+        ReactGA.send({ hitType: "pageview", page: "/koreksyon-grame", title: "Correction Editor", });
+    }, []);
 
     const handleGrammarCheck = useCallback(async () => {
         setError(null)

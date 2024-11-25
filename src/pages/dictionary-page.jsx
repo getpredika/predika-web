@@ -14,6 +14,7 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useAuth } from "@/context/auth-context";
 import { useNavigate } from "react-router-dom";
+import ReactGA from "react-ga4";
 
 function DictionaryPage() {
   const { toasts, addToast, removeToast } = useToast();
@@ -35,6 +36,10 @@ function DictionaryPage() {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
   };
+
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: "/diksyonè", title: "Dictionary", });
+  }, []);
 
   const handleWordClick = async (word) => {
     try {

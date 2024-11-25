@@ -16,27 +16,11 @@ import PrivateRoute from "@/router/private-route";
 import GoogleCallback from "./pages/google-callback";
 import DictionaryPage from "./pages/dictionary-page";
 import {HelmetProvider} from "react-helmet-async";
-import initializeAnalytics from "@/utils/analytics";
-import {useEffect} from "react";
-import ReactGA from "react-ga4";
-
-const TrackPageView = () => {
-    const location = useLocation();
-    useEffect(() => {
-        ReactGA.send({ hitType: "pageview", page: location.pathname, title: document.title, });
-    }, [location]);
-
-    return null;
-};
-
-// Initialize Google Analytics once
-initializeAnalytics();
 
 function App() {
     return (
         <HelmetProvider>
             <AuthProvider>
-                <TrackPageView />
                 <Routes>
                 <Route path="/" index={true} element={<LandingPage />} />
                 <Route path="/koneksyon" element={<LoginPage />} />

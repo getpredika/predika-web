@@ -10,6 +10,8 @@ import Footer from "@/components/footer";
 import { Link } from "react-router-dom";
 import { motion } from 'framer-motion'
 import SEOHelmet from "@/components/seo-helmet.jsx";
+import {useEffect} from "react";
+import ReactGA from "react-ga4";
 
 export default function LandingPage() {
     const containerVariants = {
@@ -46,6 +48,10 @@ export default function LandingPage() {
             },
         },
     }
+
+    useEffect(() => {
+        ReactGA.send({ hitType: "pageview", page: "/", title: "Home", });
+    }, []);
 
     return (
         <>

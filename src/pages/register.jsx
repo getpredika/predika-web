@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react"
+import {useEffect, useState} from "react"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import { Button } from "@/components/ui/button"
@@ -11,6 +11,7 @@ import { Card } from "@/components/ui/card"
 import { useAuth } from "@/context/auth-context";
 import { Link, useNavigate } from "react-router-dom";
 import SEOHelmet from "@/components/seo-helmet.jsx";
+import ReactGA from "react-ga4";
 
 const validationSchema = Yup.object().shape({
     email: Yup.string().email("Imèl la pa valid").required("Imèl obligatwa"),
@@ -48,6 +49,10 @@ export default function RegisterPage() {
     const handleGoogleAuth = async () => {
         await googleRedirect();
     }
+
+    useEffect(() => {
+        ReactGA.send({ hitType: "pageview", page: "/anregistre", title: "Register", });
+    }, []);
 
     return (
         <>

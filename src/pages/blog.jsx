@@ -4,8 +4,14 @@ import { Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import MainHeader from "@/components/main-header.jsx";
 import SEOHelmet from "@/components/seo-helmet.jsx";
+import {useEffect} from "react";
+import ReactGA from "react-ga4";
 
 export default function Blog() {
+    useEffect(() => {
+        ReactGA.send({ hitType: "pageview", page: "/atik", title: "Blog", });
+    }, []);
+
     return (
         <>
             <SEOHelmet

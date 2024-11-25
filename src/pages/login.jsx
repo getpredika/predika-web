@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react"
+import {useEffect, useState} from "react"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import { Button } from "@/components/ui/button"
@@ -9,6 +9,7 @@ import { Eye, EyeOff } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { useAuth } from "@/context/auth-context.jsx"
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import ReactGA from "react-ga4";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Imèl la pa valid").required("Imèl obligatwa"),
@@ -23,6 +24,10 @@ export default function Login() {
   const location = useLocation();
 
   const redirectTo = location.state?.from || "/koreksyon-grame";
+
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: "/koneksyon", title: "Login", });
+  }, []);
 
   const formik = useFormik({
     initialValues: {
