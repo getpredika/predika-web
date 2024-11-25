@@ -2,93 +2,35 @@ import Footer from "@/components/footer";
 import MainHeader from "@/components/main-header";
 import DictionarySecondaryHeader from "@/components/ui/dictionary-secondary-header";
 import { useState, useEffect, useRef } from "react";
+import Pagination from "@/components/ui/pagination";
 import { useToast } from "@/components/ui/use-toast";
 import Toast from "@/components/ui/Toast";
 import WordList from "@/components/dictionary/word-list";
 import WordDefinition from "@/components/dictionary/word-definition";
 import WordSuggestionForm from "@/components/dictionary/word-suggestion-form";
 import SEOHelmet from "@/components/seo-helmet.jsx";
-import {
-  fetchDictionaryWords,
-  fetchWordDefinition,
-  suggestNewWord,
-} from "@/utils/api";
+import { fetchWordDefinition, suggestNewWord } from "@/utils/api";
+import { useDictionary } from "@/hooks/use-dictionary";
+import { useDebounce } from "@/hooks/use-debounce";
+import { useAuth } from "@/context/auth-context";
+import { useNavigate } from "react-router-dom";
 
 function DictionaryPage() {
   const { toasts, addToast, removeToast } = useToast();
-  const [words, setWords] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredWords, setFilteredWords] = useState([]);
   const [selectedDefinition, setSelectedDefinition] = useState(null);
+  const [isSuggestionFormVisible, setIsSuggestionFormVisible] = useState(false);
   const [isSuggesting, setIsSuggesting] = useState(false);
-
   const [page, setPage] = useState(1);
-  const [limit] = useState(7);
-  const [totalPages, setTotalPages] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSearching, setIsSearching] = useState(false);
-  const searchDebounceTimeout = useRef(null);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const loadWords = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetchDictionaryWords(page, limit);
-        const wordData = response.data.data;
-      
-        setWords(wordData || []);
-        setTotalPages(Math.ceil(response.data.meta.total / limit));
-        setFilteredWords(wordData || []);
-      } catch (error) {
-        console.error("Error fetching dictionary words:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    loadWords();
-  }, [page, limit]);
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
-  useEffect(() => {
-    if (searchDebounceTimeout.current) {
-      clearTimeout(searchDebounceTimeout.current);
-    }
+  const { words, filteredWords, isLoading, isSearching, totalPages } =
+    useDictionary(page, 7, debouncedSearchTerm);
 
-    searchDebounceTimeout.current = setTimeout(async () => {
-      if (searchTerm.trim() === "") {
-        setFilteredWords(words);
-        setIsSearching(false);
-        return;
-      }
-
-      setIsSearching(true);
-      try {
-        const response = await fetchWordDefinition(searchTerm.trim());
-        const definitionText = response.definition;
-        setFilteredWords([
-          { word: searchTerm.trim(), definition: definitionText },
-        ]);
-      } catch (error) {
-        console.error("Error searching for word:", error);
-        setFilteredWords([]);
-      } finally {
-        setIsSearching(false);
-      }
-    }, 300);
-
-    return () => {
-      clearTimeout(searchDebounceTimeout.current);
-    };
-  }, [searchTerm, words]);
-
-  const handleSearchChange = (e) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    setSelectedDefinition(null);
-
-    if (value.trim() === "") {
-      setFilteredWords(words);
-    }
-  };
+  const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -97,36 +39,55 @@ function DictionaryPage() {
   const handleWordClick = async (word) => {
     try {
       const response = await fetchWordDefinition(word);
-      const definitionText = response.data.definition;
-   
-      setSelectedDefinition({ word, definitionText });
+
+      if (response.data.definition === null) {
+        setSelectedDefinition({
+          word,
+          definitionText: (
+            <div>
+              Nou pa jwenn mo sa a nan diksyonè a. Ou vle <br />
+              <button
+                onClick={() => setIsSuggesting(true)}
+                className="text-blue-500 underline"
+              >
+                sijere mo a?
+              </button>
+            </div>
+          ),
+        });
+      } else {
+        setSelectedDefinition({
+          word,
+          definitionText: response.data.definition,
+        });
+      }
     } catch (error) {
       console.error("Error fetching word definition:", error);
+      addToast({
+        title: "Erè",
+        description: "Nou pa ka jwenn definisyon mo a kounye a.",
+      });
+      setSelectedDefinition(null);
     }
   };
 
   const validateInputs = (word, description) => {
-    if (!word || word.trim() === "") {
-      throw new Error("Word cannot be empty.");
-    }
-    if (word.length > 50) {
-      throw new Error("Word exceeds maximum length of 50 characters.");
-    }
-    if (!description || description.trim() === "") {
-      throw new Error("Description cannot be empty.");
-    }
-    if (description.length > 300) {
-      throw new Error("Description exceeds maximum length of 300 characters.");
-    }
+    if (!word || word.trim() === "") throw new Error("Mo pa ka vid.");
+    if (word.length > 50) throw new Error("Mo a twò long (50 karaktè max).");
+    if (!description || description.trim() === "")
+      throw new Error("Deskripsyon pa ka vid.");
+    if (description.length > 300)
+      throw new Error("Deskripsyon twò long (300 karaktè max).");
   };
-  
 
-  const handleSuggestWord = async (word, description) => {
-    setIsSuggesting(true);
-
+  const handleSuggestWord = async (word, definition) => {
     try {
-      validateInputs(word, description);
-      await suggestNewWord(word, description);
+      validateInputs(word, definition);
+      if (!word.trim() || !definition.trim()) {
+        throw new Error("Mo ak deskripsyon yo dwe ranpli.");
+      }
+
+      await suggestNewWord(word, definition);
       addToast({
         title: "Mo Sijere",
         description: `Mèsi paske ou sijere "${word}". Ekip nou an pral revize li.`,
@@ -134,11 +95,27 @@ function DictionaryPage() {
     } catch (error) {
       addToast({
         title: "Erè",
-        description: "Te gen yon pwoblèm pandan nou te ap voye sijesyon ou a.",
+        description:
+          error.message ||
+          "Te gen yon pwoblèm pandan nou te ap voye sijesyon ou a.",
       });
     } finally {
       setIsSuggesting(false);
     }
+  };
+
+  const handleSuggestButtonClick = () => {
+    if (!user) {
+      addToast({
+        title: "Ouvri sesyon",
+        description: "Tanpri konekte pou ou ka sijere yon mo.",
+      });
+      navigate("/koneksyon", {
+        state: { from: "/diksyonè", intent: "suggest-word" },
+      });
+      return;
+    }
+    setIsSuggestionFormVisible(true);
   };
 
   const noResultsFound =
@@ -163,67 +140,61 @@ function DictionaryPage() {
         />
 
         <main className="max-w-screen-xl mx-auto p-6">
-          {isLoading || isSearching ? (
-            <div className="text-center">
-              <p>Chaje...</p>
-            </div>
-          ) : !noResultsFound ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <WordList words={filteredWords} onWordClick={handleWordClick} />
-              <WordDefinition definition={selectedDefinition} />
-            </div>
-          ) : (
-            <div className="text-center text-gray-500">
-              <p>
-                Pa gen rezilta pou "
-                <span className="font-semibold">{searchTerm}</span>".
-              </p>
-              <p>Ou ka sijere nouvo mo anba a!</p>
+          {isSuggestionFormVisible ? (
+            <div>
+              <h2 className="text-2xl font-semibold mb-4 text-center">
+                Sijere yon nouvo mo
+              </h2>
               <WordSuggestionForm
                 isSuggesting={isSuggesting}
-                defaultWord={searchTerm}
+                defaultWord={searchTerm || ""}
                 onSuggestWord={handleSuggestWord}
               />
-            </div>
-          )}
-
-          {/* Pagination Controls */}
-          {!searchTerm && (
-            <div className="flex justify-between items-center mt-6">
               <button
-                onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-                disabled={page === 1}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50"
+                onClick={() => setIsSuggestionFormVisible(false)}
+                className="mt-4 block mx-auto text-[#40c4a7] underline px-4 py-2 rounded-md hover:bg-[#40c4a7] hover:text-white transition-all duration-200"
               >
-                Previous
-              </button>
-              <span>
-                Page {page} of {totalPages}
-              </span>
-              <button
-                onClick={() =>
-                  setPage((prev) => Math.min(prev + 1, totalPages))
-                }
-                disabled={page === totalPages}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50"
-              >
-                Next
+                Tounen nan diksyonè a
               </button>
             </div>
+          ) : (
+            <>
+              {isLoading || isSearching ? (
+                <div className="text-center">
+                  <p>Chaje...</p>
+                </div>
+              ) : noResultsFound ? (
+                <div className="text-center text-gray-500">
+                  <p>
+                    Pa gen rezilta pou "
+                    <span className="font-semibold">{searchTerm}</span>". Ou ka
+                    sijere nouvo mo anba a!
+                  </p>
+                  <button
+                    onClick={handleSuggestButtonClick}
+                    className="text-[#40c4a7] underline hover:text-white hover:bg-[#40c4a7] px-3 py-1 rounded-md transition-all duration-200 ease-in-out"
+                  >
+                    Sijere yon mo
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <WordList
+                      words={filteredWords}
+                      onWordClick={handleWordClick}
+                    />
+                    <WordDefinition definition={selectedDefinition} />
+                  </div>
+                  <Pagination
+                    currentPage={page}
+                    totalPages={totalPages}
+                    onPageChange={(newPage) => setPage(newPage)}
+                  />
+                </div>
+              )}
+            </>
           )}
-
-          {/* Render Toasts */}
-          <div className="fixed bottom-4 right-4 z-50">
-            {toasts.map((toast) => (
-              <Toast
-                key={toast.id}
-                id={toast.id}
-                title={toast.title}
-                description={toast.description}
-                onClose={removeToast}
-              />
-            ))}
-          </div>
         </main>
         <Footer />
       </div>

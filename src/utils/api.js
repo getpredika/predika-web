@@ -28,28 +28,39 @@ export const fetchDictionaryWords = async (page = 1, limit = 10) => {
 };
 
 export const fetchWordDefinition = async (word) => {
-  const response = await fetch(`${BASE_URL}/dictionary/${encodeURIComponent(word)}`, {
-    method: "GET",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message);
+  try {
+    const response = await fetch(
+      `${BASE_URL}/dictionary/${encodeURIComponent(word)}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = await response.json();
+    if (response.ok) {
+      return data;
+    }
+
+
+    throw new Error(data.message || "Unexpected error occurred");
+  } catch (error) {
+    console.error("Fetch word definition error:", error);
+    throw error;
   }
-  return response.json();
 };
 
-export const suggestNewWord = async (word, description) => {
+export const suggestNewWord = async (word, definition) => {
   const response = await fetch(`${BASE_URL}/dictionary/suggest`, {
     method: "POST",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ word, defini }),
+    body: JSON.stringify({ word, definition }),
   });
   if (!response.ok) {
     const errorData = await response.json();

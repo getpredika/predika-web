@@ -5,7 +5,7 @@ const WordList = ({ words, onWordClick }) => {
       <ul className="space-y-2 max-h-96 overflow-y-auto">
         {words.map((wordObj) => (
           <li
-            key={wordObj.id}
+            key={wordObj.id || wordObj.word}
             onClick={() => onWordClick(wordObj.word)}
             className="cursor-pointer hover:bg-[#40c4a7] p-3 rounded transition-colors"
           >
