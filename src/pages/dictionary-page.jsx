@@ -28,7 +28,7 @@ function DictionaryPage() {
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
-  const { words, filteredWords, isLoading, isSearching, totalPages } =
+  const { filteredWords, isLoading, isSearching, totalPages } =
     useDictionary(page, 7, debouncedSearchTerm);
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -63,7 +63,7 @@ function DictionaryPage() {
       } else {
         setSelectedDefinition({
           word,
-          definitionText: response.data.definition,
+          definitionText: response.definition,
         });
       }
     } catch (error) {
