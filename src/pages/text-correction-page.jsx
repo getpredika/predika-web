@@ -3,7 +3,7 @@
 import {useState, useCallback, useRef, useEffect} from 'react'
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { X, Copy, Check, Edit, RotateCcw, Zap, Upload } from 'lucide-react'
+import { X, Copy, Check, Edit, RotateCcw, Zap, Upload, Download } from 'lucide-react'
 import {
     Select,
     SelectContent,
@@ -33,6 +33,7 @@ export default function TextCorrectionPage() {
     const [activeCorrection, setActiveCorrection] = useState(null)
     const [error, setError] = useState(null)
     const [isUploading, setIsUploading] = useState(false)
+    const [isExporting, setIsExporting] = useState(false)
     const fileInputRef = useRef(null)
 
     useEffect(() => {
@@ -168,6 +169,28 @@ export default function TextCorrectionPage() {
         fileInputRef.current.click();
     };
 
+    const handleExportText = useCallback(() => {
+        setIsExporting(true)
+        try {
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' })
+
+            const url = window.URL.createObjectURL(blob)
+            const link = document.createElement('a')
+            link.href = url
+            link.download = 'corrected-text.txt'
+
+            document.body.appendChild(link)
+            link.click()
+
+            document.body.removeChild(link)
+            window.URL.revokeObjectURL(url)
+        } catch (error) {
+            setError("Yon erè pase pandan ekspòtasyon an.")
+        } finally {
+            setIsExporting(false)
+        }
+    }, [text])
+
     const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0
     const characterCount = text.length
 
@@ -253,7 +276,7 @@ export default function TextCorrectionPage() {
                                         <SelectValue placeholder="Select model" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="hairobert-1.0">HaiRobert-1.0</SelectItem>
+                                        <SelectItem value="hairobert-1.0">HaiRoBERT-1.0</SelectItem>
                                     </SelectContent>
                                 </Select>
                                 <div className="flex items-center">
@@ -282,6 +305,24 @@ export default function TextCorrectionPage() {
                                         accept=".txt,.pdf,.doc,.docx"
                                         className="hidden"
                                     />
+                                    <Button
+                                            onClick={handleExportText}
+                                            variant="outline"
+                                            size="icon"
+                                            className="mr-2 text-gray-400 bg-white hover:bg-gray-100 hover:text-[#2d2d5f] border-gray-300"
+                                            aria-label="Export text"
+                                            disabled={!text || isExporting}
+                                        >
+                                            {isExporting ? (
+                                                <motion.div
+                                                    initial={{ scale: 0.5, opacity: 0 }}
+                                                    animate={{ scale: 1, opacity: 1 }}
+                                                    className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"
+                                                />
+                                            ) : (
+                                                <Download className="h-4 w-4" />
+                                            )}
+                                    </Button>
                                     <Button
                                         onClick={handleCopyText}
                                         variant="outline"

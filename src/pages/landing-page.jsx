@@ -109,7 +109,7 @@ export default function LandingPage() {
                                             Kreye Yon Kont
                                         </Button>
                                     </Link>
-                                    <a href="#features">
+                                    <a href="#detay">
                                         <Button
                                             variant="outline"
                                             className="border-[#40c4a7] text-[#40c4a7] hover:bg-[#40c4a7] hover:text-white px-8"

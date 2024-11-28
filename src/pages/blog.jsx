@@ -26,7 +26,7 @@ export default function Blog() {
                 <MainHeader/>
                 <section className="w-full py-12 md:py-24 lg:py-32 relative">
                     <div className="absolute inset-0" style={{
-                        backgroundImage: 'radial-gradient(circle at center, #40c4a7 1px, transparent 1px)',
+                        backgroundImage: 'radial-gradient(circle at center, #40c4a7 2px, transparent 2px)',
                         backgroundSize: '24px 24px',
                         opacity: 0.1
                     }}/>
