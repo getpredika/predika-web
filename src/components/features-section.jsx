@@ -11,21 +11,21 @@ const features = [
         icon: CircleCheck,
         title: "Koreksyon Enstantane",
         description: "AI nou an rapidman idantifye ak korije erè gramè ak òtograf nan tèks ou, asire ke mesaj ou klè ak pwofesyonèl.",
-        link: "#",
+        link: "/koreksyon-grame",
         linkText: "Wè Kijan Sa Fonksyone",
     },
     {
         icon: BookOpen,
         title: "Zouti Aprantisaj",
         description: "Amelyore konpetans lang ou ak zouti aprantisaj sa ki eksplike koreksyon yo ak ofri konsèy pou pi bon sentaks nan Kreyòl.",
-        link: "#",
+        link: "/diksyonè",
         linkText: "Eksplore Zouti Aprantisaj",
     },
     {
         icon: UserCheck,
         title: "Sijesyon Pèsonalize",
         description: "AI nou an konprann nyans ak tradisyon Kreyòl, bay ou koreksyon ak sijesyon ki respekte kilti a.",
-        link: "#",
+        link: "/atik",
         linkText: "Dekouvri Karakteristik Pèsonalize",
     }
 ]
