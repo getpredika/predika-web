@@ -63,7 +63,7 @@ function DictionaryPage() {
       } else {
         setSelectedDefinition({
           word,
-          definitionText: response.definition,
+          definitionText: response.data.definition,
         });
       }
     } catch (error) {
