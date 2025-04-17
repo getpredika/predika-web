@@ -7,7 +7,7 @@ const WordList = ({ words, onWordClick }) => {
           <li
             key={wordObj.id || wordObj.word}
             onClick={() => onWordClick(wordObj.word)}
-            className="cursor-pointer hover:bg-[#40c4a7] p-3 rounded transition-colors"
+            className="cursor-pointer hover:bg-[#40c4a7] hover:text-white p-3 rounded transition-colors"
           >
             {wordObj.word}
           </li>

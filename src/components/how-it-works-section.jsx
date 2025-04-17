@@ -12,7 +12,7 @@ export default function HowItWorksSection() {
     const steps = [
         {
             number: "1",
-            title: "Chwazi yon modèl AI",
+            title: "Chwazi yon Entèlijans Atifisyèl ou vle a",
             description: "Senpleman chwazi yon modèl ki adapte ak bezwen ou yo nan lis ki disponib la pou korije tèks ou a."
         },
         {
@@ -90,7 +90,7 @@ export default function HowItWorksSection() {
     return (
         <section className="w-full py-12 relative bg-white" ref={ref}>
             <div className="absolute inset-0" style={{
-                backgroundImage: 'radial-gradient(circle at center, #40c4a7 1px, transparent 1px)',
+                backgroundImage: 'radial-gradient(circle at center, #40c4a7 2.7px, transparent 2.7px)',
                 backgroundSize: '24px 24px',
                 opacity: 0.1
             }} />
@@ -129,7 +129,7 @@ export default function HowItWorksSection() {
                             variants={stepVariants}
                         >
                             <motion.div
-                                className="text-8xl font-bold text-[#40c4a7]/10 mb-4"
+                                className="text-8xl font-bold text-[#40c4a7]/40 mb-4"
                                 initial={{ scale: 0.5, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
                                 transition={{ delay: i * 0.2, duration: 0.5 }}

@@ -2,7 +2,7 @@
 
 import { Link } from "react-router-dom"
 import { Card, CardContent } from "@/components/ui/card"
-import { ArrowRight, CircleCheck, BookOpen, UserCheck } from "lucide-react"
+import {ArrowRight, CircleCheck, BookOpen, UserCheck, BookOpenCheck} from "lucide-react"
 import { motion, useAnimation } from "framer-motion"
 import { useEffect, useRef } from "react"
 
@@ -10,22 +10,22 @@ const features = [
     {
         icon: CircleCheck,
         title: "Koreksyon Enstantane",
-        description: "AI nou an rapidman idantifye ak korije erè gramè ak òtograf nan tèks ou, asire ke mesaj ou klè ak pwofesyonèl.",
+        description: "Entèlijans Atifisyèl nou an rapidman idantifye ak korije erè gramè ak òtograf nan tèks ou, asire ke mesaj ou klè ak pwofesyonèl.",
         link: "/koreksyon-grame",
         linkText: "Wè Kijan Sa Fonksyone",
     },
     {
-        icon: BookOpen,
-        title: "Zouti Aprantisaj",
-        description: "Amelyore konpetans lang ou ak zouti aprantisaj sa ki eksplike koreksyon yo ak ofri konsèy pou pi bon sentaks nan Kreyòl.",
+        icon: BookOpenCheck,
+        title: "Diksyonè Kreyòl",
+        description: "Jwenn definisyon mo an Kreyòl fasil ak rapid. Ou ka tou sijere nouvo mo pou ede nou agrandi diksyonè a.",
         link: "/diksyonè",
-        linkText: "Eksplore Zouti Aprantisaj",
+        linkText: "Eksplore Diksyonè a",
     },
     {
         icon: UserCheck,
         title: "Sijesyon Pèsonalize",
-        description: "AI nou an konprann nyans ak tradisyon Kreyòl, bay ou koreksyon ak sijesyon ki respekte kilti a.",
-        link: "/atik",
+        description: "Entèlijans Atifisyèl nou an konprann nyans ak tradisyon Kreyòl, bay ou koreksyon ak sijesyon ki respekte kilti a.",
+        link: "/koreksyon-grame",
         linkText: "Dekouvri Karakteristik Pèsonalize",
     }
 ]
@@ -96,7 +96,7 @@ export default function FeaturesSection() {
     }
 
     return (
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-white" id="features" ref={ref}>
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-white" id="detay" ref={ref}>
             <motion.div
                 className="px-4 md:px-6"
                 initial="hidden"

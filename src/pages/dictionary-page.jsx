@@ -28,8 +28,11 @@ function DictionaryPage() {
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
-  const { filteredWords, isLoading, isSearching, totalPages } =
-    useDictionary(page, 7, debouncedSearchTerm);
+  const { filteredWords, isLoading, isSearching, totalPages } = useDictionary(
+    page,
+    7,
+    debouncedSearchTerm
+  );
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
@@ -38,7 +41,11 @@ function DictionaryPage() {
   };
 
   useEffect(() => {
-    ReactGA.send({ hitType: "pageview", page: "/diksyonè", title: "Dictionary", });
+    ReactGA.send({
+      hitType: "pageview",
+      page: "/diksyonè",
+      title: "Dictionary",
+    });
   }, []);
 
   const handleWordClick = async (word) => {
@@ -137,71 +144,84 @@ function DictionaryPage() {
       />
 
       <div className="min-h-screen bg-[#f0faf7] text-[#2d2d5f] font-sans">
+        {/* <div className=" min-h-screen bg-white"> */}
         <MainHeader />
-        <DictionarySecondaryHeader
-          searchTerm={searchTerm}
-          onSearchChange={handleSearchChange}
-          onSearchSubmit={handleSearchSubmit}
-        />
+        <section className="w-full py-12 md:py-24 lg:py-32 relative">
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at center, #40c4a7 2px, transparent 2px)",
+              backgroundSize: "24px 24px",
+              opacity: 0.1,
+            }}
+          />
 
-        <main className="max-w-screen-xl mx-auto p-6">
-          {isSuggestionFormVisible ? (
-            <div>
-              <h2 className="text-2xl font-semibold mb-4 text-center">
-                Sijere yon nouvo mo
-              </h2>
-              <WordSuggestionForm
-                isSuggesting={isSuggesting}
-                defaultWord={searchTerm || ""}
-                onSuggestWord={handleSuggestWord}
-              />
-              <button
-                onClick={() => setIsSuggestionFormVisible(false)}
-                className="mt-4 block mx-auto text-[#40c4a7] underline px-4 py-2 rounded-md hover:bg-[#40c4a7] hover:text-white transition-all duration-200"
-              >
-                Tounen nan diksyonè a
-              </button>
-            </div>
-          ) : (
-            <>
-              {isLoading || isSearching ? (
-                <div className="text-center">
-                  <p>Chaje...</p>
-                </div>
-              ) : noResultsFound ? (
-                <div className="text-center text-gray-500">
-                  <p>
-                    Pa gen rezilta pou "
-                    <span className="font-semibold">{searchTerm}</span>". Ou ka
-                    sijere nouvo mo anba a!
-                  </p>
-                  <button
-                    onClick={handleSuggestButtonClick}
-                    className="text-[#40c4a7] underline hover:text-white hover:bg-[#40c4a7] px-3 py-1 rounded-md transition-all duration-200 ease-in-out"
-                  >
-                    Sijere yon mo
-                  </button>
-                </div>
-              ) : (
-                <div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <WordList
-                      words={filteredWords}
-                      onWordClick={handleWordClick}
-                    />
-                    <WordDefinition definition={selectedDefinition} />
+          <DictionarySecondaryHeader
+            searchTerm={searchTerm}
+            onSearchChange={handleSearchChange}
+            onSearchSubmit={handleSearchSubmit}
+          />
+
+          <main className="max-w-screen-xl mx-auto p-6">
+            {isSuggestionFormVisible ? (
+              <div>
+                <h2 className="text-2xl font-semibold mb-4 text-center">
+                  Sijere yon nouvo mo
+                </h2>
+                <WordSuggestionForm
+                  isSuggesting={isSuggesting}
+                  defaultWord={searchTerm || ""}
+                  onSuggestWord={handleSuggestWord}
+                />
+                <button
+                  onClick={() => setIsSuggestionFormVisible(false)}
+                  className="mt-4 block mx-auto text-[#40c4a7] underline px-4 py-2 rounded-md hover:bg-[#40c4a7] hover:text-white transition-all duration-200"
+                >
+                  Tounen nan diksyonè a
+                </button>
+              </div>
+            ) : (
+              <>
+                {isLoading || isSearching ? (
+                  <div className="text-center">
+                    <p>Chaje...</p>
                   </div>
-                  <Pagination
-                    currentPage={page}
-                    totalPages={totalPages}
-                    onPageChange={(newPage) => setPage(newPage)}
-                  />
-                </div>
-              )}
-            </>
-          )}
-        </main>
-        <Footer />
+                ) : noResultsFound ? (
+                  <div className="text-center text-gray-500">
+                    <p>
+                      Pa gen rezilta pou "
+                      <span className="font-semibold">{searchTerm}</span>". Ou
+                      ka sijere nouvo mo anba a!
+                    </p>
+                    <button
+                      onClick={handleSuggestButtonClick}
+                      className="text-[#40c4a7] underline hover:text-white hover:bg-[#40c4a7] px-3 py-1 rounded-md transition-all duration-200 ease-in-out"
+                    >
+                      Sijere yon mo
+                    </button>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <WordList
+                        words={filteredWords}
+                        onWordClick={handleWordClick}
+                      />
+                      <WordDefinition definition={selectedDefinition} />
+                    </div>
+                    <Pagination
+                      currentPage={page}
+                      totalPages={totalPages}
+                      onPageChange={(newPage) => setPage(newPage)}
+                    />
+                  </div>
+                )}
+              </>
+            )}
+          </main>
+          <Footer />
+        </section>
       </div>
     </>
   );
