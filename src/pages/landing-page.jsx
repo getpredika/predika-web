@@ -12,6 +12,7 @@ import { motion } from 'framer-motion'
 import SEOHelmet from "@/components/seo-helmet.jsx";
 import {useEffect} from "react";
 import ReactGA from "react-ga4";
+import WhatsAppChannelSection from "@/components/whatsapp-channel-section";
 
 export default function LandingPage() {
     const containerVariants = {
@@ -126,6 +127,7 @@ export default function LandingPage() {
             <FeaturesSection />
             <HowItWorksSection />
             <CTASection />
+            <WhatsAppChannelSection />
             <Footer />
         </div>
         </>
