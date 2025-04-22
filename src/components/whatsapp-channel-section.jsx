@@ -37,15 +37,11 @@ export default function WhatsAppChannelSection() {
       text: "Resevwa dènye mizajou ak nouvèl sou Predika",
     },
     {
-      icon: (
-        <MessageSquare className="h-5 w-5 text-[#40c4a7]" aria-hidden="true" />
-      ),
+      icon: <MessageSquare className="h-5 w-5 text-[#40c4a7]" aria-hidden="true" />,
       text: "Jwenn konsèy ak asistans pou amelyore ekriti Kreyòl ou",
     },
     {
-      icon: (
-        <Smartphone className="h-5 w-5 text-[#40c4a7]" aria-hidden="true" />
-      ),
+      icon: <Smartphone className="h-5 w-5 text-[#40c4a7]" aria-hidden="true" />,
       text: "Aksè fasil ak rapid sou telefòn ou",
     },
   ];
@@ -65,12 +61,13 @@ export default function WhatsAppChannelSection() {
       <div className="container px-4 md:px-6">
         <motion.div
           ref={ref}
-          className="grid gap-10 lg:grid-cols-2 items-center"
+          className="grid lg:grid-cols-2 gap-10 items-center justify-items-center text-center lg:text-left"
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          <div className="space-y-6">
+          
+          <div className="w-full max-w-xl space-y-6">
             <div className="inline-block rounded-lg bg-[#f0faf7] px-3 py-1 text-sm text-[#40c4a7]">
               Konekte ak Nou
             </div>
@@ -86,7 +83,7 @@ export default function WhatsAppChannelSection() {
               {benefits.map((benefit, index) => (
                 <motion.div
                   key={index}
-                  className="flex items-center gap-3"
+                  className="flex items-start gap-3 text-left"
                   variants={itemVariants}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
@@ -114,6 +111,7 @@ export default function WhatsAppChannelSection() {
             </div>
           </div>
 
+        
           <div className="flex justify-center">
             <motion.div
               className="relative bg-white p-6 rounded-2xl shadow-lg border border-gray-100 max-w-xs"
@@ -123,10 +121,7 @@ export default function WhatsAppChannelSection() {
             >
               <div className="text-center mb-4">
                 <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#25D366] mb-3">
-                  <MessageSquare
-                    className="h-6 w-6 text-white"
-                    aria-hidden="true"
-                  />
+                  <MessageSquare className="h-6 w-6 text-white" aria-hidden="true" />
                 </div>
                 <h3 className="text-lg font-semibold text-[#2d2d5f]">
                   Kanal Predika
@@ -143,11 +138,6 @@ export default function WhatsAppChannelSection() {
                   className="w-full h-auto"
                 />
               </div>
-
-              {/* Optional: Add fallback text here if needed */}
-              {/* <div className="text-center text-sm text-gray-500">
-                Oubyen klike sou bouton anwo a pou swiv nou dirèkteman
-              </div> */}
             </motion.div>
           </div>
         </motion.div>
