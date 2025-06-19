@@ -17,6 +17,8 @@ import GoogleCallback from "./pages/google-callback";
 import DictionaryPage from "./pages/dictionary-page";
 import {HelmetProvider} from "react-helmet-async";
 import ReactGA from "react-ga4";
+import TtsSttPage from "./pages/tts-stt-page";
+import TtsSttSimple from "./pages/tts-stt-page";
 
 function App() {
     ReactGA.initialize("G-1WS9JS2T69");
@@ -27,6 +29,7 @@ function App() {
                 <Routes>
                 <Route path="/" index={true} element={<LandingPage />} />
                 <Route path="/koneksyon" element={<LoginPage />} />
+                <Route path="/tts-stt" element={<TtsSttSimple />} />
                 <Route path="/anregistre" element={<RegisterPage />} />
                 <Route path="/chanje-modpas" element={<ResetPasswordPage />} />
                 <Route path="/verifikasyon" element={<OTPVerificationPage />} />
