@@ -1,6 +1,6 @@
 "use client"
 import { useState, useRef, useEffect } from "react"
-import { Mic, MicOff, Play, Square, Volume2, Copy, RotateCcw } from "lucide-react"
+import { Mic, MicOff, Play, Square, Volume2, Copy, RotateCcw, Upload } from "lucide-react"
 import SecondaryHeader from "@/components/secondary-header"
 
 const TtsSttSimple = () => {
@@ -10,14 +10,18 @@ const TtsSttSimple = () => {
   const [isListening, setIsListening] = useState(false)
   const [interimText, setInterimText] = useState("")
 
+  const [uploadedFile, setUploadedFile] = useState(null)
+
   const recognitionRef = useRef(null)
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
+
 
   const samplePhrases = [
     "Bonjou, kijan ou ye?",
     "Mèsi anpil pou èd ou.",
     "Mwen renmen Ayiti.",
     "Kote ou rete?",
-    "Nou wè nou pita.",
+    "N ap wè nou pita.",
     "Bondye beni ou.",
   ]
 
@@ -244,12 +248,21 @@ const TtsSttSimple = () => {
                 ) : (
                   <button
                     onClick={handleStopListening}
-                    className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+                    className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-[#2d2d5f] hover:bg-[#2d2d5f] text-white rounded-lg transition-colors"
                   >
                     <MicOff className="h-4 w-4" />
                     Sispann koute
                   </button>
                 )}
+
+                  <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="px-4 py-2 bg-gray-300 hover:bg-gray-700 text-white rounded-lg transition-colors flex items-center gap-2"
+                  title="Chwazi fichye odyo"
+                >
+                  <Upload className="h-4 w-4" />
+                  Fichye
+                </button>
 
                 <button
                   onClick={() => setSttText("")}
