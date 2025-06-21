@@ -83,6 +83,13 @@ function DictionaryPage() {
     }
   };
 
+  const playAudio = (text) => {
+  const synth = window.speechSynthesis;
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "ht-HT";
+  synth.speak(utterance);
+};
+
   const validateInputs = (word, description) => {
     if (!word || word.trim() === "") throw new Error("Mo pa ka vid.");
     if (word.length > 50) throw new Error("Mo a twò long (50 karaktè max).");
