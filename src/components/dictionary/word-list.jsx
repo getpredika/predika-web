@@ -1,7 +1,7 @@
 const WordList = ({ words, onWordClick }) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md overflow-hidden">
-      <h2 className="text-2xl font-semibold mb-4">Lis Mo</h2>
+      <h2 className="text-2xl text-center font-semibold mb-4">Lis Mo</h2>
       <ul className="space-y-2 max-h-96 overflow-y-auto">
         {words.map((wordObj) => (
           <li
