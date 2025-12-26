@@ -595,12 +595,12 @@ export default function Landing() {
                 </>
               ) : (
                 <>
-                  <a href="/api/login">
+                  <a href="/login">
                     <Button variant="ghost" data-testid="button-login">
                       Log in
                     </Button>
                   </a>
-                  <a href="/api/login">
+                  <a href="/login">
                     <Button data-testid="button-get-started">
                       Get Started
                     </Button>
@@ -651,7 +651,7 @@ export default function Landing() {
                   </Button>
                 </Link>
               ) : (
-                <a href="/api/login">
+                <a href="/login">
                   <Button
                     size="lg"
                     className="text-base px-8"
