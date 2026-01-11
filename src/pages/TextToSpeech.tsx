@@ -139,14 +139,7 @@ export default function TextToSpeech() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <Link href="/app">
-            <Button variant="ghost" className="mb-4" data-testid="button-back-home">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Home
-            </Button>
-          </Link>
-
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 pt-12">
             <div className="p-3 rounded-lg bg-primary/10">
               <Volume2 className="w-8 h-8 text-primary" />
             </div>

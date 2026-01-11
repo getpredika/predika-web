@@ -1,109 +1,178 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import * as authApi from "@/api/auth";
+import type {
+  User,
+  LoginRequest,
+  RegisterRequest,
+  VerifyEmailRequest,
+  ForgotPasswordRequest,
+  ResetPasswordRequest,
+  ResendOTPRequest,
+} from "@/types/api";
+import { ApiError } from "@/lib/api-client";
 
-async function fetchUser(): Promise<User | null> {
-  const response = await fetch("/api/auth/user", {
-    credentials: "include",
-  });
+// Query key for user data
+const USER_QUERY_KEY = ["auth", "user"];
 
-  if (response.status === 401) {
-    return null;
-  }
+// Login result type
+interface LoginResult {
+  user: User;
+  needsVerification: boolean;
+  email: string;
+}
 
-  if (!response.ok) {
-    throw new Error(`${response.status}: ${response.statusText}`);
-  }
-
-  return response.json();
+// Register result type
+interface RegisterResult {
+  user: User;
+  needsVerification: boolean;
+  email: string;
 }
 
 export function useAuth() {
   const queryClient = useQueryClient();
 
-  const { data: user, isLoading } = useQuery<User | null>({
-    queryKey: ["/api/auth/user"],
-    queryFn: fetchUser,
+  // Fetch current user
+  const {
+    data: user,
+    isLoading,
+    error: userError,
+  } = useQuery<User | null>({
+    queryKey: USER_QUERY_KEY,
+    queryFn: async () => {
+      try {
+        return await authApi.getMe();
+      } catch (error) {
+        // Return null for 401 (not authenticated) - this is expected
+        if (error instanceof ApiError && error.status === 401) {
+          return null;
+        }
+        throw error;
+      }
+    },
     retry: false,
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
-  const logoutMutation = useMutation({
+  // Login mutation
+  const loginMutation = useMutation<LoginResult, Error, LoginRequest>({
+    mutationFn: async (data) => {
+      const user = await authApi.login(data);
+      return {
+        user,
+        needsVerification: !user.isVerified,
+        email: user.email,
+      };
+    },
+    onSuccess: (result) => {
+      // Update cached user data
+      queryClient.setQueryData(USER_QUERY_KEY, result.user);
+    },
+  });
+
+  // Register mutation
+  const registerMutation = useMutation<RegisterResult, Error, RegisterRequest>({
+    mutationFn: async (data) => {
+      const response = await authApi.register(data);
+      return {
+        user: response.user,
+        needsVerification: !response.user.isVerified,
+        email: response.user.email,
+      };
+    },
+    onSuccess: (result) => {
+      // Update cached user data
+      queryClient.setQueryData(USER_QUERY_KEY, result.user);
+    },
+  });
+
+  // Logout mutation
+  const logoutMutation = useMutation<void, Error>({
     mutationFn: async () => {
-      await apiRequest("POST", "/api/auth/logout");
+      await authApi.logout();
     },
     onSuccess: () => {
-      queryClient.setQueryData(["/api/auth/user"], null);
+      // Clear user data from cache
+      queryClient.setQueryData(USER_QUERY_KEY, null);
+      // Clear all queries to reset app state
+      queryClient.clear();
+      // Redirect to home
       window.location.href = "/";
     },
   });
 
-  const loginMutation = useMutation({
-    mutationFn: async (data: { email: string; password: string }) => {
-      const response = await apiRequest("POST", "/api/auth/login", data);
-      return response.json();
+  // Verify email mutation
+  const verifyEmailMutation = useMutation<void, Error, { otp: string; type?: VerifyEmailRequest["type"] }>({
+    mutationFn: async ({ otp, type = "VERIFY_EMAIL" }) => {
+      await authApi.verifyEmail({ otp, type });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      // Refetch user to get updated verification status
+      queryClient.invalidateQueries({ queryKey: USER_QUERY_KEY });
     },
   });
 
-  const registerMutation = useMutation({
-    mutationFn: async (data: { email: string; password: string; firstName: string; lastName: string }) => {
-      const response = await apiRequest("POST", "/api/auth/register", data);
-      return response.json();
+  // Forgot password mutation
+  const forgotPasswordMutation = useMutation<void, Error, ForgotPasswordRequest>({
+    mutationFn: async (data) => {
+      await authApi.forgotPassword(data);
     },
   });
 
-  const verifyEmailMutation = useMutation({
-    mutationFn: async (data: { email: string; token: string }) => {
-      const response = await apiRequest("POST", "/api/auth/verify-email", data);
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+  // Reset password mutation
+  const resetPasswordMutation = useMutation<void, Error, ResetPasswordRequest>({
+    mutationFn: async (data) => {
+      await authApi.resetPassword(data);
     },
   });
 
-  const forgotPasswordMutation = useMutation({
-    mutationFn: async (data: { email: string }) => {
-      const response = await apiRequest("POST", "/api/auth/forgot-password", data);
-      return response.json();
-    },
-  });
-
-  const resetPasswordMutation = useMutation({
-    mutationFn: async (data: { token: string; password: string }) => {
-      const response = await apiRequest("POST", "/api/auth/reset-password", data);
-      return response.json();
-    },
-  });
-
-  const resendVerificationMutation = useMutation({
-    mutationFn: async (data: { email: string }) => {
-      const response = await apiRequest("POST", "/api/auth/resend-verification", data);
-      return response.json();
+  // Resend OTP mutation
+  const resendOTPMutation = useMutation<void, Error, ResendOTPRequest>({
+    mutationFn: async (data) => {
+      await authApi.resendOTP(data);
     },
   });
 
   return {
+    // User state
     user,
     isLoading,
     isAuthenticated: !!user,
-    logout: logoutMutation.mutate,
-    isLoggingOut: logoutMutation.isPending,
+    userError,
+
+    // Login
     login: loginMutation.mutateAsync,
     isLoggingIn: loginMutation.isPending,
     loginError: loginMutation.error,
+
+    // Register
     register: registerMutation.mutateAsync,
     isRegistering: registerMutation.isPending,
     registerError: registerMutation.error,
+
+    // Logout
+    logout: logoutMutation.mutate,
+    isLoggingOut: logoutMutation.isPending,
+
+    // Verify email
     verifyEmail: verifyEmailMutation.mutateAsync,
     isVerifying: verifyEmailMutation.isPending,
+    verifyError: verifyEmailMutation.error,
+
+    // Forgot password
     forgotPassword: forgotPasswordMutation.mutateAsync,
     isSendingReset: forgotPasswordMutation.isPending,
+    forgotPasswordError: forgotPasswordMutation.error,
+
+    // Reset password
     resetPassword: resetPasswordMutation.mutateAsync,
     isResettingPassword: resetPasswordMutation.isPending,
-    resendVerification: resendVerificationMutation.mutateAsync,
-    isResendingVerification: resendVerificationMutation.isPending,
+    resetPasswordError: resetPasswordMutation.error,
+
+    // Resend OTP (renamed from resendVerification for clarity)
+    resendOTP: resendOTPMutation.mutateAsync,
+    resendVerification: resendOTPMutation.mutateAsync, // Keep old name for compatibility
+    isResendingOTP: resendOTPMutation.isPending,
+    isResendingVerification: resendOTPMutation.isPending, // Keep old name for compatibility
+    resendOTPError: resendOTPMutation.error,
   };
 }

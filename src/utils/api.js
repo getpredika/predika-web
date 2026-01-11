@@ -1,87 +1,69 @@
-const BASE_URL = "https://api.predika.app";
-
 /**
- * Fetch dictionary words with pagination.
- * @param {number} page - The page number to fetch.
- * @param {number} limit - The number of items per page.
- * @returns {Promise<Object>} The response containing the dictionary words and pagination metadata.
- * @throws Will throw an error if the suggestion fails.
+ * @deprecated This file is deprecated. Use the new API modules:
+ * - @/api/auth for authentication
+ * - @/api/dictionary for dictionary operations
+ * - @/api/quiz for quiz operations
+ * - @/api/correction for text correction
+ * - @/lib/api-client for audio URL helpers
+ * 
+ * This file is kept for backward compatibility during migration.
  */
 
+import * as dictionaryApi from "@/api/dictionary";
+import * as correctionApi from "@/api/correction";
+import { getAudioUrl, getBestAudioUrl } from "@/lib/api-client";
+
+/**
+ * @deprecated Use dictionaryApi.listWords() instead
+ */
 export const fetchDictionaryWords = async (page = 1, limit = 10) => {
-  const response = await fetch(
-    `${BASE_URL}/dictionary?page=${page}&limit=${limit}`,
-    {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message);
-  }
-  return response.json();
+  const response = await dictionaryApi.listWords({ page, limit });
+  return {
+    data: response.data,
+    meta: response.meta,
+  };
 };
 
-export const fetchWordDefinition = async (word) => {
-  try {
-    const response = await fetch(
-      `${BASE_URL}/dictionary/${encodeURIComponent(word)}`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    const data = await response.json();
-    if (response.ok) {
-      return data;
-    }
-
-
-    throw new Error(data.message || "Unexpected error occurred");
-  } catch (error) {
-    console.error("Fetch word definition error:", error);
-    throw error;
-  }
+/**
+ * @deprecated Use dictionaryApi.getWord() instead
+ */
+export const fetchWordDefinition = async (wordId) => {
+  return dictionaryApi.getWord(wordId);
 };
 
+/**
+ * @deprecated Use dictionaryApi.createWord() instead
+ */
 export const suggestNewWord = async (word, definition) => {
-  const response = await fetch(`${BASE_URL}/dictionary/suggest`, {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ word, definition }),
+  return dictionaryApi.createWord({
+    word,
+    senses: [
+      {
+        partOfSpeech: "n", // Default part of speech
+        definition,
+      },
+    ],
   });
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message);
-  }
-  return response.json();
 };
 
+/**
+ * @deprecated Use correctionApi.correctText() instead
+ */
 export const correctText = async (text) => {
-  const response = await fetch(`${BASE_URL}/api/correct`, {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ text }),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message);
-  }
-  return response.json();
+  return correctionApi.correctText({ text });
 };
+
+/**
+ * Helper to get audio URL from CDN
+ * @param {string} filename - Audio filename
+ * @returns {string|null} Full CDN URL or null
+ */
+export const getAudioUrl = getAudioUrl;
+
+/**
+ * Helper to get best available audio URL
+ * @param {object} audio - Audio files object
+ * @returns {string|null} Best available audio URL or null
+ */
+export const getBestAudioUrl = getBestAudioUrl;
+

@@ -12,11 +12,11 @@ import predikaLogo from "@assets/predika-logo.png";
 
 export default function ResetPassword() {
   const [, setLocation] = useLocation();
-  const [tokenFromUrl, setTokenFromUrl] = useState("");
-  
+  const [emailFromUrl, setEmailFromUrl] = useState("");
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    setTokenFromUrl(params.get("token") || "");
+    setEmailFromUrl(params.get("email") || "");
   }, []);
   
   const [password, setPassword] = useState("");
@@ -47,13 +47,13 @@ export default function ResetPassword() {
       return;
     }
 
-    if (!tokenFromUrl) {
-      toast({ title: "Invalid link", description: "This password reset link is invalid", variant: "destructive" });
+    if (!emailFromUrl) {
+      toast({ title: "Invalid link", description: "This password reset link is invalid. Please request a new one.", variant: "destructive" });
       return;
     }
-    
+
     try {
-      await resetPassword({ token: tokenFromUrl, password });
+      await resetPassword({ email: emailFromUrl, password, password_confirmation: confirmPassword });
       setSuccess(true);
     } catch (error: any) {
       const message = error?.message || "Failed to reset password.";

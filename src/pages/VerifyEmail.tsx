@@ -14,7 +14,9 @@ export default function VerifyEmail() {
   const search = useSearch();
   const params = new URLSearchParams(search);
   const emailFromUrl = params.get("email") || "";
-  
+  const typeFromUrl = params.get("type");
+  const isPasswordReset = typeFromUrl === "password_reset";
+
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [email] = useState(emailFromUrl);
   const [countdown, setCountdown] = useState(60);
@@ -72,9 +74,14 @@ export default function VerifyEmail() {
     }
 
     try {
-      await verifyEmail({ email, token: fullCode });
-      toast({ title: "Email verified!", description: "Your account is now active." });
-      setLocation("/app");
+      await verifyEmail({ otp: fullCode, type: isPasswordReset ? "PASSWORD_RESET" : "VERIFY_EMAIL" });
+      if (isPasswordReset) {
+        toast({ title: "Code verified!", description: "You can now set your new password." });
+        setLocation(`/reset-password?email=${encodeURIComponent(email)}`);
+      } else {
+        toast({ title: "Email verified!", description: "Your account is now active." });
+        setLocation("/app");
+      }
     } catch (error: any) {
       const message = error?.message || "Verification failed. Please try again.";
       toast({ title: "Verification failed", description: message, variant: "destructive" });
@@ -83,7 +90,7 @@ export default function VerifyEmail() {
 
   const handleResend = async () => {
     try {
-      await resendVerification({ email });
+      await resendVerification({ email, type: isPasswordReset ? "PASSWORD_RESET" : "VERIFY_EMAIL" });
       toast({ title: "Code sent!", description: "A new verification code has been sent to your email." });
       setCountdown(60);
       setCanResend(false);
@@ -123,9 +130,11 @@ export default function VerifyEmail() {
             <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
               <Mail className="w-8 h-8 text-primary" />
             </div>
-            <CardTitle className="text-2xl font-serif text-center">Check your email</CardTitle>
+            <CardTitle className="text-2xl font-serif text-center">
+              {isPasswordReset ? "Enter reset code" : "Check your email"}
+            </CardTitle>
             <CardDescription className="text-center">
-              We sent a verification code to<br />
+              We sent a {isPasswordReset ? "password reset" : "verification"} code to<br />
               <span className="font-medium text-foreground">{email || "your email"}</span>
             </CardDescription>
           </CardHeader>
@@ -161,7 +170,7 @@ export default function VerifyEmail() {
                   </>
                 ) : (
                   <>
-                    Verify email
+                    {isPasswordReset ? "Verify code" : "Verify email"}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </>
                 )}

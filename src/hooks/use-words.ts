@@ -1,37 +1,40 @@
-import { useQuery } from "@tanstack/react-query";
-import { z } from "zod";
+import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
+import { listWords, getWord } from "@/api/dictionary";
+import type { WordsListParams, Word, WordsListResponse } from "@/types/api";
+
+function stableStringify(value: unknown): string {
+  if (!value || typeof value !== "object") return JSON.stringify(value);
+
+  if (Array.isArray(value)) {
+    return `[${value.map(stableStringify).join(",")}]`;
+  }
+
+  const obj = value as Record<string, unknown>;
+  const keys = Object.keys(obj).sort();
+  const entries = keys.map((k) => `${JSON.stringify(k)}:${stableStringify(obj[k])}`);
+  return `{${entries.join(",")}}`;
+}
 
 // Fetch list of words (optionally filtered by search)
-export function useWords(search?: string) {
+export function useWords(
+  params?: WordsListParams,
+  options?: Omit<UseQueryOptions<WordsListResponse>, "queryKey" | "queryFn">
+) {
+  // Serialize params so the queryKey is stable across renders
+  const paramsKey = stableStringify(params ?? null);
+
   return useQuery({
-    queryKey: [api.words.list.path, search],
-    queryFn: async () => {
-      const url = search
-        ? `${api.words.list.path}?search=${encodeURIComponent(search)}`
-        : api.words.list.path;
-
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("Failed to fetch words");
-
-      const data = await res.json();
-      return api.words.list.responses[200].parse(data);
-    },
+    queryKey: ["/api/words", paramsKey],
+    queryFn: () => listWords(params),
+    ...options,
   });
 }
 
 // Fetch single word by ID
 export function useWord(id: number) {
-  return useQuery({
-    queryKey: [api.words.get.path, id],
-    queryFn: async () => {
-      const url = buildUrl(api.words.get.path, { id });
-      const res = await fetch(url);
-
-      if (res.status === 404) return null;
-      if (!res.ok) throw new Error("Failed to fetch word");
-
-      const data = await res.json();
-      return api.words.get.responses[200].parse(data);
-    },
+  return useQuery<Word | null>({
+    queryKey: ["/api/words", id],
+    queryFn: () => getWord(id),
+    enabled: !!id,
   });
 }

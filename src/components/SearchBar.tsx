@@ -1,15 +1,16 @@
-import { Search, X } from "lucide-react";
+import { LoaderCircle, Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface SearchBarProps {
   value: string;
   onChange: (value: string) => void;
+  isLoading?: boolean;
   className?: string;
 }
 
-export function SearchBar({ value, onChange, className }: SearchBarProps) {
+export function SearchBar({ value, onChange, isLoading = false, className }: SearchBarProps) {
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -29,10 +30,21 @@ export function SearchBar({ value, onChange, className }: SearchBarProps) {
         "absolute inset-y-0 left-4 flex items-center pointer-events-none transition-all duration-300",
         isFocused ? "text-primary scale-110" : "text-muted-foreground scale-100"
       )}>
-        <Search className="h-5 w-5" />
+            {isLoading ? (
+        <LoaderCircle
+            className="animate-spin h-5 w-5"
+          size={16}
+          strokeWidth={2}
+          role="status"
+          aria-label="Loading..."
+        />
+      ) : (
+        <Search size={16} strokeWidth={2} aria-hidden="true" className="h-5 w-5" />
+      )}
+        {/* <Search className="h-5 w-5" /> */}
       </div>
-
-      <input
+      
+       <input
         ref={inputRef}
         type="text"
         value={value}

@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
+import { getGoogleOAuthUrl } from "@/api/auth";
 import predikaLogo from "@assets/predika-logo.png";
 
 export default function Register() {
@@ -49,12 +50,8 @@ export default function Register() {
       return;
     }
 
-    const nameParts = fullName.trim().split(/\s+/);
-    const firstName = nameParts[0] ?? "";
-    const lastName = nameParts.slice(1).join(" ") ?? "";
-    
     try {
-      await register({ email, password, firstName, lastName });
+      await register({ email, password, fullName: fullName.trim() });
       toast({ 
         title: "Account created!", 
         description: "Please check your email for a verification code." 
@@ -71,10 +68,7 @@ export default function Register() {
   };
 
   const handleGoogleClick = () => {
-    toast({ 
-      title: "Coming soon", 
-      description: "Google sign-up will be available soon!" 
-    });
+    window.location.href = getGoogleOAuthUrl();
   };
 
   return (

@@ -23,7 +23,7 @@ import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
 import { Separator } from "@/components/ui/separator";
 
-import Home from "@/pages/Home";
+import Dictionary from "@/pages/Dictionary";
 import Quiz from "@/pages/Quiz";
 import Progress from "@/pages/Progress";
 import TextToSpeech from "@/pages/TextToSpeech";
@@ -32,7 +32,7 @@ import SpeechToText from "@/pages/SpeechToText";
 import GrammarCorrector from "@/pages/GrammarCorrector";
 
 const navItems = [
-  { id: "dictionary", label: "Dictionary", icon: BookOpen, component: Home },
+  { id: "dictionary", label: "Dictionary", icon: BookOpen, component: Dictionary },
   { id: "quiz", label: "Quiz Hub", icon: Brain, component: Quiz },
   { id: "progress", label: "Progress", icon: BarChart3, component: Progress },
   { id: "tts", label: "Text to Speech", icon: Volume2, component: TextToSpeech },

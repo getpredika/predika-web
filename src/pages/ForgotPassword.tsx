@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { Mail, ArrowRight, Loader2, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { useAuth } from "@/hooks/use-auth";
 import predikaLogo from "@assets/predika-logo.png";
 
 export default function ForgotPassword() {
+  const [, setLocation] = useLocation();
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const { toast } = useToast();
@@ -18,10 +19,14 @@ export default function ForgotPassword() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       await forgotPassword({ email });
       setSubmitted(true);
+      // Redirect to verify email page with password reset flow
+      setTimeout(() => {
+        setLocation(`/verify-email?email=${encodeURIComponent(email)}&type=password_reset`);
+      }, 2000);
     } catch (error: any) {
       const message = error?.message || "Failed to send reset email.";
       toast({ title: "Error", description: message, variant: "destructive" });

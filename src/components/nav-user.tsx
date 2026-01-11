@@ -36,6 +36,7 @@ export function NavUser({
 }: {
   user: User;
   onLogout?: () => void;
+  
 }) {
   const { isMobile } = useSidebar();
 
@@ -91,18 +92,18 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem data-testid="menu-account">
+              {/* <DropdownMenuItem data-testid="menu-account">
                 <BadgeCheck className="mr-2 size-4" />
                 Account
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
               <DropdownMenuItem data-testid="menu-billing">
                 <CreditCard className="mr-2 size-4" />
                 Billing
               </DropdownMenuItem>
-              <DropdownMenuItem data-testid="menu-notifications">
+              {/* <DropdownMenuItem data-testid="menu-notifications">
                 <Bell className="mr-2 size-4" />
                 Notifications
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={onLogout} className="text-destructive focus:text-destructive" data-testid="menu-logout">

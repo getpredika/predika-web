@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
+import { getGoogleOAuthUrl } from "@/api/auth";
 import predikaLogo from "@assets/predika-logo.png";
 
 export default function Login() {
@@ -40,10 +41,7 @@ export default function Login() {
   };
 
   const handleGoogleClick = () => {
-    toast({ 
-      title: "Coming soon", 
-      description: "Google sign-in will be available soon!" 
-    });
+    window.location.href = getGoogleOAuthUrl();
   };
 
   return (

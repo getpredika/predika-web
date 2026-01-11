@@ -8,6 +8,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
+import { useCorrectText } from "@/hooks/use-correction";
+import { isCorrectedTextResponse } from "@/types/api";
 
 interface UndoAction {
   segments: CorrectionResult["segments"];
@@ -29,113 +31,50 @@ interface CorrectionResult {
   segments: { text: string; isError: boolean; errorIndex?: number }[];
 }
 
-const mockCorrections: Record<string, CorrectionResult> = {
-  default: {
-    originalText: "",
-    correctedText: "",
-    errors: [],
-    segments: [],
-  },
-};
-
-function generateMockCorrection(text: string): CorrectionResult {
-  const errorPatterns: { pattern: RegExp; correction: string; type: GrammarError["type"]; explanation: string }[] = [
-    { pattern: /\btheir\s+is\b/gi, correction: "there is", type: "grammar", explanation: "Use 'there' for location/existence, not 'their' (possessive)" },
-    { pattern: /\bthier\b/gi, correction: "their", type: "spelling", explanation: "Correct spelling is 'their'" },
-    { pattern: /\bteh\b/gi, correction: "the", type: "spelling", explanation: "Typo: 'teh' should be 'the'" },
-    { pattern: /\brecieve\b/gi, correction: "receive", type: "spelling", explanation: "'i' before 'e' except after 'c'" },
-    { pattern: /\boccured\b/gi, correction: "occurred", type: "spelling", explanation: "Double 'r' in 'occurred'" },
-    { pattern: /\bdefinate\b/gi, correction: "definite", type: "spelling", explanation: "Correct spelling is 'definite'" },
-    { pattern: /\bseperate\b/gi, correction: "separate", type: "spelling", explanation: "Correct spelling is 'separate'" },
-    { pattern: /\baccomodate\b/gi, correction: "accommodate", type: "spelling", explanation: "Double 'c' and double 'm'" },
-    { pattern: /\buntill\b/gi, correction: "until", type: "spelling", explanation: "Only one 'l' in 'until'" },
-    { pattern: /\bwich\b/gi, correction: "which", type: "spelling", explanation: "Correct spelling is 'which'" },
-    { pattern: /\bwoud\b/gi, correction: "would", type: "spelling", explanation: "Correct spelling is 'would'" },
-    { pattern: /\bcoud\b/gi, correction: "could", type: "spelling", explanation: "Correct spelling is 'could'" },
-    { pattern: /\bshoud\b/gi, correction: "should", type: "spelling", explanation: "Correct spelling is 'should'" },
-    { pattern: /\byour\s+welcome\b/gi, correction: "you're welcome", type: "grammar", explanation: "Use 'you're' (you are) not 'your' (possessive)" },
-    { pattern: /\byour\s+right\b/gi, correction: "you're right", type: "grammar", explanation: "Use 'you're' (you are) not 'your' (possessive)" },
-    { pattern: /\bits\s+a\s+good\b/gi, correction: "it's a good", type: "grammar", explanation: "Use 'it's' (it is) not 'its' (possessive)" },
-    { pattern: /\bI\s+has\b/gi, correction: "I have", type: "grammar", explanation: "Use 'have' with 'I', not 'has'" },
-    { pattern: /\bhe\s+have\b/gi, correction: "he has", type: "grammar", explanation: "Use 'has' with third person singular" },
-    { pattern: /\bshe\s+have\b/gi, correction: "she has", type: "grammar", explanation: "Use 'has' with third person singular" },
-    { pattern: /\bthey\s+was\b/gi, correction: "they were", type: "grammar", explanation: "Use 'were' with plural subjects" },
-    { pattern: /\bwe\s+was\b/gi, correction: "we were", type: "grammar", explanation: "Use 'were' with plural subjects" },
-    { pattern: /\bme\s+and\s+him\b/gi, correction: "he and I", type: "grammar", explanation: "Use subject pronouns at the start of a sentence" },
-    { pattern: /\balot\b/gi, correction: "a lot", type: "spelling", explanation: "'A lot' is two words" },
-    { pattern: /\bdefinately\b/gi, correction: "definitely", type: "spelling", explanation: "Correct spelling is 'definitely'" },
-    { pattern: /\bbeacuse\b/gi, correction: "because", type: "spelling", explanation: "Correct spelling is 'because'" },
-    { pattern: /\bbeleive\b/gi, correction: "believe", type: "spelling", explanation: "Correct spelling is 'believe'" },
-    { pattern: /\bfreind\b/gi, correction: "friend", type: "spelling", explanation: "'i' before 'e' in 'friend'" },
-    { pattern: /\bgoverment\b/gi, correction: "government", type: "spelling", explanation: "Missing 'n' in 'government'" },
-    { pattern: /\bweather\s+or\s+not\b/gi, correction: "whether or not", type: "grammar", explanation: "Use 'whether' for choices, 'weather' for climate" },
-    { pattern: /\beffect\s+on\s+me\b/gi, correction: "affect me", type: "grammar", explanation: "'Affect' is the verb, 'effect' is the noun" },
-    { pattern: /\b,\s*,\b/g, correction: ",", type: "punctuation", explanation: "Remove duplicate comma" },
-    { pattern: /\s+\./g, correction: ".", type: "punctuation", explanation: "No space before period" },
-    { pattern: /\s+,/g, correction: ",", type: "punctuation", explanation: "No space before comma" },
-  ];
-
-  const errors: GrammarError[] = [];
-  let correctedText = text;
-  const foundMatches: { start: number; end: number; original: string; errorIndex: number }[] = [];
-
-  for (const { pattern, correction, type, explanation } of errorPatterns) {
-    let match;
-    const regex = new RegExp(pattern.source, pattern.flags);
-    while ((match = regex.exec(text)) !== null) {
-      const original = match[0];
-      errors.push({
-        original,
-        corrected: correction,
-        type,
-        explanation,
-      });
-      foundMatches.push({
-        start: match.index,
-        end: match.index + original.length,
-        original,
-        errorIndex: errors.length - 1,
-      });
-      correctedText = correctedText.replace(original, correction);
-    }
-  }
-
-  foundMatches.sort((a, b) => a.start - b.start);
-
+function generateSegmentsFromBackend(
+  originalText: string,
+  modifications: { start: number; end: number }[]
+): CorrectionResult["segments"] {
   const segments: CorrectionResult["segments"] = [];
-  let lastEnd = 0;
+  let cursor = 0;
 
-  for (const match of foundMatches) {
-    if (match.start > lastEnd) {
-      segments.push({ text: text.slice(lastEnd, match.start), isError: false });
-    }
-    segments.push({ text: match.original, isError: true, errorIndex: match.errorIndex });
-    lastEnd = match.end;
+  [...modifications]
+    .sort((a, b) => a.start - b.start)
+    .forEach((mod, i) => {
+      if (mod.start > cursor) {
+        segments.push({
+          text: originalText.slice(cursor, mod.start),
+          isError: false,
+        });
+      }
+
+      segments.push({
+        text: originalText.slice(mod.start, mod.end),
+        isError: true,
+        errorIndex: i,
+      });
+
+      cursor = mod.end;
+    });
+
+  if (cursor < originalText.length) {
+    segments.push({
+      text: originalText.slice(cursor),
+      isError: false,
+    });
   }
 
-  if (lastEnd < text.length) {
-    segments.push({ text: text.slice(lastEnd), isError: false });
-  }
-
-  if (segments.length === 0 && text.length > 0) {
-    segments.push({ text, isError: false });
-  }
-
-  return {
-    originalText: text,
-    correctedText,
-    errors,
-    segments,
-  };
+  return segments;
 }
 
-function ErrorHighlight({ 
-  text, 
+
+function ErrorHighlight({
+  text,
   error,
   segmentIndex,
-  onApplyCorrection 
-}: { 
-  text: string; 
+  onApplyCorrection
+}: {
+  text: string;
   error: GrammarError;
   segmentIndex: number;
   onApplyCorrection: (segmentIndex: number, corrected: string) => void;
@@ -158,7 +97,7 @@ function ErrorHighlight({
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <span 
+        <span
           className={`cursor-pointer px-0.5 rounded-sm ${getErrorStyle()}`}
           onClick={() => onApplyCorrection(segmentIndex, error.corrected)}
           data-testid={`error-${segmentIndex}`}
@@ -166,8 +105,8 @@ function ErrorHighlight({
           {text}
         </span>
       </TooltipTrigger>
-      <TooltipContent 
-        side="top" 
+      <TooltipContent
+        side="top"
         className="max-w-xs bg-white dark:bg-zinc-900 border border-border shadow-xl z-[100]"
       >
         <div className="space-y-2">
@@ -199,7 +138,7 @@ export default function GrammarCorrector() {
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    
+
     if (!file.name.endsWith('.txt')) {
       toast({ title: "Please upload a .txt file", variant: "destructive" });
       return;
@@ -215,17 +154,17 @@ export default function GrammarCorrector() {
       toast({ title: "File loaded", description: `Loaded ${file.name}` });
     };
     reader.readAsText(file);
-    
+
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
   };
 
   const downloadText = () => {
-    const textToDownload = result 
-      ? result.segments.map(s => s.text).join('') 
+    const textToDownload = result
+      ? result.segments.map(s => s.text).join('')
       : inputText;
-    
+
     const blob = new Blob([textToDownload], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -238,6 +177,8 @@ export default function GrammarCorrector() {
     toast({ title: "Downloaded", description: "Text saved as corrected_text.txt" });
   };
 
+  const correctTextMutation = useCorrectText();
+
   const checkGrammar = useCallback(async () => {
     if (!inputText.trim()) {
       toast({ title: "Please enter some text", variant: "destructive" });
@@ -245,27 +186,73 @@ export default function GrammarCorrector() {
     }
 
     setIsChecking(true);
-    await new Promise((resolve) => setTimeout(resolve, 800 + Math.random() * 700));
-    
-    const correction = generateMockCorrection(inputText);
-    setResult(correction);
-    setIsEditing(false);
-    setIsChecking(false);
 
-    if (correction.errors.length === 0) {
-      toast({ title: "No errors found", description: "Your text looks great!" });
-    } else {
-      toast({ 
-        title: `Found ${correction.errors.length} issue${correction.errors.length > 1 ? 's' : ''}`, 
-        description: "Click on highlighted text to apply corrections" 
+    try {
+      const response = await correctTextMutation.mutateAsync({ text: inputText });
+
+      let correction: CorrectionResult;
+
+      if (isCorrectedTextResponse(response)) {
+        // Has corrections - convert API response to CorrectionResult format
+        const errors: GrammarError[] = response.modifications.map(mod => ({
+          original: mod.original,
+          corrected: mod.corrected,
+          type: mod.type,
+          explanation: mod.explanation,
+        }));
+
+
+        // Generate segments for highlighting
+        const segments = generateSegmentsFromBackend(
+          inputText,
+          response.modifications
+        );
+
+
+        correction = {
+          originalText: inputText,
+          correctedText: response.corrected_text,
+          errors,
+          segments,
+        };
+      } else {
+        // No corrections needed
+        correction = {
+          originalText: inputText,
+          correctedText: inputText,
+          errors: [],
+          segments: [{ text: inputText, isError: false }],
+        };
+      }
+
+      setResult(correction);
+      setIsEditing(false);
+
+      if (correction.errors.length === 0) {
+        toast({ title: "No errors found", description: "Your text looks great!" });
+      } else {
+        toast({
+          title: `Found ${correction.errors.length} issue${correction.errors.length > 1 ? 's' : ''}`,
+          description: "Click on highlighted text to apply corrections"
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error checking text",
+        description: error instanceof Error ? error.message : "An error occurred",
+        variant: "destructive"
       });
+    } finally {
+      setIsChecking(false);
     }
-  }, [inputText, toast]);
+  }, [inputText, toast, correctTextMutation]);
 
-  const applyCorrection = (segmentIndex: number, corrected: string) => {
+  const applyCorrection = async (segmentIndex: number, corrected: string) => {
     if (result) {
       // Save current state to undo stack
       const originalSegment = result.segments[segmentIndex];
+      if (!originalSegment) return;
+
       setUndoStack(prev => [...prev, {
         segments: [...result.segments],
         errors: [...result.errors],
@@ -276,8 +263,51 @@ export default function GrammarCorrector() {
       newSegments[segmentIndex] = { text: corrected, isError: false };
       const newText = newSegments.map(s => s.text).join("");
       setInputText(newText);
-      const newResult = generateMockCorrection(newText);
-      setResult(newResult);
+
+      // Re-check the corrected text with API
+      try {
+        const response = await correctTextMutation.mutateAsync({ text: newText });
+
+        let newResult: CorrectionResult;
+        if (isCorrectedTextResponse(response)) {
+          const errors: GrammarError[] = response.modifications.map(mod => ({
+            original: mod.original,
+            corrected: mod.corrected,
+            type: mod.type,
+            explanation: mod.explanation,
+          }));
+
+          const segments = generateSegmentsFromBackend(
+            newText,
+            response.modifications
+          );
+
+          newResult = {
+            originalText: newText,
+            correctedText: response.corrected_text,
+            errors,
+            segments,
+          };
+        }
+        else {
+          newResult = {
+            originalText: newText,
+            correctedText: newText,
+            errors: [],
+            segments: [{ text: newText, isError: false }],
+          };
+        }
+        setResult(newResult);
+      } catch (error) {
+        // If API fails, just update with the corrected text
+        setResult({
+          originalText: newText,
+          correctedText: newText,
+          errors: [],
+          segments: [{ text: newText, isError: false }],
+        });
+      }
+
       toast({ title: "Correction applied" });
     }
   };
@@ -304,10 +334,12 @@ export default function GrammarCorrector() {
 
   const undoLastChange = () => {
     if (undoStack.length === 0) return;
-    
+
     const lastState = undoStack[undoStack.length - 1];
+    if (!lastState) return;
+
     setUndoStack(prev => prev.slice(0, -1));
-    
+
     const newText = lastState.segments.map(s => s.text).join("");
     setInputText(newText);
     setResult({
@@ -351,14 +383,8 @@ export default function GrammarCorrector() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <Link href="/app">
-            <Button variant="ghost" className="mb-4" data-testid="button-back-home">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Home
-            </Button>
-          </Link>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 pt-12">
             <div className="p-3 rounded-lg bg-primary/10">
               <Sparkles className="w-8 h-8 text-primary" />
             </div>
@@ -380,9 +406,9 @@ export default function GrammarCorrector() {
               <CardHeader>
                 <CardTitle>{isEditing ? "Enter Your Text" : "Corrected Text"}</CardTitle>
                 <CardDescription>
-                  {isEditing 
-                    ? "Paste or type your text below" 
-                    : result && result.errors.length > 0 
+                  {isEditing
+                    ? "Paste or type your text below"
+                    : result && result.errors.length > 0
                       ? "Click on highlighted errors to apply corrections"
                       : "No errors found"}
                 </CardDescription>
@@ -399,13 +425,13 @@ Try typing: 'Their is alot of things I beleive we shoud do. Me and him went to t
                     data-testid="input-text"
                   />
                 ) : (
-                  <div 
+                  <div
                     className="min-h-[300px] p-3 rounded-md border bg-background leading-relaxed text-base whitespace-pre-wrap"
                     data-testid="result-text"
                   >
                     {result?.segments.map((segment, index) => (
                       segment.isError && segment.errorIndex !== undefined ? (
-                        <ErrorHighlight 
+                        <ErrorHighlight
                           key={index}
                           text={segment.text}
                           error={result.errors[segment.errorIndex]}
@@ -449,7 +475,7 @@ Try typing: 'Their is alot of things I beleive we shoud do. Me and him went to t
                     )}
                   </div>
                 )}
-                
+
                 <input
                   type="file"
                   accept=".txt"
@@ -458,12 +484,12 @@ Try typing: 'Their is alot of things I beleive we shoud do. Me and him went to t
                   className="hidden"
                   data-testid="input-file-upload"
                 />
-                
+
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                   <div className="flex items-center gap-2 flex-wrap">
                     {isEditing ? (
-                      <Button 
-                        onClick={checkGrammar} 
+                      <Button
+                        onClick={checkGrammar}
                         disabled={isChecking || !inputText.trim()}
                         data-testid="button-check"
                       >
@@ -511,8 +537,8 @@ Try typing: 'Their is alot of things I beleive we shoud do. Me and him went to t
                     {isEditing && (
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Button 
-                            variant="ghost" 
+                          <Button
+                            variant="ghost"
                             size="icon"
                             onClick={() => fileInputRef.current?.click()}
                             data-testid="button-upload"
@@ -537,8 +563,8 @@ Try typing: 'Their is alot of things I beleive we shoud do. Me and him went to t
                     </Tooltip>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Button 
-                          variant="ghost" 
+                        <Button
+                          variant="ghost"
                           size="icon"
                           onClick={downloadText}
                           disabled={!inputText.trim()}
