@@ -188,7 +188,21 @@ export default function GrammarCorrector() {
     setIsChecking(true);
 
     try {
-      const response = await correctTextMutation.mutateAsync({ text: inputText });
+      let response = await correctTextMutation.mutateAsync({ text: inputText });
+
+      // Handle null/undefined response from API
+      if (!response) {
+        throw new Error("No response from server. Please try again.");
+      }
+
+      // Handle case where response is a JSON string instead of object
+      if (typeof response === 'string') {
+        try {
+          response = JSON.parse(response);
+        } catch {
+          throw new Error("Invalid response format from server");
+        }
+      }
 
       let correction: CorrectionResult;
 
@@ -266,10 +280,19 @@ export default function GrammarCorrector() {
 
       // Re-check the corrected text with API
       try {
-        const response = await correctTextMutation.mutateAsync({ text: newText });
+        let response = await correctTextMutation.mutateAsync({ text: newText });
+
+        // Handle case where response is a JSON string instead of object
+        if (typeof response === 'string') {
+          try {
+            response = JSON.parse(response);
+          } catch {
+            response = null;
+          }
+        }
 
         let newResult: CorrectionResult;
-        if (isCorrectedTextResponse(response)) {
+        if (response && isCorrectedTextResponse(response)) {
           const errors: GrammarError[] = response.modifications.map(mod => ({
             original: mod.original,
             corrected: mod.corrected,

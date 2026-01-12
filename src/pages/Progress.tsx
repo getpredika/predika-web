@@ -319,7 +319,7 @@ export default function ProgressDashboard() {
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold text-lg">{attempt.correctAnswers}/{attempt.totalQuestions}</p>
+                        <p className="font-bold text-lg">{attempt.score}/{attempt.totalQuestions}</p>
                         <Badge variant={attempt.scorePercentage >= 70 ? "default" : "secondary"}>
                           {Math.round(attempt.scorePercentage)}%
                         </Badge>

@@ -257,10 +257,7 @@ export interface QuizHistoryItem {
     score: number;
     totalQuestions: number;
     scorePercentage: number;
-    correctAnswers: number;
-    timeTaken: number;
     completedAt: string;
-    createdAt: string;
 }
 
 export interface QuizHistoryResponse {
@@ -285,7 +282,6 @@ export interface QuizStats {
     totalCorrectAnswers: number;
     accuracyRate: number;
     averageScore: number;
-    averageTimePerQuestion: number;
     bestScore: number;
     currentStreak: number;
     longestStreak: number;
@@ -336,13 +332,13 @@ export interface ApiErrorResponse {
 // ============= Helper type guards =============
 
 export function isCorrectedTextResponse(
-    response: CorrectTextResponse
+    response: CorrectTextResponse | null | undefined
 ): response is CorrectedTextResponse {
-    return "corrected_text" in response;
+    return response != null && "corrected_text" in response;
 }
 
 export function isNoCorrectionsResponse(
-    response: CorrectTextResponse
+    response: CorrectTextResponse | null | undefined
 ): response is NoCorrectionsResponse {
-    return "no_corrections" in response;
+    return response != null && "no_corrections" in response;
 }

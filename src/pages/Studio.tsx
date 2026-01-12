@@ -32,9 +32,9 @@ import SpeechToText from "@/pages/SpeechToText";
 import GrammarCorrector from "@/pages/GrammarCorrector";
 
 const navItems = [
+  { id: "progress", label: "Progress", icon: BarChart3, component: Progress },
   { id: "dictionary", label: "Dictionary", icon: BookOpen, component: Dictionary },
   { id: "quiz", label: "Quiz Hub", icon: Brain, component: Quiz },
-  { id: "progress", label: "Progress", icon: BarChart3, component: Progress },
   { id: "tts", label: "Text to Speech", icon: Volume2, component: TextToSpeech },
   { id: "pronunciation", label: "Pronunciation", icon: Mic, component: PronunciationAssessment },
   { id: "stt", label: "Speech to Text", icon: AudioLines, component: SpeechToText },
@@ -90,7 +90,7 @@ function AppSidebar({
 }
 
 export default function Studio() {
-  const [activeTab, setActiveTab] = useState("dictionary");
+  const [activeTab, setActiveTab] = useState("progress");
   const { user, isLoading, isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
