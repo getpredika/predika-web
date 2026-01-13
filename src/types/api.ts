@@ -318,6 +318,47 @@ export interface NoCorrectionsResponse {
 
 export type CorrectTextResponse = CorrectedTextResponse | NoCorrectionsResponse;
 
+// ============= Text-to-Speech (TTS) Types =============
+
+export interface TTSModel {
+    id: string;
+    name: string;
+    description: string;
+}
+
+export interface TTSSpeaker {
+    id: string;
+    name: string;
+    gender: "male" | "female";
+    description: string;
+    previewUrl: string;
+}
+
+export interface TTSGenerateRequest {
+    text: string;
+    speaker?: string;
+    model?: string;
+    temperature?: number;
+    top_p?: number;
+    repetition_penalty?: number;
+    max_tokens?: number;
+    num_return_sequences?: number;
+}
+
+export interface TTSGenerateMetadata {
+    generationTime: number;
+    decodeTime: number;
+    totalTime: number;
+    speaker: string;
+    model: string;
+}
+
+export interface TTSGenerateResponse {
+    audioBlob: Blob;
+    audioUrl: string;
+    metadata: TTSGenerateMetadata;
+}
+
 // ============= Standard API Response Types =============
 
 export interface ApiSuccessResponse<T = unknown> {
