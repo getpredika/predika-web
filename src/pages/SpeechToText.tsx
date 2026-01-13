@@ -1,60 +1,21 @@
 import { useState, useRef, useCallback, useEffect } from "react";
-import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { ArrowLeft, Mic, Square, RotateCcw, Copy, Download, FileText, Upload, Play, Pause, Volume2 } from "lucide-react";
+import { Mic, Square, RotateCcw, Copy, Download, FileText, Upload, Play, Pause, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
-
-interface WordSegment {
-  word: string;
-  startTime: number;
-  endTime: number;
-  confidence: number;
-}
+import { transcribeAudio, type TranscribeResponse, type TranscriptSegment } from "@/api/asr";
 
 interface TranscriptResult {
   text: string;
-  segments: WordSegment[];
+  segments: TranscriptSegment[];
+  confidence: number;
   duration: number;
   language: string;
+  model: string;
 }
-
-const generateMockTranscript = (duration: number): TranscriptResult => {
-  const sentences = [
-    "Hello and welcome to our speech recognition demonstration",
-    "This system can transcribe your voice with impressive accuracy",
-    "Each word is timestamped for precise synchronization",
-    "You can see the words highlight as the audio plays",
-    "This technology enables many accessibility features"
-  ];
-  
-  const text = sentences.slice(0, Math.min(3, Math.ceil(duration / 5))).join(". ") + ".";
-  const words = text.split(/\s+/);
-  const avgWordDuration = (duration * 1000) / words.length;
-  
-  let currentTime = 0;
-  const segments: WordSegment[] = words.map((word) => {
-    const wordDuration = avgWordDuration * (0.7 + Math.random() * 0.6);
-    const segment: WordSegment = {
-      word,
-      startTime: currentTime,
-      endTime: currentTime + wordDuration,
-      confidence: 0.85 + Math.random() * 0.15,
-    };
-    currentTime += wordDuration + (Math.random() * 100);
-    return segment;
-  });
-
-  return {
-    text,
-    segments,
-    duration: duration * 1000,
-    language: "en-US",
-  };
-};
 
 export default function SpeechToText() {
   const [isRecording, setIsRecording] = useState(false);
@@ -64,23 +25,23 @@ export default function SpeechToText() {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [currentWordIndex, setCurrentWordIndex] = useState(-1);
+  const [currentSegmentIndex, setCurrentSegmentIndex] = useState(-1);
   const [audioFileName, setAudioFileName] = useState<string | null>(null);
-  
+  const [audioFile, setAudioFile] = useState<File | null>(null);
+
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   useEffect(() => {
     if (transcript && currentTime >= 0) {
-      const timeMs = currentTime * 1000;
       const idx = transcript.segments.findIndex(
-        (seg) => timeMs >= seg.startTime && timeMs < seg.endTime
+        (seg) => currentTime >= seg.start && currentTime < seg.end
       );
-      setCurrentWordIndex(idx);
+      setCurrentSegmentIndex(idx);
     }
   }, [currentTime, transcript]);
 
@@ -107,32 +68,32 @@ export default function SpeechToText() {
 
       mediaRecorder.onstop = () => {
         stream.getTracks().forEach((track) => track.stop());
-        const audioBlob = new Blob(audioChunksRef.current, { type: "audio/webm" });
-        const url = URL.createObjectURL(audioBlob);
+        const blob = new Blob(audioChunksRef.current, { type: "audio/webm" });
+        const url = URL.createObjectURL(blob);
         if (audioUrl) URL.revokeObjectURL(audioUrl);
         setAudioUrl(url);
-        setAudioFileName("Recording");
+        setAudioFile(new File([blob], "recording.webm", { type: "audio/webm" }));
+        setAudioFileName("Anrejistreman");
       };
 
       mediaRecorder.start();
       setIsRecording(true);
       setRecordingDuration(0);
       setTranscript(null);
-      setCurrentWordIndex(-1);
+      setCurrentSegmentIndex(-1);
 
       timerRef.current = setInterval(() => {
         setRecordingDuration((d) => d + 1);
       }, 1000);
 
-      toast({ title: "Recording started", description: "Speak clearly into your microphone" });
+      toast({ title: "Anrejistreman kòmanse", description: "Pale klè nan mikwofòn ou" });
     } catch {
-      toast({ title: "Microphone access denied", description: "Please allow microphone access to record", variant: "destructive" });
+      toast({ title: "Aksè mikwofòn refize", description: "Tanpri pèmèt aksè mikwofòn pou anrejistre", variant: "destructive" });
     }
   }, [toast, audioUrl]);
 
-  const stopRecording = useCallback(async () => {
+  const stopRecording = useCallback(() => {
     if (mediaRecorderRef.current && isRecording) {
-      const duration = recordingDuration;
       mediaRecorderRef.current.stop();
       setIsRecording(false);
 
@@ -141,58 +102,66 @@ export default function SpeechToText() {
         timerRef.current = null;
       }
 
-      setIsTranscribing(true);
-      await new Promise((resolve) => setTimeout(resolve, 1500 + Math.random() * 1000));
-
-      const result = generateMockTranscript(Math.max(duration, 3));
-      setTranscript(result);
-      setIsTranscribing(false);
-
-      toast({ title: "Transcription complete" });
+      toast({ title: "Anrejistreman fini", description: "Klike sou 'Transkri Odyo' pou konvèti an tèks" });
     }
-  }, [isRecording, recordingDuration, toast]);
+  }, [isRecording, toast]);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const validTypes = ["audio/mpeg", "audio/wav", "audio/mp3", "audio/x-wav", "audio/webm"];
-    if (!validTypes.some(type => file.type.includes(type.split('/')[1]))) {
-      toast({ title: "Invalid file type", description: "Please upload an MP3 or WAV file", variant: "destructive" });
+    const validExtensions = ["mpeg", "wav", "mp3", "x-wav", "webm", "ogg", "flac", "m4a", "mp4"];
+    const fileExtension = file.type.split('/')[1] || '';
+    if (!validExtensions.some(ext => fileExtension.includes(ext))) {
+      toast({ title: "Tip fichye envalid", description: "Tanpri telechaje yon fichye MP3, WAV, OGG, oswa WEBM", variant: "destructive" });
       return;
     }
 
     if (audioUrl) URL.revokeObjectURL(audioUrl);
     const url = URL.createObjectURL(file);
     setAudioUrl(url);
+    setAudioFile(file);
     setAudioFileName(file.name);
     setTranscript(null);
-    setCurrentWordIndex(-1);
+    setCurrentSegmentIndex(-1);
     setIsPlaying(false);
-    
-    toast({ title: "Audio loaded", description: file.name });
-    
+
+    toast({ title: "Odyo chaje", description: file.name });
+
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const transcribeUploadedAudio = async () => {
-    if (!audioUrl) return;
-    
+    if (!audioFile) {
+      toast({ title: "Pa gen odyo", description: "Tanpri anrejistre oswa telechaje yon fichye odyo dabò", variant: "destructive" });
+      return;
+    }
+
     setIsTranscribing(true);
-    await new Promise((resolve) => setTimeout(resolve, 2000 + Math.random() * 1000));
-    
-    const audio = new Audio(audioUrl);
-    await new Promise<void>((resolve) => {
-      audio.onloadedmetadata = () => resolve();
-      audio.onerror = () => resolve();
-    });
-    
-    const duration = audio.duration || 10;
-    const result = generateMockTranscript(duration);
-    setTranscript(result);
-    setIsTranscribing(false);
-    
-    toast({ title: "Transcription complete" });
+
+    try {
+      const response = await transcribeAudio(audioFile, {
+        languageHint: "ht",
+        timestamps: true,
+      });
+
+      const result: TranscriptResult = {
+        text: response.text,
+        segments: response.segments,
+        confidence: response.confidence,
+        duration: response.audio.duration_sec,
+        language: response.language_hint,
+        model: response.model,
+      };
+
+      setTranscript(result);
+      toast({ title: "Transkripsyon fini" });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Yon erè fèt pandan transkripsyon an";
+      toast({ title: "Erè transkripsyon", description: message, variant: "destructive" });
+    } finally {
+      setIsTranscribing(false);
+    }
   };
 
   const togglePlayback = () => {
@@ -214,14 +183,14 @@ export default function SpeechToText() {
 
   const handleAudioEnded = () => {
     setIsPlaying(false);
-    setCurrentWordIndex(-1);
+    setCurrentSegmentIndex(-1);
     setCurrentTime(0);
   };
 
-  const seekToWord = (segment: WordSegment) => {
+  const seekToSegment = (segment: TranscriptSegment) => {
     if (audioRef.current) {
-      audioRef.current.currentTime = segment.startTime / 1000;
-      setCurrentTime(segment.startTime / 1000);
+      audioRef.current.currentTime = segment.start;
+      setCurrentTime(segment.start);
       if (!isPlaying) {
         audioRef.current.play();
         setIsPlaying(true);
@@ -232,10 +201,11 @@ export default function SpeechToText() {
   const reset = () => {
     if (audioUrl) URL.revokeObjectURL(audioUrl);
     setAudioUrl(null);
+    setAudioFile(null);
     setAudioFileName(null);
     setTranscript(null);
     setRecordingDuration(0);
-    setCurrentWordIndex(-1);
+    setCurrentSegmentIndex(-1);
     setCurrentTime(0);
     setIsPlaying(false);
   };
@@ -243,29 +213,34 @@ export default function SpeechToText() {
   const copyToClipboard = () => {
     if (transcript) {
       navigator.clipboard.writeText(transcript.text);
-      toast({ title: "Copied to clipboard" });
+      toast({ title: "Kopye nan clipboard" });
     }
   };
 
   const downloadTranscript = () => {
     if (!transcript) return;
-    
-    let content = `Transcript\n${"=".repeat(50)}\n\n`;
+
+    let content = `Transkripsyon\n${"=".repeat(50)}\n\n`;
+    content += `Modèl: ${transcript.model}\n`;
+    content += `Lang: ${transcript.language}\n`;
+    content += `Konfyans: ${(transcript.confidence * 100).toFixed(0)}%\n`;
+    content += `Dire: ${formatDuration(transcript.duration)}\n\n`;
+    content += `Tèks\n${"-".repeat(50)}\n\n`;
     content += `${transcript.text}\n\n`;
-    content += `Word Segments\n${"-".repeat(50)}\n\n`;
-    
+    content += `Segman\n${"-".repeat(50)}\n\n`;
+
     transcript.segments.forEach((seg, i) => {
-      content += `${i + 1}. "${seg.word}" [${(seg.startTime / 1000).toFixed(2)}s - ${(seg.endTime / 1000).toFixed(2)}s] (${(seg.confidence * 100).toFixed(0)}% confidence)\n`;
+      content += `${i + 1}. [${seg.start.toFixed(2)}s - ${seg.end.toFixed(2)}s] "${seg.text}"\n`;
     });
-    
+
     const blob = new Blob([content], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "transcript.txt";
+    a.download = "transkripsyon.txt";
     a.click();
     URL.revokeObjectURL(url);
-    toast({ title: "Download started" });
+    toast({ title: "Telechajman kòmanse" });
   };
 
   const formatDuration = (seconds: number) => {
@@ -293,8 +268,8 @@ export default function SpeechToText() {
               <FileText className="w-8 h-8 text-primary" />
             </div>
             <div>
-              <h1 className="text-3xl font-serif font-bold">Speech to Text</h1>
-              <p className="text-muted-foreground">Convert audio to text with word-level timestamps (demo)</p>
+              <h1 className="text-3xl font-serif font-bold">Vwa an Tèks</h1>
+              <p className="text-muted-foreground">Konvèti odyo an tèks ak estanp tan</p>
             </div>
           </div>
         </motion.div>
@@ -307,8 +282,8 @@ export default function SpeechToText() {
           >
             <Card>
               <CardHeader>
-                <CardTitle>Audio Input</CardTitle>
-                <CardDescription>Record audio or upload an audio file (MP3, WAV)</CardDescription>
+                <CardTitle>Antre Odyo</CardTitle>
+                <CardDescription>Anrejistre odyo oswa telechaje yon fichye odyo (MP3, WAV, OGG, WEBM)</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
@@ -335,16 +310,16 @@ export default function SpeechToText() {
                       </Button>
                     )}
                     <span className="text-sm text-muted-foreground">
-                      {isRecording ? "Recording..." : "Record"}
+                      {isRecording ? "Anrejistreman..." : "Anrejistre"}
                     </span>
                   </div>
 
-                  <div className="text-muted-foreground text-lg">or</div>
+                  <div className="text-muted-foreground text-lg">oswa</div>
 
                   <div className="flex flex-col items-center gap-3">
                     <input
                       type="file"
-                      accept=".mp3,.wav,audio/mpeg,audio/wav"
+                      accept=".mp3,.wav,.ogg,.webm,.flac,.m4a,audio/mpeg,audio/wav,audio/ogg,audio/webm,audio/flac,audio/m4a"
                       ref={fileInputRef}
                       onChange={handleFileUpload}
                       className="hidden"
@@ -360,7 +335,7 @@ export default function SpeechToText() {
                     >
                       <Upload className="w-8 h-8" />
                     </Button>
-                    <span className="text-sm text-muted-foreground">Upload File</span>
+                    <span className="text-sm text-muted-foreground">Telechaje Fichye</span>
                   </div>
                 </div>
 
@@ -386,7 +361,7 @@ export default function SpeechToText() {
                     className="flex items-center justify-center gap-2"
                   >
                     <div className="animate-spin w-5 h-5 border-2 border-primary border-t-transparent rounded-full" />
-                    <span className="text-muted-foreground">Transcribing audio...</span>
+                    <span className="text-muted-foreground">Ap transkri odyo a...</span>
                   </motion.div>
                 )}
 
@@ -402,7 +377,7 @@ export default function SpeechToText() {
                     </div>
                     <Button onClick={transcribeUploadedAudio} data-testid="button-transcribe">
                       <FileText className="w-4 h-4 mr-2" />
-                      Transcribe Audio
+                      Transkri Odyo
                     </Button>
                   </motion.div>
                 )}
@@ -418,9 +393,9 @@ export default function SpeechToText() {
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between gap-2 flex-wrap">
                   <div>
-                    <CardTitle>Transcript</CardTitle>
+                    <CardTitle>Transkripsyon</CardTitle>
                     <CardDescription>
-                      Click any word to jump to that position in the audio
+                      Klike sou nenpòt segman pou ale nan pozisyon sa nan odyo a
                     </CardDescription>
                   </div>
                   <div className="flex items-center gap-2">
@@ -430,7 +405,7 @@ export default function SpeechToText() {
                           <Copy className="w-4 h-4" />
                         </Button>
                       </TooltipTrigger>
-                      <TooltipContent className="bg-white dark:bg-zinc-900 border shadow-lg">Copy</TooltipContent>
+                      <TooltipContent className="bg-white dark:bg-zinc-900 border shadow-lg">Kopye</TooltipContent>
                     </Tooltip>
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -438,7 +413,7 @@ export default function SpeechToText() {
                           <Download className="w-4 h-4" />
                         </Button>
                       </TooltipTrigger>
-                      <TooltipContent className="bg-white dark:bg-zinc-900 border shadow-lg">Download</TooltipContent>
+                      <TooltipContent className="bg-white dark:bg-zinc-900 border shadow-lg">Telechaje</TooltipContent>
                     </Tooltip>
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -446,7 +421,7 @@ export default function SpeechToText() {
                           <RotateCcw className="w-4 h-4" />
                         </Button>
                       </TooltipTrigger>
-                      <TooltipContent className="bg-white dark:bg-zinc-900 border shadow-lg">Clear</TooltipContent>
+                      <TooltipContent className="bg-white dark:bg-zinc-900 border shadow-lg">Efase</TooltipContent>
                     </Tooltip>
                   </div>
                 </CardHeader>
@@ -464,7 +439,7 @@ export default function SpeechToText() {
                       <div className="flex-1">
                         <div className="text-sm font-medium">{audioFileName}</div>
                         <div className="text-xs text-muted-foreground">
-                          {formatDuration(currentTime)} / {formatDuration((transcript?.duration || 0) / 1000)}
+                          {formatDuration(currentTime)} / {formatDuration(transcript?.duration || 0)}
                         </div>
                       </div>
                       <audio
@@ -483,28 +458,24 @@ export default function SpeechToText() {
                         <Tooltip key={index}>
                           <TooltipTrigger asChild>
                             <span
-                              onClick={() => seekToWord(segment)}
-                              className={`cursor-pointer px-0.5 rounded transition-all duration-150 ${
-                                index === currentWordIndex
+                              onClick={() => seekToSegment(segment)}
+                              className={`cursor-pointer px-1 py-0.5 rounded transition-all duration-150 ${
+                                index === currentSegmentIndex
                                   ? "bg-primary text-primary-foreground"
                                   : "hover:bg-muted"
                               }`}
-                              data-testid={`word-${index}`}
+                              data-testid={`segment-${index}`}
                             >
-                              {segment.word}{" "}
+                              {segment.text}{" "}
                             </span>
                           </TooltipTrigger>
-                          <TooltipContent 
-                            side="top" 
+                          <TooltipContent
+                            side="top"
                             className="bg-white dark:bg-zinc-900 border shadow-lg z-[100]"
                           >
                             <div className="text-xs space-y-1">
-                              <div className="font-medium">{segment.word}</div>
                               <div className="text-muted-foreground">
-                                {(segment.startTime / 1000).toFixed(2)}s - {(segment.endTime / 1000).toFixed(2)}s
-                              </div>
-                              <div className={getConfidenceColor(segment.confidence)}>
-                                {(segment.confidence * 100).toFixed(0)}% confidence
+                                {segment.start.toFixed(2)}s - {segment.end.toFixed(2)}s
                               </div>
                             </div>
                           </TooltipContent>
@@ -515,15 +486,18 @@ export default function SpeechToText() {
 
                   <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-4">
-                      <span>{transcript.segments.length} words</span>
-                      <span>{transcript.text.length} characters</span>
+                      <span>{transcript.segments.length} segman</span>
+                      <span>{transcript.text.length} karaktè</span>
+                      <span className={getConfidenceColor(transcript.confidence)}>
+                        {(transcript.confidence * 100).toFixed(0)}% konfyans
+                      </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Badge variant="outline">
                         {transcript.language}
                       </Badge>
                       <Badge variant="outline">
-                        {formatDuration(transcript.duration / 1000)}
+                        {formatDuration(transcript.duration)}
                       </Badge>
                     </div>
                   </div>
@@ -540,8 +514,8 @@ export default function SpeechToText() {
             >
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Word Segments</CardTitle>
-                  <CardDescription>Detailed timing and confidence for each word</CardDescription>
+                  <CardTitle className="text-lg">Segman</CardTitle>
+                  <CardDescription>Tan detaye pou chak segman</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="max-h-[300px] overflow-y-auto">
@@ -549,38 +523,29 @@ export default function SpeechToText() {
                       <thead className="sticky top-0 bg-card border-b">
                         <tr className="text-left text-muted-foreground">
                           <th className="pb-2 font-medium">#</th>
-                          <th className="pb-2 font-medium">Word</th>
-                          <th className="pb-2 font-medium">Start</th>
-                          <th className="pb-2 font-medium">End</th>
-                          <th className="pb-2 font-medium">Duration</th>
-                          <th className="pb-2 font-medium">Confidence</th>
+                          <th className="pb-2 font-medium">Tèks</th>
+                          <th className="pb-2 font-medium">Kòmanse</th>
+                          <th className="pb-2 font-medium">Fini</th>
+                          <th className="pb-2 font-medium">Dire</th>
                         </tr>
                       </thead>
                       <tbody>
                         {transcript.segments.map((segment, index) => (
                           <tr
                             key={index}
-                            onClick={() => seekToWord(segment)}
+                            onClick={() => seekToSegment(segment)}
                             className={`cursor-pointer border-b border-border/50 transition-colors ${
-                              index === currentWordIndex
+                              index === currentSegmentIndex
                                 ? "bg-primary/10"
                                 : "hover:bg-muted/50"
                             }`}
                             data-testid={`segment-row-${index}`}
                           >
                             <td className="py-2 text-muted-foreground">{index + 1}</td>
-                            <td className="py-2 font-medium">{segment.word}</td>
-                            <td className="py-2 font-mono text-xs">{(segment.startTime / 1000).toFixed(2)}s</td>
-                            <td className="py-2 font-mono text-xs">{(segment.endTime / 1000).toFixed(2)}s</td>
-                            <td className="py-2 font-mono text-xs">{((segment.endTime - segment.startTime) / 1000).toFixed(2)}s</td>
-                            <td className="py-2">
-                              <Badge 
-                                variant="outline" 
-                                className={`text-xs ${getConfidenceColor(segment.confidence)}`}
-                              >
-                                {(segment.confidence * 100).toFixed(0)}%
-                              </Badge>
-                            </td>
+                            <td className="py-2 font-medium">{segment.text}</td>
+                            <td className="py-2 font-mono text-xs">{segment.start.toFixed(2)}s</td>
+                            <td className="py-2 font-mono text-xs">{segment.end.toFixed(2)}s</td>
+                            <td className="py-2 font-mono text-xs">{(segment.end - segment.start).toFixed(2)}s</td>
                           </tr>
                         ))}
                       </tbody>
@@ -600,16 +565,16 @@ export default function SpeechToText() {
               <CardContent className="p-6">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
                   <div>
-                    <h4 className="font-medium text-foreground mb-1">Supported Formats</h4>
-                    <p className="text-sm text-muted-foreground">MP3, WAV, WebM</p>
+                    <h4 className="font-medium text-foreground mb-1">Fòma Sipòte</h4>
+                    <p className="text-sm text-muted-foreground">MP3, WAV, OGG, WEBM, FLAC</p>
                   </div>
                   <div>
-                    <h4 className="font-medium text-foreground mb-1">Word Timestamps</h4>
-                    <p className="text-sm text-muted-foreground">Precise timing for each word</p>
+                    <h4 className="font-medium text-foreground mb-1">Estanp Tan</h4>
+                    <p className="text-sm text-muted-foreground">Tan presi pou chak segman</p>
                   </div>
                   <div>
-                    <h4 className="font-medium text-foreground mb-1">Sync Playback</h4>
-                    <p className="text-sm text-muted-foreground">Words highlight as audio plays</p>
+                    <h4 className="font-medium text-foreground mb-1">Jwe Senkronize</h4>
+                    <p className="text-sm text-muted-foreground">Segman yo klere pandan odyo a jwe</p>
                   </div>
                 </div>
               </CardContent>

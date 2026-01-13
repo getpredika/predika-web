@@ -8,10 +8,9 @@ import type {
 
 /**
  * TTS API Configuration
- * TTS backend is deployed separately on Modal.com
+ * Uses the Predika Speech API
  */
-const TTS_API_URL =
-    import.meta.env.VITE_TTS_API_URL || "https://predika-ai--haitian-creole-tts-api-fastapi-app.modal.run";
+const TTS_API_URL = import.meta.env.VITE_API_URL || "https://api.predika.app";
 
 /**
  * Static list of available TTS models
@@ -66,14 +65,15 @@ export const TTS_SPEAKERS: TTSSpeaker[] = [
 
 /**
  * Generate speech from text
- * POST /api/generate
+ * POST /api/speech/tts
  * Returns audio blob with metadata from response headers
  */
 export async function generateSpeech(
     request: TTSGenerateRequest
 ): Promise<TTSGenerateResponse> {
-    const response = await fetch(`${TTS_API_URL}/api/generate`, {
+    const response = await fetch(`${TTS_API_URL}/api/speech/tts`, {
         method: "POST",
+        credentials: "include", // Include cookies for session-based auth
         headers: {
             "Content-Type": "application/json",
         },
