@@ -1,12 +1,34 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Mic, Square, RotateCcw, Copy, Download, FileText, Upload, Play, Pause, Volume2 } from "lucide-react";
+import { Mic, Square, RotateCcw, Copy, Download, FileText, Upload, Play, Pause, Volume2, ChevronsUpDown, Check, Settings2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Orb } from "@/components/ui/orb";
 import { useToast } from "@/hooks/use-toast";
-import { transcribeAudio, type TranscribeResponse, type TranscriptSegment } from "@/api/asr";
+import { transcribeAudio, ASR_MODELS, type ASRModelId, type TranscriptSegment } from "@/api/asr";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { cn } from "@/lib/utils";
 
 interface TranscriptResult {
   text: string;
@@ -16,6 +38,8 @@ interface TranscriptResult {
   language: string;
   model: string;
 }
+
+const MODEL_ORB_COLORS: [string, string] = ["#E5E7EB", "#9CA3AF"];
 
 export default function SpeechToText() {
   const [isRecording, setIsRecording] = useState(false);
@@ -28,6 +52,11 @@ export default function SpeechToText() {
   const [currentSegmentIndex, setCurrentSegmentIndex] = useState(-1);
   const [audioFileName, setAudioFileName] = useState<string | null>(null);
   const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [selectedModel, setSelectedModel] = useState<ASRModelId>(ASR_MODELS[0].id);
+  const [modelPickerOpen, setModelPickerOpen] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [temperature, setTemperature] = useState<number[]>([0.0]);
+  const [beamSize, setBeamSize] = useState<number[]>([5]);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -37,7 +66,7 @@ export default function SpeechToText() {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (transcript && currentTime >= 0) {
+    if (transcript && currentTime >= 0 && transcript.segments.length > 0) {
       const idx = transcript.segments.findIndex(
         (seg) => currentTime >= seg.start && currentTime < seg.end
       );
@@ -141,15 +170,18 @@ export default function SpeechToText() {
 
     try {
       const response = await transcribeAudio(audioFile, {
+        model: selectedModel,
         languageHint: "ht",
         timestamps: true,
+        temperature: temperature[0],
+        beamSize: beamSize[0],
       });
 
       const result: TranscriptResult = {
         text: response.text,
-        segments: response.segments,
+        segments: response.segments ?? [],
         confidence: response.confidence,
-        duration: response.audio.duration_sec,
+        duration: response.audio?.duration_sec ?? 0,
         language: response.language_hint,
         model: response.model,
       };
@@ -166,7 +198,7 @@ export default function SpeechToText() {
 
   const togglePlayback = () => {
     if (!audioRef.current) return;
-    
+
     if (isPlaying) {
       audioRef.current.pause();
     } else {
@@ -227,11 +259,13 @@ export default function SpeechToText() {
     content += `Dire: ${formatDuration(transcript.duration)}\n\n`;
     content += `Tèks\n${"-".repeat(50)}\n\n`;
     content += `${transcript.text}\n\n`;
-    content += `Segman\n${"-".repeat(50)}\n\n`;
 
-    transcript.segments.forEach((seg, i) => {
-      content += `${i + 1}. [${seg.start.toFixed(2)}s - ${seg.end.toFixed(2)}s] "${seg.text}"\n`;
-    });
+    if (transcript.segments.length > 0) {
+      content += `Segman\n${"-".repeat(50)}\n\n`;
+      transcript.segments.forEach((seg, i) => {
+        content += `${i + 1}. [${seg.start.toFixed(2)}s - ${seg.end.toFixed(2)}s] "${seg.text}"\n`;
+      });
+    }
 
     const blob = new Blob([content], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
@@ -256,34 +290,46 @@ export default function SpeechToText() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-5xl mx-auto p-6">
+    <div className="min-h-screen bg-[#f0faf7]">
+      {/* Background decorations */}
+      <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-teal-50/40 via-transparent to-transparent pointer-events-none" />
+      <div className="absolute -top-40 -right-32 w-96 h-96 bg-teal-100/25 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 -left-32 w-80 h-80 bg-cyan-100/20 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="relative max-w-5xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="mb-8 pt-8"
         >
-          <div className="flex items-center gap-3 pt-12">
-            <div className="p-3 rounded-lg bg-primary/10">
+          <div className="flex items-center gap-4">
+            <div className="p-3 rounded-xl bg-primary/10">
               <FileText className="w-8 h-8 text-primary" />
             </div>
             <div>
-              <h1 className="text-3xl font-serif font-bold">Vwa an Tèks</h1>
-              <p className="text-muted-foreground">Konvèti odyo an tèks ak estanp tan</p>
+              <h1 className="text-3xl sm:text-4xl font-serif font-bold text-foreground">
+                Vwa an Tèks
+              </h1>
+              <p className="text-muted-foreground mt-1">
+                Konvèti odyo Kreyòl ou an tèks ak AI
+              </p>
             </div>
           </div>
         </motion.div>
 
-        <div className="space-y-6">
+        <div className="grid gap-6 lg:grid-cols-5">
+          {/* Main content - Audio input */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
+            className="lg:col-span-3 space-y-6"
           >
-            <Card>
+            <Card className="shadow-sm border-0 bg-white">
               <CardHeader>
                 <CardTitle>Antre Odyo</CardTitle>
-                <CardDescription>Anrejistre odyo oswa telechaje yon fichye odyo (MP3, WAV, OGG, WEBM)</CardDescription>
+                <CardDescription>Anrejistre oswa telechaje yon fichye odyo</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
@@ -383,200 +429,302 @@ export default function SpeechToText() {
                 )}
               </CardContent>
             </Card>
-          </motion.div>
 
-          {transcript && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between gap-2 flex-wrap">
-                  <div>
-                    <CardTitle>Transkripsyon</CardTitle>
-                    <CardDescription>
-                      Klike sou nenpòt segman pou ale nan pozisyon sa nan odyo a
-                    </CardDescription>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button variant="ghost" size="icon" onClick={copyToClipboard} data-testid="button-copy">
-                          <Copy className="w-4 h-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent className="bg-white dark:bg-zinc-900 border shadow-lg">Kopye</TooltipContent>
-                    </Tooltip>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button variant="ghost" size="icon" onClick={downloadTranscript} data-testid="button-download">
-                          <Download className="w-4 h-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent className="bg-white dark:bg-zinc-900 border shadow-lg">Telechaje</TooltipContent>
-                    </Tooltip>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button variant="ghost" size="icon" onClick={reset} data-testid="button-reset">
-                          <RotateCcw className="w-4 h-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent className="bg-white dark:bg-zinc-900 border shadow-lg">Efase</TooltipContent>
-                    </Tooltip>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {audioUrl && (
-                    <div className="flex items-center gap-4 p-4 bg-muted/50 rounded-lg">
-                      <Button
-                        size="icon"
-                        variant="outline"
-                        onClick={togglePlayback}
-                        data-testid="button-play-pause"
-                      >
-                        {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                      </Button>
-                      <div className="flex-1">
-                        <div className="text-sm font-medium">{audioFileName}</div>
-                        <div className="text-xs text-muted-foreground">
-                          {formatDuration(currentTime)} / {formatDuration(transcript?.duration || 0)}
-                        </div>
-                      </div>
-                      <audio
-                        ref={audioRef}
-                        src={audioUrl}
-                        onTimeUpdate={handleTimeUpdate}
-                        onEnded={handleAudioEnded}
-                        className="hidden"
-                      />
-                    </div>
-                  )}
-
-                  <div className="p-4 rounded-lg bg-muted/30 min-h-[120px]">
-                    <p className="text-lg leading-loose">
-                      {transcript.segments.map((segment, index) => (
-                        <Tooltip key={index}>
-                          <TooltipTrigger asChild>
-                            <span
-                              onClick={() => seekToSegment(segment)}
-                              className={`cursor-pointer px-1 py-0.5 rounded transition-all duration-150 ${
-                                index === currentSegmentIndex
-                                  ? "bg-primary text-primary-foreground"
-                                  : "hover:bg-muted"
-                              }`}
-                              data-testid={`segment-${index}`}
-                            >
-                              {segment.text}{" "}
-                            </span>
-                          </TooltipTrigger>
-                          <TooltipContent
-                            side="top"
-                            className="bg-white dark:bg-zinc-900 border shadow-lg z-[100]"
-                          >
-                            <div className="text-xs space-y-1">
-                              <div className="text-muted-foreground">
-                                {segment.start.toFixed(2)}s - {segment.end.toFixed(2)}s
-                              </div>
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      ))}
-                    </p>
-                  </div>
-
-                  <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-4">
-                      <span>{transcript.segments.length} segman</span>
-                      <span>{transcript.text.length} karaktè</span>
-                      <span className={getConfidenceColor(transcript.confidence)}>
-                        {(transcript.confidence * 100).toFixed(0)}% konfyans
-                      </span>
+            {/* Transcript result */}
+            {transcript && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <Card className="shadow-sm border-0 bg-white">
+                  <CardHeader className="flex flex-row items-center justify-between gap-2 flex-wrap">
+                    <div>
+                      <CardTitle>Transkripsyon</CardTitle>
+                      {transcript.segments.length > 0 && (
+                        <CardDescription>
+                          Klike sou nenpòt segman pou ale nan pozisyon sa nan odyo a
+                        </CardDescription>
+                      )}
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge variant="outline">
-                        {transcript.language}
-                      </Badge>
-                      <Badge variant="outline">
-                        {formatDuration(transcript.duration)}
-                      </Badge>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button variant="ghost" size="icon" onClick={copyToClipboard} data-testid="button-copy">
+                            <Copy className="w-4 h-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-white dark:bg-zinc-900 border shadow-lg">Kopye</TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button variant="ghost" size="icon" onClick={downloadTranscript} data-testid="button-download">
+                            <Download className="w-4 h-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-white dark:bg-zinc-900 border shadow-lg">Telechaje</TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button variant="ghost" size="icon" onClick={reset} data-testid="button-reset">
+                            <RotateCcw className="w-4 h-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-white dark:bg-zinc-900 border shadow-lg">Efase</TooltipContent>
+                      </Tooltip>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          )}
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    {audioUrl && (
+                      <div className="flex items-center gap-4 p-4 bg-muted/50 rounded-lg">
+                        <Button
+                          size="icon"
+                          variant="outline"
+                          onClick={togglePlayback}
+                          data-testid="button-play-pause"
+                        >
+                          {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                        </Button>
+                        <div className="flex-1">
+                          <div className="text-sm font-medium">{audioFileName}</div>
+                          <div className="text-xs text-muted-foreground">
+                            {formatDuration(currentTime)} / {formatDuration(transcript?.duration || 0)}
+                          </div>
+                        </div>
+                        <audio
+                          ref={audioRef}
+                          src={audioUrl}
+                          onTimeUpdate={handleTimeUpdate}
+                          onEnded={handleAudioEnded}
+                          className="hidden"
+                        />
+                      </div>
+                    )}
 
-          {transcript && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-            >
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Segman</CardTitle>
-                  <CardDescription>Tan detaye pou chak segman</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="max-h-[300px] overflow-y-auto">
-                    <table className="w-full text-sm">
-                      <thead className="sticky top-0 bg-card border-b">
-                        <tr className="text-left text-muted-foreground">
-                          <th className="pb-2 font-medium">#</th>
-                          <th className="pb-2 font-medium">Tèks</th>
-                          <th className="pb-2 font-medium">Kòmanse</th>
-                          <th className="pb-2 font-medium">Fini</th>
-                          <th className="pb-2 font-medium">Dire</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {transcript.segments.map((segment, index) => (
-                          <tr
-                            key={index}
-                            onClick={() => seekToSegment(segment)}
-                            className={`cursor-pointer border-b border-border/50 transition-colors ${
-                              index === currentSegmentIndex
-                                ? "bg-primary/10"
-                                : "hover:bg-muted/50"
-                            }`}
-                            data-testid={`segment-row-${index}`}
-                          >
-                            <td className="py-2 text-muted-foreground">{index + 1}</td>
-                            <td className="py-2 font-medium">{segment.text}</td>
-                            <td className="py-2 font-mono text-xs">{segment.start.toFixed(2)}s</td>
-                            <td className="py-2 font-mono text-xs">{segment.end.toFixed(2)}s</td>
-                            <td className="py-2 font-mono text-xs">{(segment.end - segment.start).toFixed(2)}s</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          )}
+                    <div className="p-4 rounded-lg bg-muted/30 min-h-[120px]">
+                      {transcript.segments.length > 0 ? (
+                        <p className="text-lg leading-loose">
+                          {transcript.segments.map((segment, index) => (
+                            <Tooltip key={index}>
+                              <TooltipTrigger asChild>
+                                <span
+                                  onClick={() => seekToSegment(segment)}
+                                  className={`cursor-pointer px-1 py-0.5 rounded transition-all duration-150 ${
+                                    index === currentSegmentIndex
+                                      ? "bg-primary text-primary-foreground"
+                                      : "hover:bg-muted"
+                                  }`}
+                                  data-testid={`segment-${index}`}
+                                >
+                                  {segment.text}{" "}
+                                </span>
+                              </TooltipTrigger>
+                              <TooltipContent
+                                side="top"
+                                className="bg-white dark:bg-zinc-900 border shadow-lg z-[100]"
+                              >
+                                <div className="text-xs space-y-1">
+                                  <div className="text-muted-foreground">
+                                    {segment.start.toFixed(2)}s - {segment.end.toFixed(2)}s
+                                  </div>
+                                </div>
+                              </TooltipContent>
+                            </Tooltip>
+                          ))}
+                        </p>
+                      ) : (
+                        <p className="text-lg leading-loose">{transcript.text}</p>
+                      )}
+                    </div>
 
+                    <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-4">
+                        {transcript.segments.length > 0 && (
+                          <span>{transcript.segments.length} segman</span>
+                        )}
+                        <span>{transcript.text.length} karaktè</span>
+                        <span className={getConfidenceColor(transcript.confidence)}>
+                          {(transcript.confidence * 100).toFixed(0)}% konfyans
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline">
+                          {transcript.language}
+                        </Badge>
+                        <Badge variant="outline">
+                          {formatDuration(transcript.duration)}
+                        </Badge>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+          </motion.div>
+
+          {/* Sidebar - Settings */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
+            className="lg:col-span-2 space-y-6"
           >
-            <Card>
-              <CardContent className="p-6">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
-                  <div>
-                    <h4 className="font-medium text-foreground mb-1">Fòma Sipòte</h4>
-                    <p className="text-sm text-muted-foreground">MP3, WAV, OGG, WEBM, FLAC</p>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-foreground mb-1">Estanp Tan</h4>
-                    <p className="text-sm text-muted-foreground">Tan presi pou chak segman</p>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-foreground mb-1">Jwe Senkronize</h4>
-                    <p className="text-sm text-muted-foreground">Segman yo klere pandan odyo a jwe</p>
-                  </div>
+            {/* Model Selection */}
+            <Card className="shadow-sm border-0 bg-white overflow-hidden">
+              <CardContent className="p-6 space-y-5">
+                <div>
+                  <Label className="text-sm text-muted-foreground mb-2 block">
+                    Modèl:
+                  </Label>
+                  <Popover open={modelPickerOpen} onOpenChange={setModelPickerOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={modelPickerOpen}
+                        disabled={isTranscribing}
+                        className="w-full justify-between h-12 px-3 border-input bg-background hover:bg-muted/50 shadow-sm"
+                      >
+                        <div className="flex items-center gap-3 overflow-hidden">
+                          <div className="relative w-8 h-8 shrink-0">
+                            <Orb agentState={null} colors={MODEL_ORB_COLORS} className="absolute inset-0" />
+                          </div>
+                          <div className="flex flex-col items-start text-left">
+                            <span className="text-sm font-medium truncate">
+                              {ASR_MODELS.find(m => m.id === selectedModel)?.name ?? "Ayira Medium"}
+                            </span>
+                          </div>
+                        </div>
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className="w-[--radix-popover-trigger-width] p-0 bg-white border shadow-md"
+                      align="start"
+                      sideOffset={4}
+                    >
+                      <Command className="rounded-lg border-0 bg-white">
+                        <CommandInput placeholder="Chèche modèl..." className="h-10 border-0" />
+                        <CommandList className="max-h-[220px] bg-white">
+                          <CommandEmpty className="py-6 text-center text-sm text-muted-foreground">
+                            Pa gen modèl ki koresponn.
+                          </CommandEmpty>
+                          <CommandGroup className="p-1">
+                            {ASR_MODELS.map((model) => (
+                              <CommandItem
+                                key={model.id}
+                                value={`${model.id} ${model.name}`}
+                                onSelect={() => {
+                                  setSelectedModel(model.id);
+                                  setModelPickerOpen(false);
+                                }}
+                                className={cn(
+                                  "flex items-center gap-3 py-2 px-2 cursor-pointer rounded-md",
+                                  "aria-selected:bg-muted",
+                                  selectedModel === model.id && "bg-muted"
+                                )}
+                              >
+                                <div className="relative w-8 h-8 shrink-0">
+                                  <Orb agentState={null} colors={MODEL_ORB_COLORS} className="absolute inset-0" />
+                                </div>
+                                <div className="flex flex-1 flex-col gap-0.5 min-w-0">
+                                  <span className="font-medium text-sm text-foreground">
+                                    {model.name}
+                                  </span>
+                                </div>
+                                <div className={cn(
+                                  "flex items-center justify-center w-5 h-5 rounded-full shrink-0",
+                                  selectedModel === model.id ? "bg-primary text-primary-foreground" : "opacity-0"
+                                )}>
+                                  <Check className="h-3 w-3" />
+                                </div>
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                 </div>
+              </CardContent>
+            </Card>
+
+            {/* Advanced settings */}
+            <Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
+              <Card className="shadow-sm border-0 bg-white">
+                <CollapsibleTrigger asChild>
+                  <CardHeader className="cursor-pointer hover:bg-muted/30 transition-colors rounded-t-xl">
+                    <CardTitle className="text-sm font-medium flex items-center justify-between">
+                      <span className="flex items-center gap-2">
+                        <Settings2 className="w-4 h-4" />
+                        Paramèt Avanse
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        {showAdvanced ? "Kache" : "Montre"}
+                      </span>
+                    </CardTitle>
+                  </CardHeader>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <CardContent className="pt-0 space-y-6">
+                    {/* Beam Size */}
+                    <div>
+                      <div className="flex justify-between items-center mb-3">
+                        <Label className="text-sm">
+                          Beam Size
+                        </Label>
+                        <span className="text-sm font-semibold text-primary tabular-nums">
+                          {beamSize[0]}
+                        </span>
+                      </div>
+                      <Slider
+                        value={beamSize}
+                        onValueChange={setBeamSize}
+                        min={1}
+                        max={10}
+                        step={1}
+                        disabled={isTranscribing}
+                      />
+                      <div className="flex justify-between text-xs text-muted-foreground mt-2">
+                        <span>Rapid</span>
+                        <span>Presi</span>
+                      </div>
+                    </div>
+
+                    {/* Temperature */}
+                    <div>
+                      <div className="flex justify-between items-center mb-3">
+                        <Label className="text-sm">
+                          Tanperati
+                        </Label>
+                        <span className="text-sm font-semibold text-primary tabular-nums">
+                          {(temperature[0] ?? 0).toFixed(1)}
+                        </span>
+                      </div>
+                      <Slider
+                        value={temperature}
+                        onValueChange={setTemperature}
+                        min={0}
+                        max={1}
+                        step={0.1}
+                        disabled={isTranscribing}
+                      />
+                      <div className="flex justify-between text-xs text-muted-foreground mt-2">
+                        <span>Detèminis</span>
+                        <span>Kreyatif</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </CollapsibleContent>
+              </Card>
+            </Collapsible>
+
+            {/* Info card */}
+            <Card className="shadow-sm bg-gradient-to-br from-primary/5 to-secondary/5 border-0">
+              <CardContent className="p-4">
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Sistèm STT sa a itilize modèl AI pou konvèti vwa natirèl an tèks nan lang Kreyòl Ayisyen.
+                  Sipòte fòma MP3, WAV, OGG, WEBM, ak FLAC.
+                </p>
               </CardContent>
             </Card>
           </motion.div>

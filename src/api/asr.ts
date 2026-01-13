@@ -54,12 +54,8 @@ export interface TranscribeResponse {
     language_hint: string;
     text: string;
     confidence: number;
+    segments: TranscriptSegment[] | null;
     audio: AudioInfo;
-    segments: TranscriptSegment[];
-    notes: {
-        timestamps: string;
-        timestamp_error: string | null;
-    };
     decode: {
         beam_size: number;
         temperature: number;
