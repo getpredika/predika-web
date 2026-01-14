@@ -82,7 +82,7 @@ export async function generateSpeech(
 
     if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Failed to generate speech: ${errorText || response.statusText}`);
+        throw new Error(`Echèk nan jenere lapawòl: ${errorText || response.statusText}`);
     }
 
     // Get audio blob

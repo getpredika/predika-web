@@ -173,8 +173,8 @@ export default function SpeechToText() {
         model: selectedModel,
         languageHint: "ht",
         timestamps: true,
-        temperature: temperature[0],
-        beamSize: beamSize[0],
+        temperature: temperature[0] ?? 0,
+        beamSize: beamSize[0] ?? 5,
       });
 
       const result: TranscriptResult = {

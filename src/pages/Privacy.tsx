@@ -12,68 +12,68 @@ export default function Privacy() {
               <ArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
-          <h1 className="text-xl font-semibold">Privacy Policy</h1>
+          <h1 className="text-xl font-semibold">Politik sou Vi Prive</h1>
         </div>
       </header>
-      
+
       <main className="container mx-auto px-4 py-8 max-w-3xl">
         <div className="prose prose-neutral dark:prose-invert max-w-none">
-          <p className="text-muted-foreground text-sm mb-8">Last updated: December 20, 2025</p>
-          
+          <p className="text-muted-foreground text-sm mb-8">Dènye mizajou: 20 Desanm 2025</p>
+
           <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">1. Information We Collect</h2>
+            <h2 className="text-xl font-semibold mb-4">1. Enfòmasyon Nou Kolekte</h2>
             <p className="text-muted-foreground mb-4">
-              When you use Predika, we collect information to provide and improve our services:
+              Lè w itilize Predika, nou kolekte enfòmasyon pou bay epi amelyore sèvis nou yo:
             </p>
             <ul className="list-disc pl-6 text-muted-foreground space-y-2">
-              <li>Account information (name, email) when you sign up</li>
-              <li>Learning progress and quiz results</li>
-              <li>Words you search and save</li>
-              <li>Usage data to improve our features</li>
+              <li>Enfòmasyon kont (non, imel) lè w enskri</li>
+              <li>Pwogresyon aprantisaj ak rezilta quiz ou yo</li>
+              <li>Mo w chèche ak sove</li>
+              <li>Done itilizasyon pou amelyore fonksyon nou yo</li>
             </ul>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">2. How We Use Your Information</h2>
+            <h2 className="text-xl font-semibold mb-4">2. Kòman Nou Itilize Enfòmasyon W</h2>
             <p className="text-muted-foreground mb-4">
-              We use your information to:
+              Nou itilize enfòmasyon w pou:
             </p>
             <ul className="list-disc pl-6 text-muted-foreground space-y-2">
-              <li>Provide personalized vocabulary learning experiences</li>
-              <li>Track your progress and achievements</li>
-              <li>Improve our dictionary and pronunciation features</li>
-              <li>Send important updates about our service</li>
+              <li>Bay eksperyans aprantisaj vokabilè pèsonalize</li>
+              <li>Swiv pwogresyon ak reyisit ou</li>
+              <li>Amelyore diksyonè ak fonksyon pwononsyasyon nou an</li>
+              <li>Voye mizajou enpòtan sou sèvis nou an</li>
             </ul>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">3. Data Security</h2>
+            <h2 className="text-xl font-semibold mb-4">3. Sekirite Done</h2>
             <p className="text-muted-foreground">
-              We implement industry-standard security measures to protect your personal information. 
-              Your data is encrypted in transit and at rest. We regularly review our security practices 
-              to ensure your information remains safe.
+              Nou mete an plas mezi sekirite selon estanda endistri a pou pwoteje enfòmasyon pèsonèl ou.
+              Done w kripte nan transpò ak nan depo. Nou revize pratik sekirite nou yo regilyèman
+              pou asire enfòmasyon w rete an sekirite.
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">4. Your Rights</h2>
+            <h2 className="text-xl font-semibold mb-4">4. Dwa W yo</h2>
             <p className="text-muted-foreground mb-4">
-              You have the right to:
+              Ou gen dwa pou:
             </p>
             <ul className="list-disc pl-6 text-muted-foreground space-y-2">
-              <li>Access your personal data</li>
-              <li>Request correction of inaccurate data</li>
-              <li>Request deletion of your account</li>
-              <li>Export your learning data</li>
+              <li>Aksede done pèsonèl ou</li>
+              <li>Mande koreksyon done ki pa egzak</li>
+              <li>Mande pou efase kont ou</li>
+              <li>Ekspòte done aprantisaj ou</li>
             </ul>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">5. Contact Us</h2>
+            <h2 className="text-xl font-semibold mb-4">5. Kontakte Nou</h2>
             <p className="text-muted-foreground">
-              If you have questions about this Privacy Policy, please contact us at{" "}
+              Si w gen kesyon sou Politik sou Vi Prive sa a, tanpri kontakte nou nan{" "}
               <Link href="/contact" className="text-primary hover:underline">
-                our contact page
+                paj kontak nou an
               </Link>.
             </p>
           </section>

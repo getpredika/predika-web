@@ -22,27 +22,32 @@ export default function Register() {
   const { register, isRegistering } = useAuth();
 
   const passwordRequirements = [
-    { label: "At least 8 characters", met: password.length >= 8 },
-    { label: "Contains a number", met: /\d/.test(password) },
-    { label: "Contains a letter", met: /[a-zA-Z]/.test(password) },
+    { label: "Omwen 8 karaktè", met: password.length >= 8 },
+    { label: "Gen yon chif", met: /\d/.test(password) },
+    { label: "Gen yon lèt", met: /[a-zA-Z]/.test(password) },
   ];
 
   const clearError = (field: string) => {
-    setErrors(prev => ({ ...prev, [field]: undefined, general: undefined }));
+    setErrors(prev => {
+      const newErrors = { ...prev };
+      delete newErrors[field as keyof typeof newErrors];
+      delete newErrors.general;
+      return newErrors;
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
-    
+
     const newErrors: typeof errors = {};
-    
+
     if (!fullName.trim()) {
-      newErrors.name = "Please enter your full name";
+      newErrors.name = "Tanpri antre non konplè ou";
     }
 
     if (password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
+      newErrors.password = "Modpas dwe gen omwen 8 karaktè";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -52,13 +57,13 @@ export default function Register() {
 
     try {
       await register({ email, password, fullName: fullName.trim() });
-      toast({ 
-        title: "Account created!", 
-        description: "Please check your email for a verification code." 
+      toast({
+        title: "Kont kreye!",
+        description: "Tanpri tcheke imèl ou pou wè kòd verifikasyon an."
       });
       setLocation(`/verify-email?email=${encodeURIComponent(email)}`);
     } catch (error: any) {
-      const message = error?.message || "Registration failed. Please try again.";
+      const message = error?.message || "Enskripsyon echwe. Tanpri eseye ankò.";
       if (message.toLowerCase().includes("email")) {
         setErrors({ email: message });
       } else {
@@ -96,15 +101,15 @@ export default function Register() {
 
         <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
           <CardHeader className="space-y-1 pb-4">
-            <CardTitle className="text-2xl font-serif text-center">Create an account</CardTitle>
+            <CardTitle className="text-2xl font-serif text-center">Kreye yon kont</CardTitle>
             <CardDescription className="text-center">
-              Start your vocabulary learning journey today
+              Kòmanse vwayaj aprantisaj vokabilè ou jodi a
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Button 
-              variant="outline" 
-              className="w-full mb-2 text-gray-600 font-normal" 
+            <Button
+              variant="outline"
+              className="w-full mb-2 text-gray-600 font-normal"
               type="button"
               onClick={handleGoogleClick}
               data-testid="button-google-register"
@@ -127,7 +132,7 @@ export default function Register() {
                   fill="#EA4335"
                 />
               </svg>
-              Continue with Google
+              Kontinye ak Google
             </Button>
 
             <div className="relative">
@@ -135,19 +140,19 @@ export default function Register() {
                 <span className="w-full border-t" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-muted-foreground">Or continue with email</span>
+                <span className="bg-white px-2 text-muted-foreground">Oswa kontinye ak imèl</span>
               </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="fullName">Full name</Label>
+                <Label htmlFor="fullName">Non konplè</Label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
                     id="fullName"
                     type="text"
-                    placeholder="John Doe"
+                    placeholder="Jan Douz"
                     value={fullName}
                     onChange={(e) => { setFullName(e.target.value); clearError("name"); }}
                     className={`pl-10 ${errors.name ? "border-red-500 focus-visible:ring-red-500" : ""}`}
@@ -164,13 +169,13 @@ export default function Register() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">Imèl</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
                     id="email"
                     type="email"
-                    placeholder="you@example.com"
+                    placeholder="ou@egzanp.com"
                     value={email}
                     onChange={(e) => { setEmail(e.target.value); clearError("email"); }}
                     className={`pl-10 ${errors.email ? "border-red-500 focus-visible:ring-red-500" : ""}`}
@@ -187,13 +192,13 @@ export default function Register() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Modpas</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder="Create a strong password"
+                    placeholder="Kreye yon modpas solid"
                     value={password}
                     onChange={(e) => { setPassword(e.target.value); clearError("password"); }}
                     className={`pl-10 pr-10 ${errors.password ? "border-red-500 focus-visible:ring-red-500" : ""}`}
@@ -236,20 +241,20 @@ export default function Register() {
                 </div>
               )}
 
-              <Button 
-                type="submit" 
-                className="w-full" 
+              <Button
+                type="submit"
+                className="w-full"
                 disabled={isRegistering}
                 data-testid="button-register"
               >
                 {isRegistering ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Creating account...
+                    Ap kreye kont...
                   </>
                 ) : (
                   <>
-                    Create account
+                    Kreye kont
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </>
                 )}
@@ -257,10 +262,10 @@ export default function Register() {
             </form>
 
             <p className="text-center text-sm text-muted-foreground">
-              Already have an account?{" "}
+              Ou deja gen yon kont?{" "}
               <Link href="/login">
                 <span className="text-primary hover:underline font-medium cursor-pointer" data-testid="link-login">
-                  Sign in
+                  Konekte
                 </span>
               </Link>
             </p>
@@ -268,13 +273,13 @@ export default function Register() {
         </Card>
 
         <p className="text-center text-xs text-muted-foreground mt-6">
-          By creating an account, you agree to our{" "}
+          Lè w kreye yon kont, ou dakò ak{" "}
           <Link href="/terms">
-            <span className="hover:underline cursor-pointer">Terms</span>
+            <span className="hover:underline cursor-pointer">Tèm</span>
           </Link>{" "}
-          and{" "}
+          e{" "}
           <Link href="/privacy">
-            <span className="hover:underline cursor-pointer">Privacy Policy</span>
+            <span className="hover:underline cursor-pointer">Politik Konfidansyalitè</span>
           </Link>
         </p>
       </motion.div>

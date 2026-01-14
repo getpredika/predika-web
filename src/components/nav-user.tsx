@@ -36,7 +36,7 @@ export function NavUser({
 }: {
   user: User;
   onLogout?: () => void;
-  
+
 }) {
   const { isMobile } = useSidebar();
 
@@ -83,36 +83,36 @@ export function NavUser({
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem data-testid="menu-upgrade">
                 <Sparkles className="mr-2 size-4" />
-                Upgrade to Pro
+                Amélioré nan Pro
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              {/* <DropdownMenuItem data-testid="menu-account">
+              <DropdownMenuItem data-testid="menu-account">
                 <BadgeCheck className="mr-2 size-4" />
                 Account
-              </DropdownMenuItem> */}
+              </DropdownMenuItem>
               <DropdownMenuItem data-testid="menu-billing">
                 <CreditCard className="mr-2 size-4" />
-                Billing
+                Faktire
               </DropdownMenuItem>
-              {/* <DropdownMenuItem data-testid="menu-notifications">
+              <DropdownMenuItem data-testid="menu-notifications">
                 <Bell className="mr-2 size-4" />
-                Notifications
-              </DropdownMenuItem> */}
-            </DropdownMenuGroup>
+                Notifikasyon
+              </DropdownMenuItem> 
+          </DropdownMenuGroup>*/}
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={onLogout} className="text-destructive focus:text-destructive" data-testid="menu-logout">
               <LogOut className="mr-2 size-4" />
-              Log out
+              Dekonekte
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
-    </SidebarMenu>
+    </SidebarMenu >
   );
 }

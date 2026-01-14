@@ -130,7 +130,7 @@ export default function Dictionary() {
           >
             <PointerHighlight containerClassName="inline-flex">
               <h1 className="text-4xl sm:text-5xl font-serif font-bold text-foreground">
-                Cozy Dictionary
+                Diksyonè Konfòtab
               </h1>
             </PointerHighlight>
           </motion.div>
@@ -141,7 +141,7 @@ export default function Dictionary() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg text-muted-foreground max-w-lg mx-auto text-balance"
           >
-            A warm, simple space to discover beautiful words and their meanings.
+            Yon espas senp e chalere pou dekouvri mo ki bel ak siyifikasyon yo.
           </motion.p>
         </div>
 
@@ -170,7 +170,7 @@ export default function Dictionary() {
               animate={{ opacity: 1, scale: 1 }}
               className="text-center py-20 text-destructive bg-destructive/5 rounded-2xl border border-destructive/10"
             >
-              <p className="font-medium">Oops! Something went wrong.</p>
+              <p className="font-medium">Ayaya! Gen yon bagay ki mal.é.</p>
               <p className="text-sm mt-1 opacity-80">{getErrorMessage(errorToShow)}</p>
             </motion.div>
           ) : (wordOfTheDay || visibleWords.length > 0) ? (
@@ -227,10 +227,10 @@ export default function Dictionary() {
                 <Sparkles className="w-8 h-8 text-stone-400" />
               </motion.div>
               <h3 className="text-xl font-serif font-medium text-foreground mb-2">
-                No words found
+                Pa gen mo
               </h3>
               <p className="text-muted-foreground">
-                Try searching for something else, or clear the search to see all words.
+                Eseye chèche lòt bagay, oswa efase rechèch la pou wè tout mo yo.
               </p>
             </motion.div>
           )}
@@ -238,7 +238,7 @@ export default function Dictionary() {
 
         {/* Footer */}
         <footer className="mt-20 text-center text-sm text-muted-foreground py-6 border-t border-stone-100">
-          <p>Designed with warmth & care</p>
+          <p>Konsepsyon ak chalè & atansyon</p>
         </footer>
       </main>
     </div>

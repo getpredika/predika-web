@@ -12,88 +12,88 @@ export default function Terms() {
               <ArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
-          <h1 className="text-xl font-semibold">Terms of Service</h1>
+          <h1 className="text-xl font-semibold">Tèm ak Kondisyon Sevi</h1>
         </div>
       </header>
-      
+
       <main className="container mx-auto px-4 py-8 max-w-3xl">
         <div className="prose prose-neutral dark:prose-invert max-w-none">
-          <p className="text-muted-foreground text-sm mb-8">Last updated: December 20, 2025</p>
-          
+          <p className="text-muted-foreground text-sm mb-8">Dènye mizajou: 20 Desanm 2025</p>
+
           <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">1. Acceptance of Terms</h2>
+            <h2 className="text-xl font-semibold mb-4">1. Akseptasyon Tèm yo</h2>
             <p className="text-muted-foreground">
-              By accessing and using Predika, you accept and agree to be bound by these Terms of Service. 
-              If you do not agree to these terms, please do not use our service.
+              Lè w aksede epi itilize Predika, ou aksepte epi dakò pou respekte Tèm ak Kondisyon Sevi sa yo.
+              Si w pa dakò ak tèm sa yo, tanpri pa itilize sèvis nou an.
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">2. Description of Service</h2>
+            <h2 className="text-xl font-semibold mb-4">2. Deskripsyon Sèvis la</h2>
             <p className="text-muted-foreground">
-              Predika is a vocabulary learning platform that provides dictionary definitions, 
-              pronunciations, example sentences, quizzes, and other educational features to help 
-              users expand their vocabulary.
+              Predika se yon platfòm aprantisaj vokabilè ki bay definisyon diksyonè,
+              pwononsyasyon, fraz egzanp, quiz, ak lòt fonksyon edikasyonèl pou ede
+              itilizatè yo elaji vokabilè yo.
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">3. User Accounts</h2>
+            <h2 className="text-xl font-semibold mb-4">3. Kont Itilizatè</h2>
             <p className="text-muted-foreground mb-4">
-              To access certain features, you must create an account. You agree to:
+              Pou aksede sèten fonksyon, ou dwe kreye yon kont. Ou dakò pou:
             </p>
             <ul className="list-disc pl-6 text-muted-foreground space-y-2">
-              <li>Provide accurate and complete information</li>
-              <li>Keep your account credentials secure</li>
-              <li>Notify us of any unauthorized access</li>
-              <li>Be responsible for all activities under your account</li>
+              <li>Bay enfòmasyon egzak ak konplè</li>
+              <li>Kenbe idantifyan kont ou an sekirite</li>
+              <li>Avize nou si gen aks san otorizasyon</li>
+              <li>Responsab pou tout aktivite anba kont ou</li>
             </ul>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">4. Acceptable Use</h2>
+            <h2 className="text-xl font-semibold mb-4">4. Itilizasyon Akseptab</h2>
             <p className="text-muted-foreground mb-4">
-              You agree not to:
+              Ou dakò pou w pa:
             </p>
             <ul className="list-disc pl-6 text-muted-foreground space-y-2">
-              <li>Use the service for any unlawful purpose</li>
-              <li>Attempt to gain unauthorized access to our systems</li>
-              <li>Interfere with or disrupt the service</li>
-              <li>Share your account with others</li>
+              <li>Itilize sèvis la pou okenn rezon ilegal</li>
+              <li>Eseye jwenn aks san otorizasyon nan sistèm nou yo</li>
+              <li>Enterfere oswa deranje sèvis la</li>
+              <li>Pataje kont ou ak lòt moun</li>
             </ul>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">5. Intellectual Property</h2>
+            <h2 className="text-xl font-semibold mb-4">5. Pwopriyete Entèlektyèl</h2>
             <p className="text-muted-foreground">
-              All content, features, and functionality of Predika are owned by us and are protected 
-              by international copyright, trademark, and other intellectual property laws.
+              Tout kontni, fonksyon, ak fonksyonalite Predika se pou nou yo ye epi yo pwoteje
+              pa lwa entènasyonal sou dwa dotè, mak komèsyal, ak lòt lwa sou pwopriyete entèlektyèl.
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">6. Limitation of Liability</h2>
+            <h2 className="text-xl font-semibold mb-4">6. Limitasyon Responsabilite</h2>
             <p className="text-muted-foreground">
-              Predika is provided "as is" without warranties of any kind. We shall not be liable 
-              for any indirect, incidental, special, or consequential damages arising from your 
-              use of the service.
+              Predika bay "jan li ye a" san okenn garanti. Nou p ap responsab
+              pou okenn domaj endirekt, ensidantèl, espesyal, oswa ki gen konsékans ki soti nan
+              itilizasyon sèvis la.
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">7. Changes to Terms</h2>
+            <h2 className="text-xl font-semibold mb-4">7. Chanjman nan Tèm yo</h2>
             <p className="text-muted-foreground">
-              We reserve the right to modify these terms at any time. We will notify users of 
-              significant changes via email or through the service.
+              Nou rezve dwa pou modifye tèm sa yo nenpot lè. Nou pral avize itilizatè yo sou
+              chanjman enpitan pa imel oswa nan sèvis la.
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">8. Contact</h2>
+            <h2 className="text-xl font-semibold mb-4">8. Kontak</h2>
             <p className="text-muted-foreground">
-              For questions about these Terms, please visit our{" "}
+              Pou kesyon sou Tèm sa yo, tanpri vizite{" "}
               <Link href="/contact" className="text-primary hover:underline">
-                contact page
+                paj kontak nou an
               </Link>.
             </p>
           </section>

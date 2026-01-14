@@ -119,7 +119,7 @@ function ErrorHighlight({
             <span className="text-green-600 dark:text-green-400 font-medium">{error.corrected}</span>
           </p>
           <p className="text-xs text-muted-foreground">{error.explanation}</p>
-          <p className="text-xs text-primary">Click to apply correction</p>
+          <p className="text-xs text-primary">Klike pou aplike koreksyon</p>
         </div>
       </TooltipContent>
     </Tooltip>
@@ -140,7 +140,7 @@ export default function GrammarCorrector() {
     if (!file) return;
 
     if (!file.name.endsWith('.txt')) {
-      toast({ title: "Please upload a .txt file", variant: "destructive" });
+      toast({ title: "Tanpri telechaje yon fichye .txt", variant: "destructive" });
       return;
     }
 
@@ -151,7 +151,7 @@ export default function GrammarCorrector() {
       setResult(null);
       setIsEditing(true);
       setUndoStack([]);
-      toast({ title: "File loaded", description: `Loaded ${file.name}` });
+      toast({ title: "Fichye chaje", description: `Chaje ${file.name}` });
     };
     reader.readAsText(file);
 
@@ -174,14 +174,14 @@ export default function GrammarCorrector() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    toast({ title: "Downloaded", description: "Text saved as corrected_text.txt" });
+    toast({ title: "Telechaje", description: "Tèks sove kòm corrected_text.txt" });
   };
 
   const correctTextMutation = useCorrectText();
 
   const checkGrammar = useCallback(async () => {
     if (!inputText.trim()) {
-      toast({ title: "Please enter some text", variant: "destructive" });
+      toast({ title: "Tanpri antre kèk tèks", variant: "destructive" });
       return;
     }
 
@@ -192,7 +192,7 @@ export default function GrammarCorrector() {
 
       // Handle null/undefined response from API
       if (!response) {
-        throw new Error("No response from server. Please try again.");
+        throw new Error("Pa gen repons nan sèvè a. Tanpri eseye ankò.");
       }
 
       // Handle case where response is a JSON string instead of object
@@ -200,7 +200,7 @@ export default function GrammarCorrector() {
         try {
           response = JSON.parse(response);
         } catch {
-          throw new Error("Invalid response format from server");
+          throw new Error("Fòma repons nan sèvè a pa valid");
         }
       }
 
@@ -243,17 +243,17 @@ export default function GrammarCorrector() {
       setIsEditing(false);
 
       if (correction.errors.length === 0) {
-        toast({ title: "No errors found", description: "Your text looks great!" });
+        toast({ title: "Pa gen erè jwenn", description: "Tèks ou gade byen!" });
       } else {
         toast({
-          title: `Found ${correction.errors.length} issue${correction.errors.length > 1 ? 's' : ''}`,
-          description: "Click on highlighted text to apply corrections"
+          title: `Jwenn ${correction.errors.length} pwoblèm${correction.errors.length > 1 ? '' : ''}`,
+          description: "Klike sou tèks ki mare pou aplike koreksyon"
         });
       }
     } catch (error) {
       toast({
-        title: "Error checking text",
-        description: error instanceof Error ? error.message : "An error occurred",
+        title: "Erè nan verifye tèks",
+        description: error instanceof Error ? error.message : "Yon erè rive",
         variant: "destructive"
       });
     } finally {
@@ -280,12 +280,13 @@ export default function GrammarCorrector() {
 
       // Re-check the corrected text with API
       try {
-        let response = await correctTextMutation.mutateAsync({ text: newText });
+        const rawResponse = await correctTextMutation.mutateAsync({ text: newText });
 
         // Handle case where response is a JSON string instead of object
-        if (typeof response === 'string') {
+        let response: typeof rawResponse | null = rawResponse;
+        if (typeof rawResponse === 'string') {
           try {
-            response = JSON.parse(response);
+            response = JSON.parse(rawResponse);
           } catch {
             response = null;
           }
@@ -331,7 +332,7 @@ export default function GrammarCorrector() {
         });
       }
 
-      toast({ title: "Correction applied" });
+      toast({ title: "Koreksyon aplike" });
     }
   };
 
@@ -341,7 +342,7 @@ export default function GrammarCorrector() {
       setUndoStack(prev => [...prev, {
         segments: [...result.segments],
         errors: [...result.errors],
-        description: "Apply all corrections"
+        description: "Aplike tout koreksyon"
       }]);
 
       setInputText(result.correctedText);
@@ -351,7 +352,7 @@ export default function GrammarCorrector() {
         errors: [],
         segments: [{ text: result.correctedText, isError: false }],
       });
-      toast({ title: "All corrections applied" });
+      toast({ title: "Tout koreksyon aplike" });
     }
   };
 
@@ -371,13 +372,13 @@ export default function GrammarCorrector() {
       errors: lastState.errors,
       segments: lastState.segments
     });
-    toast({ title: "Undone", description: lastState.description });
+    toast({ title: "Defèt", description: lastState.description });
   };
 
   const copyText = () => {
     const textToCopy = result?.correctedText || inputText;
     navigator.clipboard.writeText(textToCopy);
-    toast({ title: "Copied to clipboard" });
+    toast({ title: "Kopye nan klib" });
   };
 
   const reset = () => {
@@ -412,8 +413,8 @@ export default function GrammarCorrector() {
               <Sparkles className="w-8 h-8 text-primary" />
             </div>
             <div>
-              <h1 className="text-3xl font-serif font-bold">Grammar Corrector</h1>
-              <p className="text-muted-foreground">Fix spelling and grammar errors in your text</p>
+              <h1 className="text-3xl font-serif font-bold">Korektè Gramè</h1>
+              <p className="text-muted-foreground">Korije fòtògraf ak gramè nan tèks ou</p>
             </div>
           </div>
         </motion.div>
@@ -427,13 +428,13 @@ export default function GrammarCorrector() {
           >
             <Card>
               <CardHeader>
-                <CardTitle>{isEditing ? "Enter Your Text" : "Corrected Text"}</CardTitle>
+                <CardTitle>{isEditing ? "Antre Tèks Ou" : "Tèks Korije"}</CardTitle>
                 <CardDescription>
                   {isEditing
-                    ? "Paste or type your text below"
+                    ? "Kole oswa tape tèks ou anba a"
                     : result && result.errors.length > 0
-                      ? "Click on highlighted errors to apply corrections"
-                      : "No errors found"}
+                      ? "Klike sou erè ki mare pou aplike koreksyon"
+                      : "Pa gen erè jwenn"}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -441,9 +442,9 @@ export default function GrammarCorrector() {
                   <Textarea
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
-                    placeholder="Enter your text here to check for grammar and spelling errors...
+                    placeholder="Antre tèks ou la a pou verifye fòtògraf ak gramè...
 
-Try typing: 'Their is alot of things I beleive we shoud do. Me and him went to teh store.'"
+Eseye tape: 'Li te ale nan magazen an. Nou te manje yon pen tre bon. Se yon bagay ki important pou nou fè.'"
                     className="min-h-[300px] text-base"
                     data-testid="input-text"
                   />
@@ -452,23 +453,24 @@ Try typing: 'Their is alot of things I beleive we shoud do. Me and him went to t
                     className="min-h-[300px] p-3 rounded-md border bg-background leading-relaxed text-base whitespace-pre-wrap"
                     data-testid="result-text"
                   >
-                    {result?.segments.map((segment, index) => (
-                      segment.isError && segment.errorIndex !== undefined ? (
+                    {result?.segments.map((segment, index) => {
+                      const error = segment.errorIndex !== undefined ? result.errors[segment.errorIndex] : undefined;
+                      return segment.isError && error ? (
                         <ErrorHighlight
                           key={index}
                           text={segment.text}
-                          error={result.errors[segment.errorIndex]}
+                          error={error}
                           segmentIndex={index}
                           onApplyCorrection={applyCorrection}
                         />
                       ) : (
                         <span key={index}>{segment.text}</span>
-                      )
-                    ))}
+                      );
+                    })}
                     {result?.errors.length === 0 && (
                       <div className="flex items-center gap-2 text-green-600 dark:text-green-400 mt-4">
                         <CheckCircle2 className="w-5 h-5" />
-                        <span>Your text is error-free!</span>
+                        <span>Tèks ou san erè!</span>
                       </div>
                     )}
                   </div>
@@ -478,22 +480,22 @@ Try typing: 'Their is alot of things I beleive we shoud do. Me and him went to t
                   <div className="flex flex-wrap gap-2">
                     {errorCounts.spelling && (
                       <Badge variant="outline" className="bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300">
-                        {errorCounts.spelling} Spelling
+                        {errorCounts.spelling} Fòtògraf
                       </Badge>
                     )}
                     {errorCounts.grammar && (
                       <Badge variant="outline" className="bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300">
-                        {errorCounts.grammar} Grammar
+                        {errorCounts.grammar} Gramè
                       </Badge>
                     )}
                     {errorCounts.punctuation && (
                       <Badge variant="outline" className="bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300">
-                        {errorCounts.punctuation} Punctuation
+                        {errorCounts.punctuation} Ponktyasyon
                       </Badge>
                     )}
                     {errorCounts.style && (
                       <Badge variant="outline" className="bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300">
-                        {errorCounts.style} Style
+                        {errorCounts.style} Stil
                       </Badge>
                     )}
                   </div>
@@ -519,12 +521,12 @@ Try typing: 'Their is alot of things I beleive we shoud do. Me and him went to t
                         {isChecking ? (
                           <>
                             <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2" />
-                            Checking...
+                            Ap verifye...
                           </>
                         ) : (
                           <>
                             <Sparkles className="w-4 h-4 mr-2" />
-                            Check Grammar
+                            Verifye Gramè
                           </>
                         )}
                       </Button>
@@ -532,7 +534,7 @@ Try typing: 'Their is alot of things I beleive we shoud do. Me and him went to t
                       <>
                         <Button variant="outline" onClick={editText} data-testid="button-edit">
                           <Pencil className="w-4 h-4 mr-2" />
-                          Edit
+                          Modifye
                         </Button>
                         {undoStack.length > 0 && (
                           <Tooltip>
@@ -542,14 +544,14 @@ Try typing: 'Their is alot of things I beleive we shoud do. Me and him went to t
                               </Button>
                             </TooltipTrigger>
                             <TooltipContent className="bg-white dark:bg-zinc-900 border shadow-lg">
-                              Undo ({undoStack.length})
+                              Defèt ({undoStack.length})
                             </TooltipContent>
                           </Tooltip>
                         )}
                         {result && result.errors.length > 0 && (
                           <Button onClick={applyAllCorrections} data-testid="button-apply-all">
                             <CheckCircle2 className="w-4 h-4 mr-2" />
-                            Apply All
+                            Aplike Tout
                           </Button>
                         )}
                       </>
@@ -570,7 +572,7 @@ Try typing: 'Their is alot of things I beleive we shoud do. Me and him went to t
                           </Button>
                         </TooltipTrigger>
                         <TooltipContent className="bg-white dark:bg-zinc-900 border shadow-lg">
-                          Upload .txt
+                          Telechaje .txt
                         </TooltipContent>
                       </Tooltip>
                     )}
@@ -581,7 +583,7 @@ Try typing: 'Their is alot of things I beleive we shoud do. Me and him went to t
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent className="bg-white dark:bg-zinc-900 border shadow-lg">
-                        Copy
+                        Kopye
                       </TooltipContent>
                     </Tooltip>
                     <Tooltip>
@@ -597,7 +599,7 @@ Try typing: 'Their is alot of things I beleive we shoud do. Me and him went to t
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent className="bg-white dark:bg-zinc-900 border shadow-lg">
-                        Download .txt
+                        Telechaje .txt
                       </TooltipContent>
                     </Tooltip>
                     <Tooltip>
@@ -607,14 +609,14 @@ Try typing: 'Their is alot of things I beleive we shoud do. Me and him went to t
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent className="bg-white dark:bg-zinc-900 border shadow-lg">
-                        Clear
+                        Efase
                       </TooltipContent>
                     </Tooltip>
                   </div>
                 </div>
 
                 <div className="text-sm text-muted-foreground">
-                  {inputText.length} characters | {inputText.trim() ? inputText.trim().split(/\s+/).length : 0} words
+                  {inputText.length} karaktè | {inputText.trim() ? inputText.trim().split(/\s+/).length : 0} mo
                 </div>
               </CardContent>
             </Card>
@@ -627,25 +629,25 @@ Try typing: 'Their is alot of things I beleive we shoud do. Me and him went to t
           >
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Legend</CardTitle>
+                <CardTitle className="text-base">Lejann</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3 text-sm">
                   <div className="flex items-center gap-2">
                     <span className="w-4 h-4 rounded bg-red-200 dark:bg-red-800 border-b-2 border-red-500" />
-                    <span>Spelling Error</span>
+                    <span>Fòtògraf</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="w-4 h-4 rounded bg-yellow-200 dark:bg-yellow-800 border-b-2 border-yellow-500" />
-                    <span>Grammar Error</span>
+                    <span>Erè Gramè</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="w-4 h-4 rounded bg-orange-200 dark:bg-orange-800 border-b-2 border-orange-500" />
-                    <span>Punctuation</span>
+                    <span>Ponktyasyon</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="w-4 h-4 rounded bg-blue-200 dark:bg-blue-800 border-b-2 border-blue-500" />
-                    <span>Style</span>
+                    <span>Stil</span>
                   </div>
                 </div>
               </CardContent>
@@ -653,14 +655,14 @@ Try typing: 'Their is alot of things I beleive we shoud do. Me and him went to t
 
             <Card className="mt-6">
               <CardHeader>
-                <CardTitle className="text-base">Tips</CardTitle>
+                <CardTitle className="text-base">Konsey</CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="text-sm text-muted-foreground space-y-2">
-                  <li>Paste or type your text in the box</li>
-                  <li>Click "Check Grammar" to analyze</li>
-                  <li>Hover over highlighted errors for details</li>
-                  <li>Click errors to apply corrections</li>
+                  <li>Kole oswa tape tèks ou nan bwat la</li>
+                  <li>Klike "Verifye Gramè" pou analize</li>
+                  <li>Pase sourit sou erè ki mare pou detay</li>
+                  <li>Klike erè yo pou aplike koreksyon</li>
                 </ul>
               </CardContent>
             </Card>

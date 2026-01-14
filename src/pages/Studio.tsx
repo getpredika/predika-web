@@ -32,13 +32,13 @@ import SpeechToText from "@/pages/SpeechToText";
 import GrammarCorrector from "@/pages/GrammarCorrector";
 
 const navItems = [
-  { id: "progress", label: "Progress", icon: BarChart3, component: Progress },
-  { id: "dictionary", label: "Dictionary", icon: BookOpen, component: Dictionary },
-  { id: "quiz", label: "Quiz Hub", icon: Brain, component: Quiz },
-  { id: "tts", label: "Text to Speech", icon: Volume2, component: TextToSpeech },
-  { id: "pronunciation", label: "Pronunciation", icon: Mic, component: PronunciationAssessment },
-  { id: "stt", label: "Speech to Text", icon: AudioLines, component: SpeechToText },
-  { id: "gec", label: "Grammar Check", icon: FileText, component: GrammarCorrector },
+  { id: "progress", label: "Pwogrè", icon: BarChart3, component: Progress },
+  { id: "dictionary", label: "Diksyonè", icon: BookOpen, component: Dictionary },
+  { id: "quiz", label: "Sant Quiz", icon: Brain, component: Quiz },
+  { id: "tts", label: "Tèks an Lapawòl", icon: Volume2, component: TextToSpeech },
+  { id: "pronunciation", label: "Pwononsyasyon", icon: Mic, component: PronunciationAssessment },
+  { id: "stt", label: "Lapawòl an Tèks", icon: AudioLines, component: SpeechToText },
+  { id: "gec", label: "Verifye Gramè", icon: FileText, component: GrammarCorrector },
 ];
 
 function AppSidebar({
@@ -71,7 +71,7 @@ function AppSidebar({
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
                   <span className="truncate font-serif font-bold text-lg">Predika</span>
-                  <span className="truncate text-xs text-muted-foreground">Language Studio</span>
+                  <span className="truncate text-xs text-muted-foreground">Estidyo Lang</span>
                 </div>
               </a>
             </SidebarMenuButton>
@@ -79,7 +79,7 @@ function AppSidebar({
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={mainNavItems} label="Features" />
+        <NavMain items={mainNavItems} label="Fonksyon" />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} onLogout={onLogout} />
@@ -111,13 +111,13 @@ export default function Studio() {
     return null;
   }
 
-  const ActiveComponent = navItems.find(item => item.id === activeTab)?.component || Home;
-  const activeLabel = navItems.find(item => item.id === activeTab)?.label || "Dictionary";
+  const ActiveComponent = navItems.find(item => item.id === activeTab)?.component || Progress;
+  const activeLabel = navItems.find(item => item.id === activeTab)?.label || "Diksyonè";
 
   const userData = {
-    name: user.firstName ? `${user.firstName} ${user.lastName || ""}`.trim() : user.email || "User",
+    name: user.fullName || user.email || "User",
     email: user.email || "",
-    avatar: user.profileImageUrl || undefined,
+    ...(user.avatar ? { avatar: user.avatar } : {}),
   };
 
   const style = {

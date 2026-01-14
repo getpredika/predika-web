@@ -42,8 +42,8 @@ export function WordCard({ word, index, isWordOfDay }: WordCardProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.1, ease: "easeOut" }}
       className={`group relative rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 hover:-translate-y-1 h-full flex flex-col overflow-hidden ${isWordOfDay
-          ? 'border-2 border-teal-200'
-          : 'bg-white border border-stone-100'
+        ? 'border-2 border-teal-200'
+        : 'bg-white border border-stone-100'
         }`}
       style={isWordOfDay ? { backgroundColor: '#E8F7F3' } : {}}
     >
@@ -68,7 +68,7 @@ export function WordCard({ word, index, isWordOfDay }: WordCardProps) {
           </h3>
           {isWordOfDay && (
             <Badge className="bg-primary/15 text-primary hover:bg-primary/15 border-primary/30">
-              Word of the Day
+              Mo Jou a
             </Badge>
           )}
         </div>
@@ -97,7 +97,7 @@ export function WordCard({ word, index, isWordOfDay }: WordCardProps) {
 
             {primarySense.example && (
               <div className="pl-4 space-y-2">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Example</p>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Egzanp</p>
                 <p className="text-base text-foreground/70 italic leading-relaxed bg-muted/40 rounded-lg px-3 py-2">
                   "{primarySense.example}"
                 </p>
@@ -108,7 +108,7 @@ export function WordCard({ word, index, isWordOfDay }: WordCardProps) {
               <div className="pt-2 space-y-3">
                 {primarySense.synonyms && primarySense.synonyms.length > 0 && (
                   <div className="pl-4 space-y-2">
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Synonyms</p>
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Sinonim</p>
                     <div className="flex flex-wrap gap-2">
                       {primarySense.synonyms.map((synonym: string, i: number) => (
                         <Badge key={i} variant="secondary" data-testid={`badge-synonym-${i}`}>
@@ -121,7 +121,7 @@ export function WordCard({ word, index, isWordOfDay }: WordCardProps) {
 
                 {primarySense.antonyms && primarySense.antonyms.length > 0 && (
                   <div className="pl-4 space-y-2">
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Antonyms</p>
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Antonim</p>
                     <div className="flex flex-wrap gap-2">
                       {primarySense.antonyms.map((antonym: string, i: number) => (
                         <Badge key={i} variant="outline" data-testid={`badge-antonym-${i}`}>

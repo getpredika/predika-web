@@ -37,197 +37,197 @@ import predikaLogo from "@assets/predika-logo.png";
 const features = [
   {
     icon: BookOpen,
-    title: "Smart Dictionary",
+    title: "Diksyonè Entelijan",
     description:
-      "Look up words instantly with IPA and ARPAbet pronunciations, definitions, and example sentences.",
+      "Chèche mo rapidman ak pwononsyasyon IPA ak ARPAbet, definisyon, ak egzanp fraz.",
   },
   {
     icon: Mic,
-    title: "Pronunciation Assessment",
+    title: "Evalyasyon Pwononsyasyon",
     description:
-      "Get real-time feedback on your pronunciation with detailed scoring and improvement tips.",
+      "Resevwa kòmantè an tan reyèl sou pwononsyasyon ou ak nòt detaye epi konsèy pou amelyore.",
   },
   {
     icon: Volume2,
-    title: "Text to Speech",
+    title: "Tèks an Lapawòl",
     description:
-      "Convert any text to natural-sounding audio with multiple voice options and speed control.",
+      "Konvèti nenpòt tèks an odyo natirèl ak plizyè opsyon vwa ak kontwòl vitès.",
   },
   {
     icon: Brain,
-    title: "Vocabulary Quizzes",
+    title: "Quiz Vokabilè",
     description:
-      "Test your knowledge with interactive quizzes and track your progress over time.",
+      "Teste konesans ou ak quiz entèraktif epi swiv pwogrè ou ak tan.",
   },
   {
     icon: Sparkles,
-    title: "Grammar Correction",
+    title: "Koreksyon Gramè",
     description:
-      "Fix spelling, grammar, and punctuation errors with AI-powered suggestions.",
+      "Korije erè òtograf, gramè, ak ponktyasyon ak sijesyon ki soti nan AI.",
   },
   {
     icon: MessageSquare,
-    title: "Speech to Text",
+    title: "Lapawòl an Tèks",
     description:
-      "Transcribe audio with word-level timestamps and synchronized playback.",
+      "Transkripsyon odyo ak tan pou chak mo ak lekti senkonize.",
   },
 ];
 
 const stats = [
-  { value: "10K+", label: "Words in Dictionary" },
-  { value: "50+", label: "Quiz Categories" },
-  { value: "98%", label: "Accuracy Rate" },
-  { value: "24/7", label: "Available" },
+  { value: "10K+", label: "Mo nan Diksyonè" },
+  { value: "50+", label: "Kategori Quiz" },
+  { value: "98%", label: "To Presizyon" },
+  { value: "24/7", label: "Disponib" },
 ];
 
 const testimonials = [
   {
     name: "Sarah Chen",
-    role: "Language Student",
+    role: "Elèv Lang",
     content:
-      "This app transformed how I learn vocabulary. The pronunciation feedback is incredibly helpful!",
+      "Aplikasyon sa a transfòme fason m ap aprann vokabilè. Kòmantè sou pwononsyasyon an trè itil!",
     rating: 5,
   },
   {
     name: "Michael Torres",
-    role: "ESL Teacher",
+    role: "Pwofesè Anglè",
     content:
-      "I recommend this to all my students. The quiz system keeps them engaged and motivated.",
+      "Mwen rekòmande sa bay tout elèv mwen yo. Sistèm quiz la kenbe yo enterese epi motive.",
     rating: 5,
   },
   {
     name: "Emma Williams",
-    role: "Content Writer",
+    role: "Ekriven Kontni",
     content:
-      "The grammar corrector saves me hours of proofreading. It catches errors I always miss.",
+      "Korektè gramè a ekonomize m plizyè èdtan nan revizyon. Li jwenn erè mwen toujou rate.",
     rating: 5,
   },
   {
     name: "David Kim",
-    role: "Business Professional",
+    role: "Pwofesyonèl Biznis",
     content:
-      "Perfect for improving my English presentation skills. The speech tools are fantastic!",
+      "Pafè pou amelyore konpetans prezantasyon Anglè mwen. Zouti lapawòl yo fantastik!",
     rating: 5,
   },
   {
     name: "Lisa Anderson",
-    role: "Graduate Student",
+    role: "Etidyan Gradye",
     content:
-      "The vocabulary quizzes helped me prepare for my GRE. Highly recommended for test prep!",
+      "Quiz vokabilè yo ede m prepare pou GRE mwen. Rekòmande anpil pou preparasyon tès!",
     rating: 5,
   },
   {
     name: "James Wilson",
-    role: "Software Developer",
+    role: "Devlopè Lojisyèl",
     content:
-      "Great for technical vocabulary. I use it daily to improve my documentation writing.",
+      "Ekselan pou vokabilè teknik. Mwen itilize l chak jou pou amelyore ekriti dokimantasyon mwen.",
     rating: 5,
   },
 ];
 
 const pricingPlans = [
   {
-    name: "Free",
+    name: "Gratis",
     price: "$0",
-    period: "forever",
-    description: "Perfect for getting started",
+    period: "pou tout tan",
+    description: "Pafè pou kòmanse",
     features: [
-      "Basic dictionary access",
-      "5 quizzes per day",
-      "Text to speech (limited)",
-      "Community support",
+      "Aksè diksyonè debaz",
+      "5 quiz pa jou",
+      "Tèks an lapawòl (limite)",
+      "Sipò kominote",
     ],
-    cta: "Get Started",
+    cta: "Kòmanse",
     popular: false,
   },
   {
     name: "Pro",
     price: "$9",
-    period: "per month",
-    description: "For serious learners",
+    period: "pa mwa",
+    description: "Pou moun ki serye nan aprantisaj",
     features: [
-      "Full dictionary access",
-      "Unlimited quizzes",
-      "All voice options",
-      "Pronunciation assessment",
-      "Grammar correction",
-      "Progress tracking",
-      "Priority support",
+      "Aksè diksyonè konplè",
+      "Quiz san limit",
+      "Tout opsyon vwa",
+      "Evalyasyon pwononsyasyon",
+      "Koreksyon gramè",
+      "Swivi pwogrè",
+      "Sipò priyorite",
     ],
-    cta: "Start Free Trial",
+    cta: "Kòmanse Esè Gratis",
     popular: true,
   },
   {
-    name: "Team",
+    name: "Ekip",
     price: "$29",
-    period: "per month",
-    description: "For classrooms & teams",
+    period: "pa mwa",
+    description: "Pou sal klas & ekip",
     features: [
-      "Everything in Pro",
-      "Up to 25 users",
-      "Admin dashboard",
-      "Usage analytics",
-      "Custom word lists",
-      "API access",
-      "Dedicated support",
+      "Tout sa ki nan Pro",
+      "Jiska 25 itilizatè",
+      "Tablo bò administè",
+      "Analize itilizasyon",
+      "Lis mo pasonèl",
+      "Aksè API",
+      "Sipò dedye",
     ],
-    cta: "Contact Sales",
+    cta: "Kontakte Vant",
     popular: false,
   },
 ];
 
 const faqs = [
   {
-    question: "How does the pronunciation assessment work?",
+    question: "Ki jan evalyasyon pwononsyasyon an fonksyone?",
     answer:
-      "Our pronunciation assessment uses advanced speech recognition to analyze your spoken words and compare them against native pronunciations. You'll receive a score and specific feedback on areas to improve.",
+      "Evalyasyon pwononsyasyon nou an itilize rekonesèns lapawòl avanse pou analize mo ou pale yo epi konpare yo ak pwononsyasyon natif natal. Ou pral resevwa yon nòt ak kòmantè espesifik sou zòn pou amelyore.",
   },
   {
-    question: "Can I use this app offline?",
+    question: "Èske mwen ka itilize aplikasyon sa a san entènèt?",
     answer:
-      "Some features like the dictionary and quizzes can be used offline once data is cached. However, features requiring AI processing like pronunciation assessment and grammar correction need an internet connection.",
+      "Kèk fonksyonalite tankou diksyonè a ak quiz yo ka itilize san entènèt yon fwa done yo kache. Men, fonksyonalite ki mande tretèman AI tankou evalyasyon pwononsyasyon ak koreksyon gramè bezwen yon koneksyon entènèt.",
   },
   {
-    question: "Is my data private and secure?",
+    question: "Èske done m yo prive epi sekirize?",
     answer:
-      "Absolutely. We take privacy seriously and never share your personal data with third parties. All audio recordings are processed securely and not stored unless you explicitly save them.",
+      "Absoliman. Nou pran konfidansyalite o seryè epi nou pa janm pataje done pèsonèl ou ak tyès pati. Tout anrejistreman odyo trete an sekirite epi yo pa estoke sof si ou ekspèsiteman sove yo.",
   },
   {
-    question: "Can I cancel my subscription anytime?",
+    question: "Èske mwen ka anile abònman mwen nenpòt lè?",
     answer:
-      "Yes, you can cancel your subscription at any time with no questions asked. You'll continue to have access until the end of your billing period.",
+      "Wi, ou ka anile abònman ou nenpòt lè san okenn kesyon. Ou pral kontinye gen aksè jouk nan fen peryòd faktirasyòn ou.",
   },
   {
-    question: "Do you offer discounts for students?",
+    question: "Èske ou òfri rabè pou elèv?",
     answer:
-      "Yes! Students with a valid .edu email address receive 50% off the Pro plan. Contact our support team with proof of enrollment to get your discount.",
+      "Wi! Elèv ki gen yon adrès imel .edu valab resevwa 50% rabè sou plan Pro a. Kontakte ekip sipò nou an ak prèv enskripsyon pou resevwa rabè ou.",
   },
 ];
 
 const howItWorks = [
   {
     step: "1",
-    title: "Search & Discover",
+    title: "Chèche & Dekouvè",
     description:
-      "Look up any word to see its definition, pronunciation, and usage examples.",
+      "Chèche nenpòt mo pou wè definisyon li, pwononsyasyon li, ak egzanp itilizasyon.",
   },
   {
     step: "2",
-    title: "Practice Speaking",
+    title: "Pratike Pale",
     description:
-      "Use our pronunciation tools to practice speaking and get instant feedback.",
+      "Itilize zouti pwononsyasyon nou yo pou pratike pale epi resevwa kòmantè imedya.",
   },
   {
     step: "3",
-    title: "Test Your Knowledge",
+    title: "Teste Konesans Ou",
     description:
-      "Take quizzes to reinforce learning and track your vocabulary growth.",
+      "Pran quiz pou ranfòse aprantisaj epi swiv kwasans vokabilè ou.",
   },
   {
     step: "4",
-    title: "Master Language",
+    title: "Metrize Lang",
     description:
-      "Review your progress and continue building your language skills daily.",
+      "Revize pwogrè ou epi kontinye konstwi konpetans lang ou chak jou.",
   },
 ];
 
@@ -450,7 +450,7 @@ function PricingCard({
         {plan.popular && (
           <div className="absolute -top-3 left-1/2 -translate-x-1/2">
             <Badge className="bg-primary text-primary-foreground">
-              Most Popular
+              Pi Popilè
             </Badge>
           </div>
         )}
@@ -534,7 +534,7 @@ export default function Landing() {
                 className="text-sm text-muted-foreground hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full cursor-pointer"
                 data-testid="link-nav-features"
               >
-                Features
+                Fonksyonalite
               </a>
               <a
                 href="#how-it-works"
@@ -542,23 +542,23 @@ export default function Landing() {
                 className="text-sm text-muted-foreground hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full cursor-pointer"
                 data-testid="link-nav-how-it-works"
               >
-                How it Works
+                Ki Jan Sa Mache
               </a>
-              <a
+              {/* <a
                 href="#pricing"
                 onClick={(e) => scrollToSection(e, "pricing")}
                 className="text-sm text-muted-foreground hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full cursor-pointer"
                 data-testid="link-nav-pricing"
               >
-                Pricing
-              </a>
+                Pri
+              </a> */}
               <a
                 href="#faq"
                 onClick={(e) => scrollToSection(e, "faq")}
                 className="text-sm text-muted-foreground hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full cursor-pointer"
                 data-testid="link-nav-faq"
               >
-                FAQ
+                Kesyon
               </a>
             </nav>
             <div className="flex items-center gap-3">
@@ -566,43 +566,43 @@ export default function Landing() {
                 <div className="w-20 h-9 bg-muted animate-pulse rounded-md" />
               ) : isAuthenticated && user ? (
                 <>
-                  <Link href="/app">
+                  <Link href="/studio">
                     <Button variant="ghost" data-testid="button-dashboard">
-                      Dashboard
+                      Tablo Bò
                     </Button>
                   </Link>
                   <div className="flex items-center gap-2">
                     <Avatar className="w-8 h-8">
                       <AvatarImage
-                        src={user.profileImageUrl || undefined}
-                        alt={user.firstName || "User"}
+                        src={user.avatar || undefined}
+                        alt={user.fullName || "User"}
                       />
                       <AvatarFallback className="text-xs">
-                        {user.firstName?.[0] ||
+                        {user.fullName?.[0] ||
                           user.email?.[0]?.toUpperCase() ||
                           "U"}
                       </AvatarFallback>
                     </Avatar>
-                    <Button
+                    {/* <Button
                       variant="ghost"
                       size="icon"
                       onClick={() => logout()}
                       data-testid="button-logout"
                     >
                       <LogOut className="w-4 h-4" />
-                    </Button>
+                    </Button> */}
                   </div>
                 </>
               ) : (
                 <>
                   <a href="/login">
                     <Button variant="ghost" data-testid="button-login">
-                      Log in
+                      Konekte
                     </Button>
                   </a>
                   <a href="/login">
                     <Button data-testid="button-get-started">
-                      Get Started
+                      Kòmanse
                     </Button>
                   </a>
                 </>
@@ -624,29 +624,28 @@ export default function Landing() {
           >
             <Badge variant="outline" className="mb-6 px-4 py-1.5">
               <Sparkles className="w-3.5 h-3.5 mr-1.5" />
-              Powered by AI
+              Pouse pa AI
             </Badge>
             <div className="flex flex-col items-center justify-center gap-2 mb-6">
               <LayoutTextFlip
-                text="Master Language with"
-                words={["Confidence", "Fluency", "Ease", "Success"]}
+                text="Metrize Lang ak"
+                words={["Konfyans", "Fliditè", "Fasilite", "Siksè"]}
                 duration={2500}
               />
             </div>
             <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              The all-in-one vocabulary and pronunciation learning platform.
-              Look up words, practice speaking, take quizzes, and track your
-              progress.
+              Platfòm tout-nan-yon pou vokabilè, aprantisaj ak pwononsyasyon.
+              Chèche mo, pratike pale, pran quiz, epi swiv pwogrè ou.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               {isAuthenticated ? (
-                <Link href="/app">
+                <Link href="/studio">
                   <Button
                     size="lg"
                     className="text-base px-8"
                     data-testid="button-hero-start"
                   >
-                    Start Learning Free
+                    Kòmanse Aprann Gratis
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </Link>
@@ -657,7 +656,7 @@ export default function Landing() {
                     className="text-base px-8"
                     data-testid="button-hero-start"
                   >
-                    Start Learning Free
+                    Kòmanse Aprann Gratis
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </a>
@@ -669,7 +668,7 @@ export default function Landing() {
                 data-testid="button-hero-demo"
               >
                 <Play className="w-4 h-4 mr-2" />
-                Watch Demo
+                Gade Demo
               </Button>
             </div>
           </motion.div>
@@ -686,7 +685,7 @@ export default function Landing() {
                 <div className="w-3 h-3 rounded-full bg-yellow-400" />
                 <div className="w-3 h-3 rounded-full bg-green-400" />
                 <span className="text-xs text-muted-foreground ml-2">
-                  Predika App
+                  Aplikasyon Predika
                 </span>
               </div>
               <div className="p-6 md:p-8 bg-gradient-to-br from-primary/5 to-transparent">
@@ -701,40 +700,39 @@ export default function Landing() {
                       </div>
                       <div>
                         <h3 className="font-serif text-2xl font-bold">
-                          Serendipity
+                          Libète
                         </h3>
                         <p className="text-sm text-muted-foreground">
-                          /ˌser.ənˈdɪp.ə.ti/
+                          /li.bɛ.te/
                         </p>
                       </div>
                     </div>
                     <p className="text-muted-foreground">
-                      The occurrence of events by chance in a happy or
-                      beneficial way.
+                      Eta yon moun oswa yon pèp ki lib, ki pa anba opresyon ni dominasyon.
                     </p>
                     <div className="p-3 rounded-lg bg-muted/50 border-l-2 border-primary">
                       <p className="text-sm italic">
-                        "Finding that book was pure serendipity."
+                        "Libète se dwa fondamantal tout moun."
                       </p>
                     </div>
                   </div>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
                       <span className="text-sm font-medium">
-                        Pronunciation Score
+                        Nòt Pwononsyasyon
                       </span>
                       <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
                         92%
                       </Badge>
                     </div>
                     <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
-                      <span className="text-sm font-medium">Words Learned</span>
+                      <span className="text-sm font-medium">Mo Aprann</span>
                       <Badge variant="outline">247</Badge>
                     </div>
                     <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
-                      <span className="text-sm font-medium">Quiz Streak</span>
+                      <span className="text-sm font-medium">Sèri Quiz</span>
                       <Badge className="bg-primary/15 text-primary">
-                        7 days
+                        7 jou
                       </Badge>
                     </div>
                   </div>
@@ -751,7 +749,7 @@ export default function Landing() {
             className="flex flex-col items-center mt-12 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
             data-testid="link-explore-features"
           >
-            <span className="text-sm mb-2">Explore Features</span>
+            <span className="text-sm mb-2">Eksplore Fonksyon</span>
             <ChevronDown className="w-5 h-5 animate-bounce" />
           </motion.a>
         </div>
@@ -805,17 +803,17 @@ export default function Landing() {
             className="text-center mb-16"
           >
             <Badge variant="outline" className="mb-4">
-              Features
+              Fonksyonalite
             </Badge>
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">
-              Everything You Need to{" "}
+              Tout Sa Ou Bezwen Pou{" "}
               <PointerHighlight pointerClassName="text-primary">
-                <span>Learn</span>
+                <span>Aprann</span>
               </PointerHighlight>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              A complete toolkit for vocabulary building, pronunciation
-              practice, and language mastery.
+              Yon konplè zouti pou konstwi vokabilè, pratike pwononsyasyon,
+              ak metriz lang.
             </p>
           </motion.div>
 
@@ -853,17 +851,16 @@ export default function Landing() {
             className="text-center mb-16"
           >
             <Badge variant="outline" className="mb-4">
-              How It Works
+              Ki Jan Sa Mache
             </Badge>
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">
-              Start Learning in{" "}
+              Kòmanse Aprann nan{" "}
               <PointerHighlight pointerClassName="text-primary">
-                <span>Minutes</span>
+                <span>Minit</span>
               </PointerHighlight>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Our simple four-step process makes language learning effective and
-              enjoyable.
+              Kat etap senp nou yo rann aprantisaj lang efikas ak agreab.
             </p>
           </motion.div>
 
@@ -914,16 +911,16 @@ export default function Landing() {
             className="text-center mb-16"
           >
             <Badge variant="outline" className="mb-4">
-              Testimonials
+              Temwanyaj
             </Badge>
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">
-              Loved by{" "}
+              Renmen pa{" "}
               <PointerHighlight pointerClassName="text-primary">
-                <span>Learners</span>
+                <span>Elèv</span>
               </PointerHighlight>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              See what our users have to say about their learning experience.
+              Gade sa itilizatè nou yo di sou eksperyans aprantisaj yo.
             </p>
           </motion.div>
 
@@ -931,50 +928,48 @@ export default function Landing() {
         </div>
       </section>
 
-      <section
+      {/* <section
         id="pricing"
         className="py-20 md:py-28 bg-muted/30 relative overflow-hidden"
       >
         <div className="absolute top-1/3 -left-16 w-64 h-64 bg-[#40C4A7]/10 rounded-full blur-3xl" />
         <div className="absolute -bottom-20 right-1/4 w-72 h-72 bg-[#E6FFF7] rounded-full blur-3xl opacity-50" />
-        {/* Grid pattern */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.03]"
-          style={{
-            backgroundImage: `linear-gradient(#40C4A7 1px, transparent 1px), linear-gradient(90deg, #40C4A7 1px, transparent 1px)`,
-            backgroundSize: "32px 32px",
-          }}
-        />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <Badge variant="outline" className="mb-4">
-              Pricing
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">
-              Simple,{" "}
-              <PointerHighlight pointerClassName="text-primary">
-                <span>Transparent</span>
-              </PointerHighlight>{" "}
-              Pricing
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Choose the plan that works best for you. All plans include a
-              14-day free trial.
-            </p>
-          </motion.div>
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.03]"
+        style={{
+          backgroundImage: `linear-gradient(#40C4A7 1px, transparent 1px), linear-gradient(90deg, #40C4A7 1px, transparent 1px)`,
+          backgroundSize: "32px 32px",
+        }}
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <Badge variant="outline" className="mb-4">
+            Pri
+          </Badge>
+          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">
+            Senp,{" "}
+            <PointerHighlight pointerClassName="text-primary">
+              <span>Transparan</span>
+            </PointerHighlight>{" "}
+            Pri
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Chwazi plan ki pi bon pou ou. Tout plan gen 14 jou esè gratis.
+          </p>
+        </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {pricingPlans.map((plan, index) => (
-              <PricingCard key={plan.name} plan={plan} index={index} />
-            ))}
-          </div>
+        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          {pricingPlans.map((plan, index) => (
+            <PricingCard key={plan.name} plan={plan} index={index} />
+          ))}
         </div>
-      </section>
+      </div>
+    </section> */}
 
       <section id="faq" className="py-20 md:py-28 relative overflow-hidden">
         <div className="absolute top-20 right-1/3 w-56 h-56 bg-[#53CAB0]/8 rounded-full blur-3xl" />
@@ -995,16 +990,16 @@ export default function Landing() {
             className="text-center mb-16"
           >
             <Badge variant="outline" className="mb-4">
-              FAQ
+              Kesyon
             </Badge>
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">
-              Frequently Asked{" "}
+              Kesyon Ki Poze{" "}
               <PointerHighlight pointerClassName="text-primary">
-                <span>Questions</span>
+                <span>Souvan</span>
               </PointerHighlight>
             </h2>
             <p className="text-lg text-muted-foreground">
-              Got questions? We've got answers.
+              Ou gen kesyon? Nou gen repons.
             </p>
           </motion.div>
 
@@ -1039,11 +1034,10 @@ export default function Landing() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">
-              Ready to Start Learning?
+              Pare Pou Kòmanse Aprann?
             </h2>
             <p className="text-lg opacity-90 mb-8 max-w-2xl mx-auto">
-              Join thousands of learners who are improving their vocabulary and
-              pronunciation every day.
+              Antre nan milye elèv k ap amelyore vokabilè yo ak pwononsyasyon yo chak jou.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/app">
@@ -1053,7 +1047,7 @@ export default function Landing() {
                   className="text-base px-8"
                   data-testid="button-cta-start"
                 >
-                  Get Started Free
+                  Kòmanse Gratis
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
@@ -1063,7 +1057,7 @@ export default function Landing() {
                 className="text-base px-8 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
                 data-testid="button-cta-demo"
               >
-                Schedule Demo
+                Pwograme Demo
               </Button>
             </div>
           </motion.div>
@@ -1083,11 +1077,11 @@ export default function Landing() {
                 <span className="font-serif font-bold text-xl">Predika</span>
               </div>
               <p className="text-sm text-muted-foreground">
-                The modern way to learn vocabulary and improve pronunciation.
+                Fòm modèn pou aprann vokabilè ak amelyore pwononsyasyon.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Product</h4>
+              <h4 className="font-semibold mb-4">Pwodwi</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
                   <a
@@ -1095,18 +1089,18 @@ export default function Landing() {
                     className="hover:text-foreground transition-colors"
                     data-testid="link-footer-features"
                   >
-                    Features
+                    Fonksyonalite
                   </a>
                 </li>
-                <li>
+                {/* <li>
                   <a
                     href="#pricing"
                     className="hover:text-foreground transition-colors"
                     data-testid="link-footer-pricing"
                   >
-                    Pricing
+                    Pri
                   </a>
-                </li>
+                </li> */}
                 <li>
                   <a
                     href="#"
@@ -1119,7 +1113,7 @@ export default function Landing() {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Company</h4>
+              <h4 className="font-semibold mb-4">Konpayi</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
                   <a
@@ -1127,7 +1121,7 @@ export default function Landing() {
                     className="hover:text-foreground transition-colors"
                     data-testid="link-footer-about"
                   >
-                    About
+                    Konsènan
                   </a>
                 </li>
                 <li>
@@ -1136,7 +1130,7 @@ export default function Landing() {
                     className="hover:text-foreground transition-colors"
                     data-testid="link-footer-blog"
                   >
-                    Blog
+                    Blòg
                   </a>
                 </li>
                 <li>
@@ -1145,7 +1139,7 @@ export default function Landing() {
                     className="hover:text-foreground transition-colors"
                     data-testid="link-footer-careers"
                   >
-                    Careers
+                    Karyè
                   </a>
                 </li>
               </ul>
@@ -1159,7 +1153,7 @@ export default function Landing() {
                     className="hover:text-foreground transition-colors"
                     data-testid="link-footer-privacy"
                   >
-                    Privacy
+                    Konfidansyalite
                   </Link>
                 </li>
                 <li>
@@ -1168,7 +1162,7 @@ export default function Landing() {
                     className="hover:text-foreground transition-colors"
                     data-testid="link-footer-terms"
                   >
-                    Terms
+                    Tèm
                   </Link>
                 </li>
                 <li>
@@ -1177,7 +1171,7 @@ export default function Landing() {
                     className="hover:text-foreground transition-colors"
                     data-testid="link-footer-contact"
                   >
-                    Contact
+                    Kontakte
                   </a>
                 </li>
               </ul>
@@ -1185,7 +1179,7 @@ export default function Landing() {
           </div>
           <div className="pt-8 border-t flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">
-              2025 Predika. All rights reserved.
+              2025 Predika. Tout dwa rezève.
             </p>
             <div className="flex items-center gap-4">
               <a
@@ -1213,6 +1207,6 @@ export default function Landing() {
           </div>
         </div>
       </footer>
-    </div>
+    </div >
   );
 }

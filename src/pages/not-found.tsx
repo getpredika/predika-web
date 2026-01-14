@@ -51,11 +51,10 @@ export default function NotFound() {
           transition={{ delay: 0.3 }}
         >
           <h1 className="text-2xl sm:text-3xl font-serif font-bold text-gray-800 mb-3">
-            Page not found
+            Paj pa jwenn
           </h1>
           <p className="text-gray-600 mb-8 px-4">
-            Oops! The page you're looking for seems to have wandered off.
-            Let's get you back on track.
+            Ayaya! Paj w ap chèche a sanble pèdi. Ann remèt ou sou bon wout la.
           </p>
         </motion.div>
 
@@ -68,7 +67,7 @@ export default function NotFound() {
           <Link href="/">
             <Button className="gap-2" data-testid="button-go-home">
               <Home className="w-4 h-4" />
-              Back to Home
+              Retounen Lakay
             </Button>
           </Link>
           <Button
@@ -78,7 +77,7 @@ export default function NotFound() {
             data-testid="button-go-back"
           >
             <ArrowLeft className="w-4 h-4" />
-            Go Back
+            Retounen
           </Button>
         </motion.div>
       </motion.div>

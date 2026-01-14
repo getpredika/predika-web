@@ -66,39 +66,39 @@ export default function VerifyEmail() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const fullCode = code.join("");
     if (fullCode.length !== 6) {
-      toast({ title: "Invalid code", description: "Please enter the 6-digit code", variant: "destructive" });
+      toast({ title: "Kòd envalid", description: "Tanpri antre kòd 6 chif la", variant: "destructive" });
       return;
     }
 
     try {
       await verifyEmail({ otp: fullCode, type: isPasswordReset ? "PASSWORD_RESET" : "VERIFY_EMAIL" });
       if (isPasswordReset) {
-        toast({ title: "Code verified!", description: "You can now set your new password." });
+        toast({ title: "Kòd verifye!", description: "Ou kapab mete nouvo modpas ou kounye a." });
         setLocation(`/reset-password?email=${encodeURIComponent(email)}`);
       } else {
-        toast({ title: "Email verified!", description: "Your account is now active." });
+        toast({ title: "Imèl verifye!", description: "Kont ou aktif kounye a." });
         setLocation("/app");
       }
     } catch (error: any) {
-      const message = error?.message || "Verification failed. Please try again.";
-      toast({ title: "Verification failed", description: message, variant: "destructive" });
+      const message = error?.message || "Verifikasyon echwe. Tanpri eseye ankò.";
+      toast({ title: "Verifikasyon echwe", description: message, variant: "destructive" });
     }
   };
 
   const handleResend = async () => {
     try {
       await resendVerification({ email, type: isPasswordReset ? "PASSWORD_RESET" : "VERIFY_EMAIL" });
-      toast({ title: "Code sent!", description: "A new verification code has been sent to your email." });
+      toast({ title: "Kòd voye!", description: "Yon nouvo kòd verifikasyon te voye nan imèl ou." });
       setCountdown(60);
       setCanResend(false);
       setCode(["", "", "", "", "", ""]);
       inputRefs.current[0]?.focus();
     } catch (error: any) {
-      const message = error?.message || "Failed to resend code.";
-      toast({ title: "Failed to resend", description: message, variant: "destructive" });
+      const message = error?.message || "Echwe voye kòd.";
+      toast({ title: "Echwe voye", description: message, variant: "destructive" });
     }
   };
 
@@ -131,11 +131,11 @@ export default function VerifyEmail() {
               <Mail className="w-8 h-8 text-primary" />
             </div>
             <CardTitle className="text-2xl font-serif text-center">
-              {isPasswordReset ? "Enter reset code" : "Check your email"}
+              {isPasswordReset ? "Antre kòd reyinisyalizasyon" : "Tcheke imèl ou"}
             </CardTitle>
             <CardDescription className="text-center">
-              We sent a {isPasswordReset ? "password reset" : "verification"} code to<br />
-              <span className="font-medium text-foreground">{email || "your email"}</span>
+              Nou voye yon kòd {isPasswordReset ? "reyinisyalizasyon modpas" : "verifikasyon"} bay<br />
+              <span className="font-medium text-foreground">{email || "imèl ou"}</span>
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -157,20 +157,20 @@ export default function VerifyEmail() {
                 ))}
               </div>
 
-              <Button 
-                type="submit" 
-                className="w-full" 
+              <Button
+                type="submit"
+                className="w-full"
                 disabled={isVerifying || code.join("").length !== 6}
                 data-testid="button-verify"
               >
                 {isVerifying ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Verifying...
+                    Ap verifye...
                   </>
                 ) : (
                   <>
-                    {isPasswordReset ? "Verify code" : "Verify email"}
+                    {isPasswordReset ? "Verifye kòd" : "Verifye imèl"}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </>
                 )}
@@ -179,7 +179,7 @@ export default function VerifyEmail() {
 
             <div className="text-center">
               <p className="text-sm text-muted-foreground mb-2">
-                Didn't receive the code?
+                Ou pa resevwa kòd la?
               </p>
               {canResend ? (
                 <Button
@@ -192,18 +192,18 @@ export default function VerifyEmail() {
                   {isResendingVerification ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Sending...
+                      Ap voye...
                     </>
                   ) : (
                     <>
                       <RefreshCw className="w-4 h-4 mr-2" />
-                      Resend code
+                      Voye kòd ankò
                     </>
                   )}
                 </Button>
               ) : (
                 <p className="text-sm text-muted-foreground">
-                  Resend in <span className="font-medium text-foreground">{countdown}s</span>
+                  Voye ank\u00f2 nan <span className="font-medium text-foreground">{countdown}s</span>
                 </p>
               )}
             </div>
@@ -211,7 +211,7 @@ export default function VerifyEmail() {
             <p className="text-center text-sm text-muted-foreground">
               <Link href="/login">
                 <span className="text-primary hover:underline cursor-pointer" data-testid="link-back-login">
-                  Back to login
+                  Retounen nan koneksyon
                 </span>
               </Link>
             </p>
@@ -219,7 +219,7 @@ export default function VerifyEmail() {
         </Card>
 
         <p className="text-center text-xs text-muted-foreground mt-6">
-          Check your spam folder if you don't see the email
+          Tcheke dosye spam ou si w pa wè im\u00e8l la
         </p>
       </motion.div>
     </div>

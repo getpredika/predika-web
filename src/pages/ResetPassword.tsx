@@ -18,7 +18,7 @@ export default function ResetPassword() {
     const params = new URLSearchParams(window.location.search);
     setEmailFromUrl(params.get("email") || "");
   }, []);
-  
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -28,27 +28,27 @@ export default function ResetPassword() {
   const { resetPassword, isResettingPassword } = useAuth();
 
   const passwordRequirements = [
-    { label: "At least 8 characters", met: password.length >= 8 },
-    { label: "Contains a number", met: /\d/.test(password) },
-    { label: "Contains a letter", met: /[a-zA-Z]/.test(password) },
-    { label: "Passwords match", met: password.length > 0 && password === confirmPassword },
+    { label: "Omwen 8 karaktè", met: password.length >= 8 },
+    { label: "Gen yon chif", met: /\d/.test(password) },
+    { label: "Gen yon lèt", met: /[a-zA-Z]/.test(password) },
+    { label: "Modpas yo matche", met: password.length > 0 && password === confirmPassword },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (password.length < 8) {
-      toast({ title: "Password too short", description: "Password must be at least 8 characters", variant: "destructive" });
+      toast({ title: "Modpas twò kòt", description: "Modpas dwe gen omwen 8 karaktè", variant: "destructive" });
       return;
     }
 
     if (password !== confirmPassword) {
-      toast({ title: "Passwords don't match", description: "Please make sure both passwords are the same", variant: "destructive" });
+      toast({ title: "Modpas yo pa matche", description: "Tanpri asire ou modpas yo menm", variant: "destructive" });
       return;
     }
 
     if (!emailFromUrl) {
-      toast({ title: "Invalid link", description: "This password reset link is invalid. Please request a new one.", variant: "destructive" });
+      toast({ title: "Lyen envalid", description: "Lyen reyinisyalizasyon modpas sa a envalid. Tanpri mande yon nouvo.", variant: "destructive" });
       return;
     }
 
@@ -56,8 +56,8 @@ export default function ResetPassword() {
       await resetPassword({ email: emailFromUrl, password, password_confirmation: confirmPassword });
       setSuccess(true);
     } catch (error: any) {
-      const message = error?.message || "Failed to reset password.";
-      toast({ title: "Reset failed", description: message, variant: "destructive" });
+      const message = error?.message || "Echwe reyinisyalize modpas.";
+      toast({ title: "Reyinisyalizasyon echwe", description: message, variant: "destructive" });
     }
   };
 
@@ -91,15 +91,15 @@ export default function ResetPassword() {
                 <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
                   <CheckCircle2 className="w-8 h-8 text-green-600" />
                 </div>
-                <CardTitle className="text-2xl font-serif text-center">Password reset!</CardTitle>
+                <CardTitle className="text-2xl font-serif text-center">Modpas reyinisyalize!</CardTitle>
                 <CardDescription className="text-center">
-                  Your password has been successfully reset. You can now log in with your new password.
+                  Modpas ou te reyinisyalize ak siksè. Ou kapab konekte kounye a ak nouvo modpas ou.
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <Link href="/login">
                   <Button className="w-full" data-testid="button-go-login">
-                    Go to login
+                    Alé nan koneksyon
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </Link>
@@ -108,21 +108,21 @@ export default function ResetPassword() {
           ) : (
             <>
               <CardHeader className="space-y-1 pb-4">
-                <CardTitle className="text-2xl font-serif text-center">Set new password</CardTitle>
+                <CardTitle className="text-2xl font-serif text-center">Mete nouvo modpas</CardTitle>
                 <CardDescription className="text-center">
-                  Create a strong password for your account
+                  Kreye yon modpas solid pou kont ou
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="password">New password</Label>
+                    <Label htmlFor="password">Nouvo modpas</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
                         id="password"
                         type={showPassword ? "text" : "password"}
-                        placeholder="Enter new password"
+                        placeholder="Antre nouvo modpas"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         className="pl-10 pr-10"
@@ -141,13 +141,13 @@ export default function ResetPassword() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="confirmPassword">Confirm password</Label>
+                    <Label htmlFor="confirmPassword">Konfime modpas</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
                         id="confirmPassword"
                         type={showConfirmPassword ? "text" : "password"}
-                        placeholder="Confirm new password"
+                        placeholder="Konfime nouvo modpas"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         className="pl-10 pr-10"
@@ -178,20 +178,20 @@ export default function ResetPassword() {
                     </div>
                   )}
 
-                  <Button 
-                    type="submit" 
-                    className="w-full" 
+                  <Button
+                    type="submit"
+                    className="w-full"
                     disabled={isResettingPassword || !passwordRequirements.every(r => r.met)}
                     data-testid="button-reset-password"
                   >
                     {isResettingPassword ? (
                       <>
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Resetting...
+                        Ap reyinisyalize...
                       </>
                     ) : (
                       <>
-                        Reset password
+                        Reyinisyalize modpas
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </>
                     )}

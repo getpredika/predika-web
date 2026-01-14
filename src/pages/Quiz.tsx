@@ -48,9 +48,9 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const modeInfo = {
-  classic: { icon: Brain, label: "Classic", description: "Match definitions to words" },
-  listening: { icon: Headphones, label: "Listening", description: "Hear words, pick definitions" },
-  wordsearch: { icon: Grid3X3, label: "Word Search", description: "Find hidden words" },
+  classic: { icon: Brain, label: "Klasik", description: "Asosye definisyon ak mo" },
+  listening: { icon: Headphones, label: "Koute", description: "Tande mo yo, chwazi definisyon" },
+  wordsearch: { icon: Grid3X3, label: "Chèche Mo", description: "Jwenn mo kache yo" },
 };
 
 // Word mastery is tracked via /api/quiz/submit - no separate endpoint needed
@@ -151,8 +151,8 @@ function ClassicQuiz({ onBack }: { onBack: () => void }) {
       setQuizSession(session);
     } catch (error) {
       toast({
-        title: "Failed to load quiz",
-        description: "Please try again",
+        title: "Echwe chajman quiz la",
+        description: "Tanpri eseye ankò",
         variant: "destructive"
       });
       onBack();
@@ -166,8 +166,8 @@ function ClassicQuiz({ onBack }: { onBack: () => void }) {
         setQuizSession(session);
       } catch (error) {
         toast({
-          title: "Failed to load quiz",
-          description: error instanceof Error ? error.message : "Please try again",
+          title: "Echwe chajman quiz la",
+          description: error instanceof Error ? error.message : "Tanpri eseye ankò",
           variant: "destructive"
         });
         onBack();
@@ -205,9 +205,9 @@ function ClassicQuiz({ onBack }: { onBack: () => void }) {
     return (
       <Card className="p-8 text-center">
         <XCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-        <h2 className="text-xl font-serif font-bold mb-2">Not Enough Words</h2>
-        <p className="text-muted-foreground mb-6">We need at least 4 words to create a quiz.</p>
-        <Button onClick={onBack}>Back to Menu</Button>
+        <h2 className="text-xl font-serif font-bold mb-2">Pa Gen Ase Mo</h2>
+        <p className="text-muted-foreground mb-6">Nou bezwen omwen 4 mo pou kreye yon quiz.</p>
+        <Button onClick={onBack}>Retounen nan Meni</Button>
       </Card>
     );
   }
@@ -217,7 +217,7 @@ function ClassicQuiz({ onBack }: { onBack: () => void }) {
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="mb-8">
         <div className="flex justify-between items-center mb-2">
           <span className="text-sm text-muted-foreground">Question {currentIndex + 1} of {questions.length}</span>
-          <Badge variant="secondary" data-testid="badge-score">Score: {score}</Badge>
+          <Badge variant="secondary" data-testid="badge-score">Nòt: {score}</Badge>
         </div>
         <Progress value={progress} className="h-2" />
       </motion.div>
@@ -225,12 +225,12 @@ function ClassicQuiz({ onBack }: { onBack: () => void }) {
       <AnimatePresence mode="wait">
         <motion.div key={currentIndex} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }}>
           <Card className="p-6 sm:p-8 mb-6">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">Definition</p>
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">Definisyon</p>
             <p className="text-lg sm:text-xl text-foreground leading-relaxed mb-2">{(currentQuestion as DefinitionQuizQuestion).definition}</p>
             {currentQuestion.partOfSpeech && <Badge variant="outline" className="mt-2">{currentQuestion.partOfSpeech}</Badge>}
           </Card>
 
-          <p className="text-sm font-medium text-muted-foreground mb-4">Which word matches this definition?</p>
+          <p className="text-sm font-medium text-muted-foreground mb-4">Ki mo ki koresponn ak definisyon sa a?</p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {(currentQuestion as DefinitionQuizQuestion).options.map((option, i) => {
@@ -261,14 +261,14 @@ function ClassicQuiz({ onBack }: { onBack: () => void }) {
                     {isCorrect ? <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" /> : <XCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />}
                     <div>
                       <p className={`font-medium ${isCorrect ? "text-green-800" : "text-red-800"}`}>
-                        {isCorrect ? "Correct!" : `Incorrect. The answer is "${correctAnswer}"`}
+                        {isCorrect ? "Korèk!" : `Enkòrèk. Repons lan se "${correctAnswer}"`}
                       </p>
-                      {q.example && <p className="text-sm mt-1 opacity-80">Example: "{q.example}"</p>}
+                      {q.example && <p className="text-sm mt-1 opacity-80">Egzanp: "{q.example}"</p>}
                     </div>
                   </div>
                 </Card>
                 <Button onClick={handleNext} className="w-full mt-4" data-testid="button-next-question">
-                  {currentIndex < questions.length - 1 ? (<>Next Question<ArrowRight className="w-4 h-4 ml-2" /></>) : (<>See Results<Trophy className="w-4 h-4 ml-2" /></>)}
+                  {currentIndex < questions.length - 1 ? (<>Kesyon Swivan<ArrowRight className="w-4 h-4 ml-2" /></>) : (<>Gade Rezilta<Trophy className="w-4 h-4 ml-2" /></>)}
                 </Button>
               </motion.div>
             );
@@ -386,8 +386,8 @@ function ListeningChallenge({ onBack }: { onBack: () => void }) {
       setQuizSession(session);
     } catch (error) {
       toast({
-        title: "Failed to load quiz",
-        description: "Please try again",
+        title: "Echwe chajman quiz la",
+        description: "Tanpri eseye ankò",
         variant: "destructive"
       });
       onBack();
@@ -401,8 +401,8 @@ function ListeningChallenge({ onBack }: { onBack: () => void }) {
         setQuizSession(session);
       } catch (error) {
         toast({
-          title: "Failed to load quiz",
-          description: error instanceof Error ? error.message : "Please try again",
+          title: "Echwe chajman quiz la",
+          description: error instanceof Error ? error.message : "Tanpri eseye ankò",
           variant: "destructive"
         });
         onBack();
@@ -432,9 +432,9 @@ function ListeningChallenge({ onBack }: { onBack: () => void }) {
     return (
       <Card className="p-8 text-center">
         <XCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-        <h2 className="text-xl font-serif font-bold mb-2">Not Enough Words</h2>
-        <p className="text-muted-foreground mb-6">We need at least 4 words for the listening challenge.</p>
-        <Button onClick={onBack}>Back to Menu</Button>
+        <h2 className="text-xl font-serif font-bold mb-2">Pa Gen Ase Mo</h2>
+        <p className="text-muted-foreground mb-6">Nou bezwen omwen 4 mo pou defi koute a.</p>
+        <Button onClick={onBack}>Retounen nan Meni</Button>
       </Card>
     );
   }
@@ -454,7 +454,7 @@ function ListeningChallenge({ onBack }: { onBack: () => void }) {
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-6">
         <div className="flex justify-between items-center mb-2">
           <span className="text-sm text-muted-foreground">Question {currentIndex + 1} of {questions.length}</span>
-          <Badge variant="secondary" data-testid="badge-listening-score">Score: {score}</Badge>
+          <Badge variant="secondary" data-testid="badge-listening-score">Nòt: {score}</Badge>
         </div>
         <Progress value={progress} className="h-2" />
       </motion.div>
@@ -462,7 +462,7 @@ function ListeningChallenge({ onBack }: { onBack: () => void }) {
       <AnimatePresence mode="wait">
         <motion.div key={currentIndex} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }}>
           <Card className="p-8 mb-6 text-center">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-4">Listen to the word</p>
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-4">Koute mo a</p>
             <Button
               size="lg"
               variant={playCount > 0 ? "outline" : "default"}
@@ -472,7 +472,7 @@ function ListeningChallenge({ onBack }: { onBack: () => void }) {
               data-testid="button-play-word"
             >
               <Volume2 className="w-5 h-5" />
-              {playCount >= maxPlays ? "No plays left" : playCount > 0 ? `Play Again (${maxPlays - playCount} left)` : "Play Word"}
+              {playCount >= maxPlays ? "Pa gen jwe ki rete" : playCount > 0 ? `Jwe Ankò (${maxPlays - playCount} rete)` : "Jwe Mo"}
             </Button>
             {showResult && (() => {
               const q = currentQuestion as ListeningQuizQuestion;
@@ -481,7 +481,7 @@ function ListeningChallenge({ onBack }: { onBack: () => void }) {
             })()}
           </Card>
 
-          <p className="text-sm font-medium text-muted-foreground mb-4">Select the correct definition:</p>
+          <p className="text-sm font-medium text-muted-foreground mb-4">Chwazi definisyon ki korèk la:</p>
 
           <div className="space-y-2">
             {(currentQuestion as ListeningQuizQuestion).options.map((option, i) => {
@@ -508,7 +508,7 @@ function ListeningChallenge({ onBack }: { onBack: () => void }) {
           {showResult && (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-6">
               <Button onClick={handleNext} className="w-full" data-testid="button-listening-next">
-                {currentIndex < questions.length - 1 ? (<>Next Question<ArrowRight className="w-4 h-4 ml-2" /></>) : (<>See Results<Trophy className="w-4 h-4 ml-2" /></>)}
+                {currentIndex < questions.length - 1 ? (<>Kesyon Swivan<ArrowRight className="w-4 h-4 ml-2" /></>) : (<>Gade Rezilta<Trophy className="w-4 h-4 ml-2" /></>)}
               </Button>
             </motion.div>
           )}
@@ -663,7 +663,7 @@ function WordSearch({ words, onBack }: { words: Word[]; onBack: () => void }) {
     return (
       <Card className="p-8 text-center">
         <Grid3X3 className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-        <p className="text-muted-foreground">Generating puzzle...</p>
+        <p className="text-muted-foreground">Ap kreye puzzle...</p>
       </Card>
     );
   }
@@ -700,7 +700,7 @@ function WordSearch({ words, onBack }: { words: Word[]; onBack: () => void }) {
       </Card>
 
       <Card className="p-4 flex-1">
-        <p className="text-sm text-muted-foreground mb-3 font-medium">Find these words:</p>
+        <p className="text-sm text-muted-foreground mb-3 font-medium">Jwenn mo sa yo:</p>
         <div className="flex flex-col gap-2">
           {wordList.map((w, i) => (
             <Badge key={i} variant={w.found ? "default" : "outline"} className={`justify-start ${w.found ? "line-through opacity-60" : ""}`}>
@@ -709,7 +709,7 @@ function WordSearch({ words, onBack }: { words: Word[]; onBack: () => void }) {
           ))}
         </div>
         <p className="text-xs text-muted-foreground mt-4">
-          {wordList.filter(w => w.found).length} / {wordList.length} found
+          {wordList.filter(w => w.found).length} / {wordList.length} jwenn
         </p>
       </Card>
     </div>
@@ -721,10 +721,10 @@ function QuizResults({ score, total, answers, onRestart, onBack, timedMode }: { 
   // Quiz results are saved via /api/quiz/submit - no separate endpoint needed
 
   const getMessage = () => {
-    if (percentage === 100) return { text: "Perfect!", icon: Trophy };
-    if (percentage >= 80) return { text: "Excellent!", icon: Sparkles };
-    if (percentage >= 60) return { text: "Good Job!", icon: Target };
-    return { text: "Keep Learning!", icon: Brain };
+    if (percentage === 100) return { text: "Pafè!", icon: Trophy };
+    if (percentage >= 80) return { text: "Ekselan!", icon: Sparkles };
+    if (percentage >= 60) return { text: "Bèl travay!", icon: Target };
+    return { text: "Kontinye aprann!", icon: Brain };
   };
   const result = getMessage();
   const ResultIcon = result.icon;
@@ -739,7 +739,7 @@ function QuizResults({ score, total, answers, onRestart, onBack, timedMode }: { 
 
       <div className="mb-6">
         <p className="text-5xl font-bold text-primary mb-1">{score}/{total}</p>
-        <p className="text-muted-foreground">{timedMode ? `${total} questions in 60 seconds` : `${percentage}% correct`}</p>
+        <p className="text-muted-foreground">{timedMode ? `${total} kesyon nan 60 segonn` : `${percentage}% korèk`}</p>
       </div>
 
       {answers.length > 0 && answers.length <= 20 && (
@@ -755,10 +755,10 @@ function QuizResults({ score, total, answers, onRestart, onBack, timedMode }: { 
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
         <Button onClick={onRestart} data-testid="button-results-restart">
           <RotateCcw className="w-4 h-4 mr-2" />
-          Play Again
+          Jwe Ankò
         </Button>
         <Button variant="outline" onClick={onBack} data-testid="button-results-menu">
-          Back to Menu
+          Retounen nan Meni
         </Button>
       </div>
     </motion.div>
@@ -788,7 +788,7 @@ export default function Quiz() {
       <div className="min-h-screen bg-[#f0faf7] flex items-center justify-center">
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center">
           <Brain className="w-12 h-12 text-primary mx-auto mb-4 animate-pulse" />
-          <p className="text-muted-foreground">Loading quiz...</p>
+          <p className="text-muted-foreground">Ap chaje quiz...</p>
         </motion.div>
       </div>
     );
@@ -800,9 +800,9 @@ export default function Quiz() {
       <div className="min-h-screen bg-[#f0faf7] flex items-center justify-center p-4">
         <Card className="p-8 text-center max-w-md">
           <XCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-          <h2 className="text-xl font-serif font-bold mb-2">Not Enough Words</h2>
-          <p className="text-muted-foreground mb-6">We need at least 4 words in the dictionary to create this quiz mode.</p>
-          <Link href="/app"><Button data-testid="button-back-home"><Home className="w-4 h-4 mr-2" />Back to Dictionary</Button></Link>
+          <h2 className="text-xl font-serif font-bold mb-2">Pa Gen Ase Mo</h2>
+          <p className="text-muted-foreground mb-6">Nou bezwen omwen 4 mo nan diksyonè a pou kreye mòd quiz sa a.</p>
+          <Link href="/app"><Button data-testid="button-back-home"><Home className="w-4 h-4 mr-2" />Retounen nan Diksyonè</Button></Link>
         </Card>
       </div>
     );
@@ -821,8 +821,8 @@ export default function Quiz() {
           <div className="inline-flex items-center justify-center p-3 bg-white rounded-2xl shadow-sm border border-stone-100 mb-4">
             <Brain className="w-8 h-8 text-primary" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-foreground mb-2">Quiz Hub</h1>
-          <p className="text-muted-foreground">Choose your challenge</p>
+          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-foreground mb-2">Sant Quiz</h1>
+          <p className="text-muted-foreground">Chwazi defi w</p>
         </motion.div>
 
         {!inGame ? (
@@ -842,8 +842,8 @@ export default function Quiz() {
                       </div>
                       <h2 className="text-2xl font-serif font-bold mb-2">{label}</h2>
                       <p className="text-muted-foreground mb-6">{description}</p>
-                      <Button disabled={label === "Word Search"} size="lg" onClick={() => startGame(mode)} data-testid="button-start-mode">
-                        Start {label}
+                      <Button disabled={label === "Chèche Mo"} size="lg" onClick={() => startGame(mode)} data-testid="button-start-mode">
+                        Kòmanse {label}
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Button>
                     </>
@@ -856,7 +856,7 @@ export default function Quiz() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <Button variant="ghost" size="sm" onClick={backToMenu} className="mb-4" data-testid="button-back-menu">
               <ArrowRight className="w-4 h-4 mr-2 rotate-180" />
-              Back to Menu
+              Retounen nan Meni
             </Button>
 
             {mode === "classic" && <ClassicQuiz onBack={backToMenu} />}

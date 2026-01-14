@@ -28,8 +28,8 @@ export default function ForgotPassword() {
         setLocation(`/verify-email?email=${encodeURIComponent(email)}&type=password_reset`);
       }, 2000);
     } catch (error: any) {
-      const message = error?.message || "Failed to send reset email.";
-      toast({ title: "Error", description: message, variant: "destructive" });
+      const message = error?.message || "Echwe voye imèl reyinisyalizasyon.";
+      toast({ title: "Erè", description: message, variant: "destructive" });
     }
   };
 
@@ -63,30 +63,30 @@ export default function ForgotPassword() {
                 <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
                   <CheckCircle2 className="w-8 h-8 text-green-600" />
                 </div>
-                <CardTitle className="text-2xl font-serif text-center">Check your email</CardTitle>
+                <CardTitle className="text-2xl font-serif text-center">Tcheke imèl ou</CardTitle>
                 <CardDescription className="text-center">
-                  We've sent password reset instructions to<br />
+                  Nou voye enstriksyon reyinisyalizasyon modpas bay<br />
                   <span className="font-medium text-foreground">{email}</span>
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-sm text-center text-muted-foreground">
-                  If you don't see the email, check your spam folder. The link will expire in 1 hour.
+                  Si w pa wè imèl la, tcheke dosye spam ou. Lyen an ap ekspire nan 1 èdètan.
                 </p>
-                
+
                 <Button
                   variant="outline"
                   className="w-full"
                   onClick={() => setSubmitted(false)}
                   data-testid="button-try-different-email"
                 >
-                  Try a different email
+                  Eseye yon lòt imèl
                 </Button>
 
                 <p className="text-center text-sm text-muted-foreground">
                   <Link href="/login">
                     <span className="text-primary hover:underline cursor-pointer" data-testid="link-back-login">
-                      Back to login
+                      Retounen nan koneksyon
                     </span>
                   </Link>
                 </p>
@@ -95,21 +95,21 @@ export default function ForgotPassword() {
           ) : (
             <>
               <CardHeader className="space-y-1 pb-4">
-                <CardTitle className="text-2xl font-serif text-center">Forgot password?</CardTitle>
+                <CardTitle className="text-2xl font-serif text-center">Bliye modpas?</CardTitle>
                 <CardDescription className="text-center">
-                  No worries! Enter your email and we'll send you reset instructions.
+                  Pa gen pwoblem! Antre imèl ou epi n ap voye ou enstriksyon reyinisyalizasyon.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">Imèl</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
                         id="email"
                         type="email"
-                        placeholder="you@example.com"
+                        placeholder="ou@egzanp.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         className="pl-10"
@@ -119,20 +119,20 @@ export default function ForgotPassword() {
                     </div>
                   </div>
 
-                  <Button 
-                    type="submit" 
-                    className="w-full" 
+                  <Button
+                    type="submit"
+                    className="w-full"
                     disabled={isSendingReset}
                     data-testid="button-send-reset"
                   >
                     {isSendingReset ? (
                       <>
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Sending...
+                        Ap voye...
                       </>
                     ) : (
                       <>
-                        Send reset link
+                        Voye lyen reyinisyalizasyon
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </>
                     )}
@@ -142,7 +142,7 @@ export default function ForgotPassword() {
                 <Link href="/login">
                   <Button variant="ghost" className="w-full" data-testid="button-back-login">
                     <ArrowLeft className="w-4 h-4 mr-2" />
-                    Back to login
+                    Retounen nan koneksyon
                   </Button>
                 </Link>
               </CardContent>

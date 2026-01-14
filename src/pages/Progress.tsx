@@ -44,8 +44,8 @@ export default function ProgressDashboard() {
 
   const getQuizTypeLabel = (quizType: string) => {
     switch (quizType) {
-      case "listening_quiz": return "Listening";
-      case "definition_quiz": return "Definition";
+      case "listening_quiz": return "Koute";
+      case "definition_quiz": return "Definisyon";
       default: return "Quiz";
     }
   };
@@ -61,7 +61,7 @@ export default function ProgressDashboard() {
       <div className="min-h-screen bg-[#f0faf7] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4" />
-          <p className="text-muted-foreground">Loading your progress...</p>
+          <p className="text-muted-foreground">Chajman pwogrè w...</p>
         </div>
       </div>
     );
@@ -72,12 +72,12 @@ export default function ProgressDashboard() {
       <div className="min-h-screen bg-[#f0faf7] flex items-center justify-center p-4">
         <Card className="p-8 text-center max-w-md">
           <Trophy className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-          <h2 className="text-xl font-serif font-bold mb-2">Unable to load progress</h2>
+          <h2 className="text-xl font-serif font-bold mb-2">Pa kapab chaje pwogrè</h2>
           <p className="text-muted-foreground mb-4">
-            {(error as Error)?.message || "Please make sure you're logged in to view your progress."}
+            {(error as Error)?.message || "Tanpri konekte pou wè pwogrè w."}
           </p>
           <Link href="/login">
-            <Button>Log In</Button>
+            <Button>Konekte</Button>
           </Link>
         </Card>
       </div>
@@ -92,8 +92,8 @@ export default function ProgressDashboard() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-foreground mb-2">Progress Dashboard</h1>
-          <p className="text-muted-foreground">Track your vocabulary learning journey</p>
+          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-foreground mb-2">Tablo Pwogrè</h1>
+          <p className="text-muted-foreground">Swiv vwayaj aprantisaj vokabilè w</p>
         </motion.div>
 
         {/* Stats Cards */}
@@ -106,7 +106,7 @@ export default function ProgressDashboard() {
                     <Trophy className="w-6 h-6 text-primary" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Quizzes Completed</p>
+                    <p className="text-sm text-muted-foreground">Quiz Fini</p>
                     <p className="text-3xl font-bold" data-testid="text-quizzes-taken">{stats?.totalQuizzes || 0}</p>
                   </div>
                 </div>
@@ -122,7 +122,7 @@ export default function ProgressDashboard() {
                     <Target className="w-6 h-6 text-green-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Accuracy Rate</p>
+                    <p className="text-sm text-muted-foreground">To Presizyon</p>
                     <p className="text-3xl font-bold" data-testid="text-accuracy-rate">{Math.round(stats?.accuracyRate || 0)}%</p>
                   </div>
                 </div>
@@ -138,7 +138,7 @@ export default function ProgressDashboard() {
                     <Flame className="w-6 h-6 text-amber-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Current Streak</p>
+                    <p className="text-sm text-muted-foreground">Seri Aktyèl</p>
                     <p className="text-3xl font-bold" data-testid="text-current-streak">{stats?.currentStreak || 0}</p>
                   </div>
                 </div>
@@ -154,7 +154,7 @@ export default function ProgressDashboard() {
                     <Zap className="w-6 h-6 text-purple-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Best Score</p>
+                    <p className="text-sm text-muted-foreground">Pi Bon Nòt</p>
                     <p className="text-3xl font-bold" data-testid="text-best-score">{Math.round(stats?.bestScore || 0)}%</p>
                   </div>
                 </div>
@@ -169,7 +169,7 @@ export default function ProgressDashboard() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Brain className="w-5 h-5" />
-                Quiz Performance
+                Pèfòmans Quiz
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -180,7 +180,7 @@ export default function ProgressDashboard() {
                   </div>
                   <div>
                     <p className="text-3xl font-bold">{stats?.totalQuestionsAnswered || 0}</p>
-                    <p className="text-primary-foreground/80 text-sm">Questions Answered</p>
+                    <p className="text-primary-foreground/80 text-sm">Kesyon Reponn</p>
                   </div>
                 </div>
 
@@ -190,7 +190,7 @@ export default function ProgressDashboard() {
                   </div>
                   <div>
                     <p className="text-3xl font-bold">{stats?.totalCorrectAnswers || 0}</p>
-                    <p className="text-primary-foreground/80 text-sm">Correct Answers</p>
+                    <p className="text-primary-foreground/80 text-sm">Repons Kòrèk</p>
                   </div>
                 </div>
 
@@ -199,8 +199,8 @@ export default function ProgressDashboard() {
                     <Clock className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className="text-3xl font-bold">{Math.round(stats?.averageTimePerQuestion || 0)}s</p>
-                    <p className="text-primary-foreground/80 text-sm">Avg Time/Question</p>
+                    <p className="text-3xl font-bold">{Math.round(stats?.averageScore || 0)}%</p>
+                    <p className="text-primary-foreground/80 text-sm">Nòt Mwayen</p>
                   </div>
                 </div>
 
@@ -210,7 +210,7 @@ export default function ProgressDashboard() {
                   </div>
                   <div>
                     <p className="text-3xl font-bold">{stats?.longestStreak || 0}</p>
-                    <p className="text-primary-foreground/80 text-sm">Longest Streak</p>
+                    <p className="text-primary-foreground/80 text-sm">Pi Long Seri</p>
                   </div>
                 </div>
               </div>
@@ -225,7 +225,7 @@ export default function ProgressDashboard() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <TrendingUp className="w-5 h-5 text-primary" />
-                  Score Trend
+                  Tandans Nòt
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -250,7 +250,7 @@ export default function ProgressDashboard() {
                   </ResponsiveContainer>
                 ) : (
                   <div className="h-[200px] flex items-center justify-center text-muted-foreground">
-                    <p>Complete quizzes to see your score trend</p>
+                    <p>Fini quiz pou wè tandans nòt ou</p>
                   </div>
                 )}
               </CardContent>
@@ -262,7 +262,7 @@ export default function ProgressDashboard() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <Brain className="w-5 h-5 text-primary" />
-                  Daily Activity
+                  Aktivite Chak Jou
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -283,7 +283,7 @@ export default function ProgressDashboard() {
                   </ResponsiveContainer>
                 ) : (
                   <div className="h-[200px] flex items-center justify-center text-muted-foreground">
-                    <p>Complete quizzes to see your activity</p>
+                    <p>Fini quiz pou wè aktivite w</p>
                   </div>
                 )}
               </CardContent>
@@ -297,7 +297,7 @@ export default function ProgressDashboard() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Calendar className="w-5 h-5 text-primary" />
-                Recent Quiz History
+                Istwa Quiz Ki Fèk Pase
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -330,8 +330,8 @@ export default function ProgressDashboard() {
               ) : (
                 <div className="text-center py-8 text-muted-foreground">
                   <Trophy className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                  <p>No quiz attempts yet</p>
-                  <p className="text-sm">Start practicing to track your progress!</p>
+                  <p>Poko gen tantativ quiz</p>
+                  <p className="text-sm">Kòmanse pratike pou swiv pwogrè w!</p>
                 </div>
               )}
             </CardContent>

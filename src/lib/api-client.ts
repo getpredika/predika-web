@@ -89,13 +89,13 @@ export async function apiClient<T = unknown>(
 
         // Handle network errors
         if (error instanceof TypeError) {
-            throw new ApiError(0, "Network error. Please check your connection.");
+            throw new ApiError(0, "Erè rezo. Tanpri verifye koneksyon w.");
         }
 
         // Handle other errors
         throw new ApiError(
             500,
-            error instanceof Error ? error.message : "An unexpected error occurred"
+            error instanceof Error ? error.message : "Yon erè ki pa prevwa fèt"
         );
     }
 }
@@ -144,7 +144,7 @@ export function getErrorMessage(error: unknown): string {
     if (error instanceof Error) {
         return error.message;
     }
-    return "An unexpected error occurred";
+    return "Yon erè ki pa prevwa fèt";
 }
 
 /**

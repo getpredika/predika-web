@@ -23,19 +23,19 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    
+
     try {
       const result = await login({ email, password });
-      
+
       if (result.needsVerification) {
         setLocation(`/verify-email?email=${encodeURIComponent(result.email)}`);
         return;
       }
-      
-      toast({ title: "Welcome back!", description: "You've successfully logged in." });
+
+      toast({ title: "Byenvini ankò!", description: "Ou konekte ak siksè." });
       setLocation("/app");
     } catch (error: any) {
-      const message = error?.message || "Login failed. Please try again.";
+      const message = error?.message || "Koneksyon echwe. Tanpri eseye ankò.";
       setError(message);
     }
   };
@@ -69,15 +69,15 @@ export default function Login() {
 
         <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
           <CardHeader className="space-y-1 pb-4">
-            <CardTitle className="text-2xl font-serif text-center">Welcome back</CardTitle>
+            <CardTitle className="text-2xl font-serif text-center">Byenvini ankò</CardTitle>
             <CardDescription className="text-center">
-              Sign in to continue your learning journey
+              Konekte pou kontinye vwayaj aprantisaj ou
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Button 
-              variant="outline" 
-              className="w-full mb-2 text-gray-600 font-normal" 
+            <Button
+              variant="outline"
+              className="w-full mb-2 text-gray-600 font-normal"
               type="button"
               onClick={handleGoogleClick}
               data-testid="button-google-login"
@@ -100,7 +100,7 @@ export default function Login() {
                   fill="#EA4335"
                 />
               </svg>
-              Continue with Google
+              Kontinye ak Google
             </Button>
 
             <div className="relative">
@@ -108,19 +108,19 @@ export default function Login() {
                 <span className="w-full border-t" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-muted-foreground">Or continue with email</span>
+                <span className="bg-white px-2 text-muted-foreground">Oswa kontinye ak imèl</span>
               </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">Imèl</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
                     id="email"
                     type="email"
-                    placeholder="you@example.com"
+                    placeholder="ou@egzanp.com"
                     value={email}
                     onChange={(e) => { setEmail(e.target.value); setError(""); }}
                     className={`pl-10 ${error ? "border-red-500 focus-visible:ring-red-500" : ""}`}
@@ -132,10 +132,10 @@ export default function Login() {
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password">Modpas</Label>
                   <Link href="/forgot-password">
                     <span className="text-sm text-primary hover:underline cursor-pointer" data-testid="link-forgot-password">
-                      Forgot password?
+                      Bliye modpas?
                     </span>
                   </Link>
                 </div>
@@ -144,7 +144,7 @@ export default function Login() {
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
+                    placeholder="Antre modpas ou"
                     value={password}
                     onChange={(e) => { setPassword(e.target.value); setError(""); }}
                     className={`pl-10 pr-10 ${error ? "border-red-500 focus-visible:ring-red-500" : ""}`}
@@ -169,20 +169,20 @@ export default function Login() {
                 </div>
               )}
 
-              <Button 
-                type="submit" 
-                className="w-full" 
+              <Button
+                type="submit"
+                className="w-full"
                 disabled={isLoggingIn}
                 data-testid="button-login"
               >
                 {isLoggingIn ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Signing in...
+                    Ap konekte...
                   </>
                 ) : (
                   <>
-                    Sign in
+                    Konekte
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </>
                 )}
@@ -190,10 +190,10 @@ export default function Login() {
             </form>
 
             <p className="text-center text-sm text-muted-foreground">
-              Don't have an account?{" "}
+              Ou pa gen kont?{" "}
               <Link href="/register">
                 <span className="text-primary hover:underline font-medium cursor-pointer" data-testid="link-register">
-                  Sign up
+                  Enskri
                 </span>
               </Link>
             </p>
