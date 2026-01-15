@@ -25,9 +25,6 @@ export default function ProgressDashboard() {
   const isLoading = isLoadingStats || isLoadingHistory;
   const error = statsError || historyError;
 
-  // Debug: check what API returns
-  console.log("Stats from API:", stats);
-  console.log("History from API:", history);
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);

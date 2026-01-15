@@ -820,8 +820,8 @@ export default function Quiz() {
           <div className="inline-flex items-center justify-center p-3 bg-white rounded-2xl shadow-sm border border-stone-100 mb-4">
             <Brain className="w-8 h-8 text-primary" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-foreground mb-2">Sant Quiz</h1>
-          <p className="text-muted-foreground">Chwazi defi w</p>
+          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-foreground mb-2">Quiz</h1>
+          <p className="text-muted-foreground">Chwazi defi ou</p>
         </motion.div>
 
         {!inGame ? (

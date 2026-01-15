@@ -34,7 +34,7 @@ import GrammarCorrector from "@/pages/GrammarCorrector";
 const navItems = [
   { id: "progress", label: "Pwogrè", icon: BarChart3, component: Progress },
   { id: "dictionary", label: "Diksyonè", icon: BookOpen, component: Dictionary },
-  { id: "quiz", label: "Sant Quiz", icon: Brain, component: Quiz },
+  { id: "quiz", label: "Quiz", icon: Brain, component: Quiz },
   { id: "tts", label: "Tèks an Lapawòl", icon: Volume2, component: TextToSpeech },
   { id: "pronunciation", label: "Pwononsyasyon", icon: Mic, component: PronunciationAssessment },
   { id: "stt", label: "Lapawòl an Tèks", icon: AudioLines, component: SpeechToText },
