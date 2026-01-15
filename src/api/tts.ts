@@ -73,7 +73,7 @@ export async function generateSpeech(
 ): Promise<TTSGenerateResponse> {
     const response = await fetch(`${TTS_API_URL}/api/speech/tts`, {
         method: "POST",
-        credentials: "include", // Include cookies for session-based auth
+        credentials: "include", 
         headers: {
             "Content-Type": "application/json",
         },

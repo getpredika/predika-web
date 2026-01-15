@@ -42,8 +42,8 @@ const EXAMPLE_PHRASES = [
 ];
 
 // Orb colors - different for model vs speaker
-const MODEL_ORB_COLORS: [string, string] = ["#E5E7EB", "#9CA3AF"]; // Indigo
-const SPEAKER_ORB_COLORS: [string, string] = ["#CADCFC", "#A0B9D1"]; // Teal/Primary
+const MODEL_ORB_COLORS: [string, string] = ["#E5E7EB", "#9CA3AF"]; 
+const SPEAKER_ORB_COLORS: [string, string] = ["#CADCFC", "#A0B9D1"]; 
 
 export default function TextToSpeech() {
     const [text, setText] = useState("");

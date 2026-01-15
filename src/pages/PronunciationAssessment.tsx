@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { ArrowLeft, Mic, Square, RotateCcw, Volume2, CheckCircle2 } from "lucide-react";
@@ -10,6 +10,15 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import {
+  AudioPlayerProvider,
+  AudioPlayerButton,
+  AudioPlayerProgress,
+  AudioPlayerTime,
+  AudioPlayerDuration,
+  AudioPlayerSpeed,
+  useAudioPlayer
+} from "@/components/ui/audio-player-core";
 
 const sampleTexts = [
   { id: 1, title: "Simple Greeting", text: "Hello, how are you doing today? I hope you are having a wonderful day." },
@@ -201,6 +210,42 @@ function TranscriptChip({ word }: { word: TranscriptWord }) {
   );
 }
 
+function RecordingAudioPlayer({ audioUrl }: { audioUrl: string }) {
+  const player = useAudioPlayer();
+
+  const audioItem = useMemo(
+    () => ({
+      id: "pronunciation-recording",
+      src: audioUrl,
+      data: {},
+    }),
+    [audioUrl]
+  );
+
+  useEffect(() => {
+    player.setActiveItem(audioItem);
+  }, [audioUrl, audioItem, player]);
+
+  return (
+    <div className="rounded-lg border bg-card p-3">
+      <div className="flex items-center gap-3">
+        <AudioPlayerButton
+          item={audioItem}
+          variant="default"
+          size="icon"
+          className="shrink-0 h-10 w-10 rounded-full"
+        />
+        <div className="flex flex-1 items-center gap-2">
+          <AudioPlayerTime className="text-xs w-10 text-right" />
+          <AudioPlayerProgress className="flex-1" />
+          <AudioPlayerDuration className="text-xs w-10" />
+          <AudioPlayerSpeed variant="ghost" size="icon" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function PronunciationAssessment() {
   const [selectedSample, setSelectedSample] = useState<number | null>(null);
   const [textValue, setTextValue] = useState("");
@@ -208,6 +253,7 @@ export default function PronunciationAssessment() {
   const [hasRecorded, setHasRecorded] = useState(false);
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [result, setResult] = useState<AssessmentResult | null>(null);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [toggles, setToggles] = useState({
     mispronunciations: true,
     unexpectedBreaks: true,
@@ -218,6 +264,7 @@ export default function PronunciationAssessment() {
   });
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
   const { toast } = useToast();
 
   const charCount = textValue.length;
@@ -238,16 +285,31 @@ export default function PronunciationAssessment() {
 
   const startRecording = useCallback(async () => {
     try {
+      // Clear previous recording
+      audioChunksRef.current = [];
+      if (audioUrl) {
+        URL.revokeObjectURL(audioUrl);
+        setAudioUrl(null);
+      }
+
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorderRef.current = mediaRecorder;
 
-      mediaRecorder.ondataavailable = () => {
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
         setHasRecorded(true);
       };
 
       mediaRecorder.onstop = () => {
         stream.getTracks().forEach((track) => track.stop());
+
+        // Create audio blob and URL
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        const url = URL.createObjectURL(audioBlob);
+        setAudioUrl(url);
       };
 
       mediaRecorder.start();
@@ -256,7 +318,7 @@ export default function PronunciationAssessment() {
     } catch (err) {
       toast({ title: "Microphone access denied", description: "Please allow microphone access to record", variant: "destructive" });
     }
-  }, [toast]);
+  }, [toast, audioUrl]);
 
   const stopRecording = useCallback(() => {
     if (mediaRecorderRef.current && isRecording) {
@@ -271,7 +333,7 @@ export default function PronunciationAssessment() {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     const mockResult = runMockAssessment();
     setResult(mockResult);
-    
+
     try {
       await apiRequest("POST", "/api/progress/pronunciation", {
         text: textValue,
@@ -284,7 +346,7 @@ export default function PronunciationAssessment() {
     } catch (e) {
       console.error("Failed to save pronunciation attempt:", e);
     }
-    
+
     setIsEvaluating(false);
   }, [textValue]);
 
@@ -292,6 +354,11 @@ export default function PronunciationAssessment() {
     setResult(null);
     setHasRecorded(false);
     setIsRecording(false);
+    if (audioUrl) {
+      URL.revokeObjectURL(audioUrl);
+      setAudioUrl(null);
+    }
+    audioChunksRef.current = [];
   };
 
   const filteredTranscript = result?.transcript.filter((word) => {
@@ -431,6 +498,22 @@ export default function PronunciationAssessment() {
                       />
                       <span className="text-sm text-muted-foreground">Recording...</span>
                     </div>
+                  </motion.div>
+                )}
+
+                {audioUrl && hasRecorded && !isRecording && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="pt-4 border-t"
+                  >
+                    <div className="mb-2">
+                      <p className="text-sm font-medium">Your Recording</p>
+                      <p className="text-xs text-muted-foreground">Listen to your pronunciation</p>
+                    </div>
+                    <AudioPlayerProvider>
+                      <RecordingAudioPlayer audioUrl={audioUrl} />
+                    </AudioPlayerProvider>
                   </motion.div>
                 )}
               </CardContent>

@@ -29,7 +29,7 @@ function useDebouncedValue(value: string, delayMs: number) {
  * This prevents hard-to-debug animation glitches if backend shape changes.
  */
 function getWordKey(word: Word): string {
-  // id is number per your type, but return string for React keys
+  // id is number per type, but return string for React keys
   return typeof word.id === "number" ? String(word.id) : `${word.word}-${word.createdAt}`;
 }
 

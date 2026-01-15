@@ -104,7 +104,7 @@ export async function transcribeAudio(
 
     const response = await fetch(`${API_URL}/api/speech/transcribe`, {
         method: "POST",
-        credentials: "include", // Include cookies for session-based auth
+        credentials: "include",
         body: formData,
     });
 

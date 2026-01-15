@@ -51,10 +51,10 @@ export default function NotFound() {
           transition={{ delay: 0.3 }}
         >
           <h1 className="text-2xl sm:text-3xl font-serif font-bold text-gray-800 mb-3">
-            Paj pa jwenn
+            Paj sa pa egziste
           </h1>
           <p className="text-gray-600 mb-8 px-4">
-            Ayaya! Paj w ap chèche a sanble pèdi. Ann remèt ou sou bon wout la.
+            Ayayayy! Paj w ap chèche a sanble pèdi. Ann remete ou sou bon wout la.
           </p>
         </motion.div>
 

@@ -2,11 +2,6 @@ import { api } from "@/lib/api-client";
 import type { CorrectTextRequest, CorrectTextResponse } from "@/types/api";
 
 /**
- * AI Text Correction API
- * Powered by Anthropic Claude for Haitian Creole text correction
- */
-
-/**
  * Correct Haitian Creole text for spelling, grammar, and syntax
  * POST /api/correct
  * Requires authentication

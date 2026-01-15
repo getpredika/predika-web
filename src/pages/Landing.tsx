@@ -193,14 +193,14 @@ const faqs = [
       "Absoliman. Nou pran konfidansyalite o seryè epi nou pa janm pataje done pèsonèl ou ak tyès pati. Tout anrejistreman odyo trete an sekirite epi yo pa estoke sof si ou ekspèsiteman sove yo.",
   },
   {
-    question: "Èske mwen ka anile abònman mwen nenpòt lè?",
+    question: "Ki lang yo disponib sou platfòm nan?",
     answer:
-      "Wi, ou ka anile abònman ou nenpòt lè san okenn kesyon. Ou pral kontinye gen aksè jouk nan fen peryòd faktirasyòn ou.",
+      "Aktyèlman, nou sipòte Kreyòl Ayisyen. Nou ap travay pou ajoute plis lang nan tan ki ap vini pou ede plis moun aprann.",
   },
   {
-    question: "Èske ou òfri rabè pou elèv?",
+    question: "Èske mwen bezwen mikwofòn espesyal pou evalyasyon pwononsyasyon?",
     answer:
-      "Wi! Elèv ki gen yon adrès imel .edu valab resevwa 50% rabè sou plan Pro a. Kontakte ekip sipò nou an ak prèv enskripsyon pou resevwa rabè ou.",
+      "Non, mikwofòn smartphone oswa òdinatè regilye ou byen ase. Men, yon mikwofòn ki gen pi bon kalite ka bay rezilta pi plis egzak.",
   },
 ];
 
@@ -661,15 +661,17 @@ export default function Landing() {
                   </Button>
                 </a>
               )}
-              <Button
-                size="lg"
-                variant="outline"
-                className="text-base px-8"
-                data-testid="button-hero-demo"
-              >
-                <Play className="w-4 h-4 mr-2" />
-                Gade Demo
-              </Button>
+              <a href="https://cal.com/predika-g8xvz4" target="_blank" rel="noopener noreferrer">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="text-base px-8"
+                  data-testid="button-hero-demo"
+                >
+                  <Play className="w-4 h-4 mr-2" />
+                  Gade Demo
+                </Button>
+              </a>
             </div>
           </motion.div>
 
@@ -1051,14 +1053,16 @@ export default function Landing() {
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
-              <Button
-                size="lg"
-                variant="outline"
-                className="text-base px-8 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
-                data-testid="button-cta-demo"
-              >
-                Pwograme Demo
-              </Button>
+              <a href="https://cal.com/predika-g8xvz4" target="_blank" rel="noopener noreferrer">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="text-base px-8 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
+                  data-testid="button-cta-demo"
+                >
+                  Pwograme Demo
+                </Button>
+              </a>
             </div>
           </motion.div>
         </div>

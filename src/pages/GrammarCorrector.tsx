@@ -247,7 +247,7 @@ export default function GrammarCorrector() {
       } else {
         toast({
           title: `Jwenn ${correction.errors.length} pwoblèm${correction.errors.length > 1 ? '' : ''}`,
-          description: "Klike sou tèks ki mare pou aplike koreksyon"
+          description: "Klike sou tèks ki gen trè sou li a pou aplike koreksyon"
         });
       }
     } catch (error) {
@@ -442,9 +442,7 @@ export default function GrammarCorrector() {
                   <Textarea
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
-                    placeholder="Antre tèks ou la a pou verifye fòtògraf ak gramè...
-
-Eseye tape: 'Li te ale nan magazen an. Nou te manje yon pen tre bon. Se yon bagay ki important pou nou fè.'"
+                    placeholder="Antre tèks ou la a pou verifye fot ògraf ak gramè..."
                     className="min-h-[300px] text-base"
                     data-testid="input-text"
                   />
@@ -661,7 +659,6 @@ Eseye tape: 'Li te ale nan magazen an. Nou te manje yon pen tre bon. Se yon baga
                 <ul className="text-sm text-muted-foreground space-y-2">
                   <li>Kole oswa tape tèks ou nan bwat la</li>
                   <li>Klike "Verifye Gramè" pou analize</li>
-                  <li>Pase sourit sou erè ki mare pou detay</li>
                   <li>Klike erè yo pou aplike koreksyon</li>
                 </ul>
               </CardContent>

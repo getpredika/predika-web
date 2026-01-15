@@ -87,7 +87,7 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem data-testid="menu-upgrade">
                 <Sparkles className="mr-2 size-4" />
-                Amélioré nan Pro
+                Ameliore nan Pro
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

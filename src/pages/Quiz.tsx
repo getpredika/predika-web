@@ -53,7 +53,6 @@ const modeInfo = {
   wordsearch: { icon: Grid3X3, label: "Chèche Mo", description: "Jwenn mo kache yo" },
 };
 
-// Word mastery is tracked via /api/quiz/submit - no separate endpoint needed
 
 function ModeSelector({ selectedMode, onSelectMode }: { selectedMode: QuizMode; onSelectMode: (mode: QuizMode) => void }) {
   return (
