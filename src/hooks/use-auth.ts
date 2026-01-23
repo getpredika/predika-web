@@ -51,6 +51,8 @@ export function useAuth() {
     },
     retry: false,
     staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   // Login mutation

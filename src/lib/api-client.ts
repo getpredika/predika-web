@@ -2,8 +2,7 @@ import type { ApiSuccessResponse, ApiErrorResponse } from "@/types/api";
 
 // API Configuration
 const API_BASE_URL =
-    import.meta.env.VITE_API_URL ||
-    (import.meta.env.DEV ? "http://localhost:3333" : "https://api.predika.app");
+    import.meta.env.VITE_API_URL ||  "https://api.predika.app";
 
 export const CDN_BASE_URL = "https://cdn.predika.app/";
 

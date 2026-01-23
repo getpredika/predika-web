@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useCallback } from "react";
 import {
   BookOpen,
   Mic,
@@ -17,7 +17,6 @@ import {
   MessageSquare,
   ChevronDown,
   Play,
-  LogOut,
 } from "lucide-react";
 import { LayoutTextFlip } from "@/components/ui/layout-text-flip";
 import { PointerHighlight } from "@/components/ui/pointer-highlight";
@@ -288,49 +287,16 @@ function FeatureCard({
 }
 
 function TestimonialCarousel() {
-  const [isPaused, setIsPaused] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
-
   const duplicatedTestimonials = [...testimonials, ...testimonials];
 
-  useEffect(() => {
-    const scrollContainer = scrollRef.current;
-    if (!scrollContainer) return;
-
-    let animationId: number;
-    let scrollPosition = 0;
-    const scrollSpeed = 0.5;
-
-    const animate = () => {
-      if (!isPaused && scrollContainer) {
-        scrollPosition += scrollSpeed;
-        const maxScroll = scrollContainer.scrollWidth / 2;
-        if (scrollPosition >= maxScroll) {
-          scrollPosition = 0;
-        }
-        scrollContainer.scrollLeft = scrollPosition;
-      }
-      animationId = requestAnimationFrame(animate);
-    };
-
-    animationId = requestAnimationFrame(animate);
-
-    return () => cancelAnimationFrame(animationId);
-  }, [isPaused]);
-
   return (
-    <div
-      className="relative overflow-hidden"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-    >
+    <div className="relative overflow-hidden">
       <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
 
       <div
-        ref={scrollRef}
-        className="flex gap-6 overflow-x-hidden py-4"
-        style={{ scrollBehavior: "auto" }}
+        className="flex gap-6 py-4 animate-scroll"
+        style={{ width: "max-content" }}
       >
         {duplicatedTestimonials.map((testimonial, index) => (
           <TestimonialCard
@@ -595,16 +561,12 @@ export default function Landing() {
                 </>
               ) : (
                 <>
-                  <a href="/login">
-                    <Button variant="ghost" data-testid="button-login">
-                      Konekte
-                    </Button>
-                  </a>
-                  <a href="/login">
-                    <Button data-testid="button-get-started">
-                      Kòmanse
-                    </Button>
-                  </a>
+                  <Button asChild variant="ghost" data-testid="button-login">
+                    <a href="/login">Konekte</a>
+                  </Button>
+                  <Button asChild data-testid="button-get-started">
+                    <a href="/login">Kòmanse</a>
+                  </Button>
                 </>
               )}
             </div>
@@ -650,28 +612,19 @@ export default function Landing() {
                   </Button>
                 </Link>
               ) : (
-                <a href="/login">
-                  <Button
-                    size="lg"
-                    className="text-base px-8"
-                    data-testid="button-hero-start"
-                  >
+                <Button asChild size="lg" className="text-base px-8" data-testid="button-hero-start">
+                  <a href="/login">
                     Kòmanse Aprann Gratis
                     <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </a>
+                  </a>
+                </Button>
               )}
-              <a href="https://cal.com/predika-g8xvz4" target="_blank" rel="noopener noreferrer">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="text-base px-8"
-                  data-testid="button-hero-demo"
-                >
+              <Button asChild size="lg" variant="outline" className="text-base px-8" data-testid="button-hero-demo">
+                <a href="https://cal.com/predika-g8xvz4" target="_blank" rel="noopener noreferrer">
                   <Play className="w-4 h-4 mr-2" />
                   Gade Demo
-                </Button>
-              </a>
+                </a>
+              </Button>
             </div>
           </motion.div>
 
@@ -1053,16 +1006,11 @@ export default function Landing() {
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
-              <a href="https://cal.com/predika-g8xvz4" target="_blank" rel="noopener noreferrer">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="text-base px-8 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
-                  data-testid="button-cta-demo"
-                >
+              <Button asChild size="lg" variant="outline" className="text-base px-8 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10" data-testid="button-cta-demo">
+                <a href="https://cal.com/predika-g8xvz4" target="_blank" rel="noopener noreferrer">
                   Pwograme Demo
-                </Button>
-              </a>
+                </a>
+              </Button>
             </div>
           </motion.div>
         </div>
@@ -1085,7 +1033,7 @@ export default function Landing() {
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Pwodwi</h4>
+              <h3 className="font-semibold mb-4">Pwodwi</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
                   <a
@@ -1107,8 +1055,8 @@ export default function Landing() {
                 </li> */}
                 <li>
                   <a
-                    href="#"
-                    className="hover:text-foreground transition-colors"
+                    className="text-muted-foreground/60 cursor-default"
+                    aria-disabled="true"
                     data-testid="link-footer-api"
                   >
                     API
@@ -1117,12 +1065,12 @@ export default function Landing() {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Konpayi</h4>
+              <h3 className="font-semibold mb-4">Konpayi</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
                   <a
-                    href="#"
-                    className="hover:text-foreground transition-colors"
+                    className="text-muted-foreground/60 cursor-default"
+                    aria-disabled="true"
                     data-testid="link-footer-about"
                   >
                     Konsènan
@@ -1130,8 +1078,8 @@ export default function Landing() {
                 </li>
                 <li>
                   <a
-                    href="#"
-                    className="hover:text-foreground transition-colors"
+                    className="text-muted-foreground/60 cursor-default"
+                    aria-disabled="true"
                     data-testid="link-footer-blog"
                   >
                     Blòg
@@ -1139,8 +1087,8 @@ export default function Landing() {
                 </li>
                 <li>
                   <a
-                    href="#"
-                    className="hover:text-foreground transition-colors"
+                    className="text-muted-foreground/60 cursor-default"
+                    aria-disabled="true"
                     data-testid="link-footer-careers"
                   >
                     Karyè
@@ -1149,7 +1097,7 @@ export default function Landing() {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Legal</h4>
+              <h3 className="font-semibold mb-4">Legal</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
                   <Link
@@ -1171,8 +1119,8 @@ export default function Landing() {
                 </li>
                 <li>
                   <a
-                    href="#"
-                    className="hover:text-foreground transition-colors"
+                    className="text-muted-foreground/60 cursor-default"
+                    aria-disabled="true"
                     data-testid="link-footer-contact"
                   >
                     Kontakte
@@ -1183,30 +1131,30 @@ export default function Landing() {
           </div>
           <div className="pt-8 border-t flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">
-              2025 Predika. Tout dwa rezève.
+              &copy; {new Date().getFullYear()} Predika. Tout dwa rezève.
             </p>
             <div className="flex items-center gap-4">
-              <a
-                href="#"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+              <button
+                className="text-muted-foreground"
+                aria-label="Sit wèb"
                 data-testid="link-social-globe"
               >
                 <Globe className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+              </button>
+              <button
+                className="text-muted-foreground"
+                aria-label="Kominote"
                 data-testid="link-social-users"
               >
                 <Users className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+              </button>
+              <button
+                className="text-muted-foreground"
+                aria-label="Sekirite"
                 data-testid="link-social-shield"
               >
                 <Shield className="w-5 h-5" />
-              </a>
+              </button>
             </div>
           </div>
         </div>
