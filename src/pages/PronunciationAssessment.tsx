@@ -411,7 +411,7 @@ export default function PronunciationAssessment() {
                   <span>{wordCount} mo</span>
                 </div>
 
-                {/* Listen to reference via TTS */}
+                {/* TODO: Listen to reference via TTS — re-enable when TTS is ready
                 {textValue.trim() && (
                   <div className="space-y-2 pt-2 border-t">
                     <div className="flex items-center justify-between">
@@ -434,6 +434,7 @@ export default function PronunciationAssessment() {
                     )}
                   </div>
                 )}
+                */}
 
                 {/* Recording controls */}
                 <div className="flex items-center justify-center gap-3 pt-2 border-t">
