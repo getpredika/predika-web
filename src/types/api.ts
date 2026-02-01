@@ -359,6 +359,116 @@ export interface TTSGenerateResponse {
     metadata: TTSGenerateMetadata;
 }
 
+// ============= Pronunciation Assessment Types =============
+
+export interface AssessmentPhone {
+    phone: string;
+    phone_id: number;
+    phone_idx: number;
+    gop: number;
+    gop_z: number;
+    occupancy: number;
+    reliable: boolean;
+    start_sec: number;
+    end_sec: number;
+    dur_sec: number;
+    is_error: boolean;
+    severity: "mild" | "medium" | "severe" | null;
+    error_type: "mispronunciation" | null;
+    top_competitors: unknown[];
+    start_frame: number;
+    end_frame: number;
+}
+
+export interface AssessmentWord {
+    word: string;
+    score: number;
+    gop_z_mean: number;
+    is_error: boolean;
+    error_types: string[];
+    num_phones: number;
+    num_errors: number;
+    phones: AssessmentPhone[];
+}
+
+export interface AssessmentBreakError {
+    error_type: "unexpected_break" | "missing_break";
+    severity: "mild" | "medium" | "severe";
+    start_sec: number;
+    end_sec: number;
+    dur_sec: number;
+}
+
+export interface AssessmentResult {
+    ok: true;
+    utterance: {
+        score: number;
+        grade: string;
+        num_phones: number;
+        num_errors: number;
+        num_words: number;
+        accuracy_pct: number;
+        method: string;
+        mode: string;
+    };
+    scores: {
+        accuracy: { score: number; n_correct: number; n_total: number };
+        fluency: { score: number; phones_per_sec: number; pause_ratio: number; n_long_pauses: number };
+        completeness: { score: number; n_spoken: number; n_expected: number; n_omitted: number };
+        prosody: { score: number; f0_std: number; is_monotone: boolean; n_break_errors: number };
+        overall: {
+            score: number;
+            grade: string;
+            breakdown: { accuracy: number; fluency: number; completeness: number; prosody: number };
+            weights: { accuracy: number; fluency: number; completeness: number; prosody: number };
+        };
+    };
+    errors: {
+        summary: {
+            mispronunciation: number;
+            omission: number;
+            insertion: number;
+            unexpected_break: number;
+            missing_break: number;
+            monotone: number;
+            total: number;
+        };
+        break_errors: AssessmentBreakError[];
+        prosody_errors: unknown[];
+    };
+    words: AssessmentWord[];
+    prosody: {
+        pitch: { f0_mean: number; f0_std: number; f0_range: number; voiced_fraction: number };
+        energy: { mean_db: number; std_db: number };
+        speaking_rate: { phones_per_sec: number; phones_per_sec_net: number; total_pause_sec: number; pause_ratio: number };
+        monotone: { is_monotone: boolean; severity: string | null; f0_std: number; f0_range: number };
+        n_pauses: number;
+    };
+    flags: { prompt_deviation: boolean; low_confidence: boolean };
+    metadata: {
+        audio_path: string | null;
+        reference_text: string;
+        num_frames: number;
+        duration_sec: number;
+        sequence_probability: number;
+    };
+}
+
+export interface AssessmentError {
+    ok: false;
+    error: string;
+    detail?: string;
+    message?: string;
+}
+
+export type AssessMethod = "gop_sa" | "gop_af";
+export type AssessMode = "posterior" | "margin" | "logitmargin";
+
+export interface AssessPronunciationOptions {
+    method?: AssessMethod;
+    mode?: AssessMode;
+}
+
 // ============= Standard API Response Types =============
 
 export interface ApiSuccessResponse<T = unknown> {

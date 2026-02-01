@@ -1,0 +1,453 @@
+{
+  "utterance": {
+    "score": 48.5,
+    "grade": "F",
+    "num_phones": 16,
+    "num_errors": 6,
+    "num_words": 5,
+    "accuracy_pct": 62.5,
+    "method": "gop_af",
+    "mode": "margin"
+  },
+  "scores": {
+    "accuracy": { "score": 62.5, "n_correct": 10, "n_total": 16 },
+    "fluency": {
+      "score": 40.1,
+      "phones_per_sec": 3.5,
+      "pause_ratio": 0.489,
+      "n_long_pauses": 2
+    },
+    "completeness": {
+      "score": 81.2,
+      "n_spoken": 13,
+      "n_expected": 16,
+      "n_omitted": 0
+    },
+    "prosody": {
+      "score": 40.0,
+      "f0_std": 147.6,
+      "is_monotone": false,
+      "n_break_errors": 2
+    },
+    "overall": {
+      "score": 57.3,
+      "grade": "F",
+      "breakdown": {
+        "accuracy": 62.5,
+        "fluency": 40.1,
+        "completeness": 81.2,
+        "prosody": 40.0
+      },
+      "weights": {
+        "accuracy": 0.4,
+        "fluency": 0.2,
+        "completeness": 0.2,
+        "prosody": 0.2
+      }
+    }
+  },
+  "errors": {
+    "summary": {
+      "mispronunciation": 6,
+      "omission": 0,
+      "insertion": 0,
+      "unexpected_break": 2,
+      "missing_break": 0,
+      "monotone": 0,
+      "total": 8
+    },
+    "break_errors": [
+      {
+        "error_type": "unexpected_break",
+        "severity": "mild",
+        "start_sec": 0.65,
+        "end_sec": 1.16,
+        "dur_sec": 0.51
+      },
+      {
+        "error_type": "unexpected_break",
+        "severity": "medium",
+        "start_sec": 1.61,
+        "end_sec": 3.13,
+        "dur_sec": 1.52
+      }
+    ],
+    "prosody_errors": []
+  },
+  "words": [
+    {
+      "word": "bonjou",
+      "score": 74.7,
+      "gop_z_mean": -0.264,
+      "is_error": false,
+      "error_types": [],
+      "num_phones": 4,
+      "num_errors": 0,
+      "phones": [
+        {
+          "phone_id": 2,
+          "phone_idx": 0,
+          "gop": 8.0324,
+          "occupancy": 1.0,
+          "reliable": false,
+          "start_frame": 7,
+          "end_frame": 8,
+          "start_sec": 0.14,
+          "end_sec": 0.16,
+          "dur_sec": 0.02,
+          "top_competitors": [],
+          "gop_z": -0.078,
+          "is_error": false,
+          "severity": null,
+          "error_type": null,
+          "phone": "b"
+        },
+        {
+          "phone_id": 25,
+          "phone_idx": 1,
+          "gop": 7.3848,
+          "occupancy": 1.0,
+          "reliable": false,
+          "start_frame": 10,
+          "end_frame": 11,
+          "start_sec": 0.2,
+          "end_sec": 0.22,
+          "dur_sec": 0.02,
+          "top_competitors": [],
+          "gop_z": -0.235,
+          "is_error": false,
+          "severity": null,
+          "error_type": null,
+          "phone": "ɔ̃"
+        },
+        {
+          "phone_id": 32,
+          "phone_idx": 2,
+          "gop": 7.8209,
+          "occupancy": 1.0,
+          "reliable": false,
+          "start_frame": 24,
+          "end_frame": 25,
+          "start_sec": 0.48,
+          "end_sec": 0.5,
+          "dur_sec": 0.02,
+          "top_competitors": [],
+          "gop_z": -0.597,
+          "is_error": false,
+          "severity": null,
+          "error_type": null,
+          "phone": "ʒ"
+        },
+        {
+          "phone_id": 17,
+          "phone_idx": 3,
+          "gop": 8.1749,
+          "occupancy": 1.0,
+          "reliable": false,
+          "start_frame": 27,
+          "end_frame": 28,
+          "start_sec": 0.54,
+          "end_sec": 0.56,
+          "dur_sec": 0.02,
+          "top_competitors": [],
+          "gop_z": -0.147,
+          "is_error": false,
+          "severity": null,
+          "error_type": null,
+          "phone": "u"
+        }
+      ]
+    },
+    {
+      "word": "kijan",
+      "score": 17.3,
+      "gop_z_mean": -3.133,
+      "is_error": true,
+      "error_types": ["mispronunciation"],
+      "num_phones": 4,
+      "num_errors": 2,
+      "phones": [
+        {
+          "phone_id": 9,
+          "phone_idx": 4,
+          "gop": 8.654,
+          "occupancy": 1.002,
+          "reliable": false,
+          "start_frame": 56,
+          "end_frame": 57,
+          "start_sec": 1.12,
+          "end_sec": 1.14,
+          "dur_sec": 0.02,
+          "top_coompetitors": [],
+          "gop_z": 0.204,
+          "is_error": false,
+          "severity": null,
+          "error_type": null,
+          "phone": "k"
+        },
+        {
+          "phone_id": 7,
+          "phone_idx": 5,
+          "gop": 8.8583,
+          "occupancy": 1.0,
+          "reliable": false,
+          "start_frame": 59,
+          "end_frame": 60,
+          "start_sec": 1.18,
+          "end_sec": 1.2,
+          "dur_sec": 0.02,
+          "top_competitors": [],
+          "gop_z": 0.463,
+          "is_error": false,
+          "severity": null,
+          "error_type": null,
+          "phone": "i"
+        },
+        {
+          "phone_id": 32,
+          "phone_idx": 6,
+          "gop": -8.1458,
+          "occupancy": 1.0,
+          "reliable": false,
+          "start_frame": 70,
+          "end_frame": 71,
+          "start_sec": 1.4,
+          "end_sec": 1.42,
+          "dur_sec": 0.02,
+          "top_competitors": [],
+          "gop_z": -11.219,
+          "is_error": true,
+          "severity": "severe",
+          "error_type": "mispronunciation",
+          "phone": "ʒ"
+        },
+        {
+          "phone_id": 21,
+          "phone_idx": 7,
+          "gop": 3.5624,
+          "occupancy": 1.0,
+          "reliable": false,
+          "start_frame": 73,
+          "end_frame": 74,
+          "start_sec": 1.46,
+          "end_sec": 1.48,
+          "dur_sec": 0.02,
+          "top_competitors": [],
+          "gop_z": -1.982,
+          "is_error": true,
+          "severity": "mild",
+          "error_type": "mispronunciation",
+          "phone": "ã"
+        }
+      ]
+    },
+    {
+      "word": "ou",
+      "score": 67.5,
+      "gop_z_mean": -0.623,
+      "is_error": false,
+      "error_types": [],
+      "num_phones": 1,
+      "num_errors": 0,
+      "phones": [
+        {
+          "phone_id": 17,
+          "phone_idx": 8,
+          "gop": 7.3841,
+          "occupancy": 1.0,
+          "reliable": false,
+          "start_frame": 159,
+          "end_frame": 160,
+          "start_sec": 3.18,
+          "end_sec": 3.2,
+          "dur_sec": 0.02,
+          "top_competitors": [],
+          "gop_z": -0.623,
+          "is_error": false,
+          "severity": null,
+          "error_type": null,
+          "phone": "u"
+        }
+      ]
+    },
+    {
+      "word": "ye",
+      "score": 83.0,
+      "gop_z_mean": 0.148,
+      "is_error": false,
+      "error_types": [],
+      "num_phones": 2,
+      "num_errors": 0,
+      "phones": [
+        {
+          "phone_id": 8,
+          "phone_idx": 9,
+          "gop": 7.8687,
+          "occupancy": 1.0,
+          "reliable": false,
+          "start_frame": 165,
+          "end_frame": 166,
+          "start_sec": 3.3,
+          "end_sec": 3.32,
+          "dur_sec": 0.02,
+          "top_competitors": [],
+          "gop_z": -0.161,
+          "is_error": false,
+          "severity": null,
+          "error_type": null,
+          "phone": "j"
+        },
+        {
+          "phone_id": 4,
+          "phone_idx": 10,
+          "gop": 8.0663,
+          "occupancy": 1.0,
+          "reliable": false,
+          "start_frame": 167,
+          "end_frame": 168,
+          "start_sec": 3.34,
+          "end_sec": 3.36,
+          "dur_sec": 0.02,
+          "top_competitors": [],
+          "gop_z": 0.456,
+          "is_error": false,
+          "severity": null,
+          "error_type": null,
+          "phone": "e"
+        }
+      ]
+    },
+    {
+      "word": "jodia",
+      "score": 0,
+      "gop_z_mean": -4.735,
+      "is_error": true,
+      "error_types": ["mispronunciation"],
+      "num_phones": 5,
+      "num_errors": 4,
+      "phones": [
+        {
+          "phone_id": 32,
+          "phone_idx": 11,
+          "gop": -7.8843,
+          "occupancy": 1.0,
+          "reliable": false,
+          "start_frame": 193,
+          "end_frame": 194,
+          "start_sec": 3.86,
+          "end_sec": 3.88,
+          "dur_sec": 0.02,
+          "top_competitors": [],
+          "gop_z": -11.045,
+          "is_error": true,
+          "severity": "severe",
+          "error_type": "mispronunciation",
+          "phone": "ʒ"
+        },
+        {
+          "phone_id": 13,
+          "phone_idx": 12,
+          "gop": 2.9867,
+          "occupancy": 1.0,
+          "reliable": false,
+          "start_frame": 195,
+          "end_frame": 196,
+          "start_sec": 3.9,
+          "end_sec": 3.92,
+          "dur_sec": 0.02,
+          "top_competitors": [],
+          "gop_z": -2.618,
+          "is_error": true,
+          "severity": "severe",
+          "error_type": "mispronunciation",
+          "phone": "o"
+        },
+        {
+          "phone_id": 3,
+          "phone_idx": 13,
+          "gop": 7.3358,
+          "occupancy": 1.0,
+          "reliable": false,
+          "start_frame": 206,
+          "end_frame": 207,
+          "start_sec": 4.12,
+          "end_sec": 4.14,
+          "dur_sec": 0.02,
+          "top_competitors": [],
+          "gop_z": -0.413,
+          "is_error": false,
+          "severity": null,
+          "error_type": null,
+          "phone": "d"
+        },
+        {
+          "phone_id": 7,
+          "phone_idx": 14,
+          "gop": 6.3615,
+          "occupancy": 1.0,
+          "reliable": false,
+          "start_frame": 209,
+          "end_frame": 210,
+          "start_sec": 4.18,
+          "end_sec": 4.2,
+          "dur_sec": 0.02,
+          "top_competitors": [],
+          "gop_z": -0.957,
+          "is_error": true,
+          "severity": "mild",
+          "error_type": "mispronunciation",
+          "phone": "i"
+        },
+        {
+          "phone_id": 1,
+          "phone_idx": 15,
+          "gop": -5.2976,
+          "occupancy": 1.0,
+          "reliable": false,
+          "start_frame": 218,
+          "end_frame": 219,
+          "start_sec": 4.36,
+          "end_sec": 4.38,
+          "dur_sec": 0.02,
+          "top_competitors": [],
+          "gop_z": -8.642,
+          "is_error": true,
+          "severity": "severe",
+          "error_type": "mispronunciation",
+          "phone": "a"
+        }
+      ]
+    }
+  ],
+  "prosody": {
+    "pitch": {
+      "f0_mean": 210.8,
+      "f0_std": 147.6,
+      "f0_range": 424.9,
+      "voiced_fraction": 0.751
+    },
+    "energy": { "mean_db": -46.3, "std_db": 16.1 },
+    "speaking_rate": {
+      "phones_per_sec": 3.5,
+      "phones_per_sec_net": 6.9,
+      "total_pause_sec": 2.23,
+      "pause_ratio": 0.489
+    },
+    "monotone": {
+      "is_monotone": false,
+      "severity": null,
+      "f0_std": 147.58088467310682,
+      "f0_range": 424.8826291079812
+    },
+    "n_pauses": 3
+  },
+  "flags": { "prompt_deviation": false, "low_confidence": true },
+  "metadata": {
+    "audio_path": null,
+    "reference_text": "Bonjou kijan ou ye jodia",
+    "num_frames": 227,
+    "duration_sec": 4.56,
+    "sequence_probability": -21.966
+  },
+  "ok": true
+}
