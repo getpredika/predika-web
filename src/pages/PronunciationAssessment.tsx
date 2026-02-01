@@ -1,14 +1,12 @@
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
-import { Link, useLocation } from "wouter";
 import { motion } from "framer-motion";
-import { ArrowLeft, Mic, Square, RotateCcw, Volume2, CheckCircle2, Construction } from "lucide-react";
+import { Mic, Square, RotateCcw, Volume2, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import {
@@ -248,7 +246,6 @@ function RecordingAudioPlayer({ audioUrl }: { audioUrl: string }) {
 }
 
 export default function PronunciationAssessment() {
-  const [, setLocation] = useLocation();
   const [selectedSample, setSelectedSample] = useState<number | null>(null);
   const [textValue, setTextValue] = useState("");
   const [isRecording, setIsRecording] = useState(false);
@@ -377,15 +374,6 @@ export default function PronunciationAssessment() {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-6xl mx-auto p-6">
-        <Alert className="mb-6 border-primary/50 bg-primary/5">
-          <Construction className="h-5 w-5 text-primary" />
-          <AlertTitle className="text-lg font-semibold">Fonksyonalite sa a ap vini byento</AlertTitle>
-          <AlertDescription className="text-base">
-            Nou ap travay di pou pote ba ou evalyasyon pwononsyasyon nan yon ti tan.
-            Tanpri retounen byento pou eseye fonksyon sa a!
-          </AlertDescription>
-        </Alert>
-
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -420,8 +408,7 @@ export default function PronunciationAssessment() {
                       key={sample.id}
                       variant={selectedSample === sample.id ? "default" : "outline"}
                       className="h-auto py-2 px-3 justify-start text-left"
-                      onClick={() => handleSampleSelect(sample.id)}
-                      disabled={true}
+                      onClick={() => handleSampleSelect(sample.id)}   
                       data-testid={`button-sample-${sample.id}`}
                     >
                       <span className="text-sm">{sample.title}</span>
@@ -434,7 +421,6 @@ export default function PronunciationAssessment() {
                   onChange={(e) => handleTextChange(e.target.value)}
                   placeholder="Select a sample above or type your own sentence here..."
                   className="min-h-[120px]"
-                  disabled={true}
                   data-testid="input-custom-text"
                 />
 
@@ -447,7 +433,7 @@ export default function PronunciationAssessment() {
                   {!isRecording ? (
                     <Button
                       onClick={startRecording}
-                      disabled={true}
+                      disabled={!textValue.trim() || isEvaluating}
                       className="gap-2"
                       data-testid="button-start-recording"
                     >
