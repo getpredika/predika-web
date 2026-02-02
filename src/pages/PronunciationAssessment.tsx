@@ -121,6 +121,12 @@ function WordChip({ word }: { word: AssessmentWord }) {
       switch (primaryError) {
         case "mispronunciation":
           return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 border-yellow-300";
+        case "unexpected_break":
+          return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border-red-300";
+        case "missing_break":
+          return "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300 border-gray-400";
+        case "monotone":
+          return "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300 border-purple-300";
         case "omission":
           return "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300 border-orange-300 line-through";
         case "insertion":
@@ -694,10 +700,26 @@ export default function PronunciationAssessment() {
                     ))}
                   </div>
 
-                  {/* Phone-level detail for words with errors */}
+                  {/* ASR: what the user actually said */}
+                  {result.asr && result.asr.word_diffs.some((d) => !d.match) && (
+                    <div className="mt-6 pt-4 border-t">
+                      <h4 className="text-sm font-medium mb-3">Sa ou te di</h4>
+                      <div className="space-y-2">
+                        {result.asr.word_diffs.filter((d) => !d.match).map((diff, i) => (
+                          <div key={i} className="flex items-center gap-3 text-sm">
+                            <span className="line-through text-muted-foreground">{diff.hyp}</span>
+                            <span className="text-xs text-muted-foreground">→</span>
+                            <span className="font-medium">{diff.ref}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Letter-level detail for words with errors */}
                   {result.words.some((w) => w.is_error) && (
                     <div className="mt-6 pt-4 border-t">
-                      <h4 className="text-sm font-medium mb-3">Detay fonèm (mo ki gen erè)</h4>
+                      <h4 className="text-sm font-medium mb-3">Detay lèt (mo ki gen erè)</h4>
                       <div className="space-y-3">
                         {result.words
                           .filter((w) => w.is_error)
@@ -722,7 +744,7 @@ export default function PronunciationAssessment() {
                                     }`}
                                     title={phone.is_error ? `${phone.error_type} (${phone.severity})` : "OK"}
                                   >
-                                    {phone.phone}
+                                    {phone.grapheme}
                                   </span>
                                 ))}
                               </div>

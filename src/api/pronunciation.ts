@@ -31,6 +31,7 @@ export async function assessPronunciation(
     params.append("text", text);
     if (options.method) params.append("method", options.method);
     if (options.mode) params.append("mode", options.mode);
+    params.append("asr", String(options.asr ?? true));
 
     const response = await fetch(`${API_URL}/api/speech/assess?${params.toString()}`, {
         method: "POST",

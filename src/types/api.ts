@@ -361,8 +361,16 @@ export interface TTSGenerateResponse {
 
 // ============= Pronunciation Assessment Types =============
 
+export interface PhoneCompetitor {
+    phone: string;
+    phone_id: number;
+    score: number;
+    confidence: number;
+}
+
 export interface AssessmentPhone {
     phone: string;
+    grapheme: string;
     phone_id: number;
     phone_idx: number;
     gop: number;
@@ -375,7 +383,7 @@ export interface AssessmentPhone {
     is_error: boolean;
     severity: "mild" | "medium" | "severe" | null;
     error_type: "mispronunciation" | null;
-    top_competitors: unknown[];
+    top_competitors: PhoneCompetitor[];
     start_frame: number;
     end_frame: number;
 }
@@ -452,6 +460,17 @@ export interface AssessmentResult {
         duration_sec: number;
         sequence_probability: number;
     };
+    asr?: {
+        transcription: string;
+        reference: string;
+        word_diffs: AsrWordDiff[];
+    };
+}
+
+export interface AsrWordDiff {
+    ref: string;
+    hyp: string;
+    match: boolean;
 }
 
 export interface AssessmentError {
@@ -467,6 +486,7 @@ export type AssessMode = "posterior" | "margin" | "logitmargin";
 export interface AssessPronunciationOptions {
     method?: AssessMethod;
     mode?: AssessMode;
+    asr?: boolean;
 }
 
 // ============= Standard API Response Types =============

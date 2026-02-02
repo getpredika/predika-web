@@ -38,3 +38,4 @@ vite.config.ts.*
 tsconfig.tsbuildinfo
 .claude
 claude
+response.json
