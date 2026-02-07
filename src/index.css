@@ -45,6 +45,12 @@
 
   --radius: 1rem;
 
+  /* Tooltip / Popover */
+  --popover: 0 0% 100%; /* white */
+  --popover-foreground: 217 13% 20%; /* readable dark text */
+  --popover-border: 167 40% 90%; /* soft mint border */
+  
+
   --font-sans: 'DM Sans', sans-serif;
   --font-serif: 'Libre Baskerville', serif;
   --font-mono: 'Fira Code', monospace;

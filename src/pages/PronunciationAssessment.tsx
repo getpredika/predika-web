@@ -113,9 +113,14 @@ function ScoreBar({ label, score, delay = 0, tooltip }: { label: string; score: 
           {tooltip && (
             <Tooltip>
               <TooltipTrigger asChild>
-                <Info className="w-3.5 h-3.5 text-muted-foreground/60 cursor-help" />
+              <Info
+                className="w-3.5 h-3.5 text-muted-foreground/60 cursor-help"
+                role="button"
+                tabIndex={0}
+                aria-label={`Eksplikasyon sou ${label}`}
+              />
               </TooltipTrigger>
-              <TooltipContent side="top">
+              <TooltipContent side="top" className="px-3 py-1.5 rounded-md shadow-md">
                 <p className="text-xs max-w-[200px]">{tooltip}</p>
               </TooltipContent>
             </Tooltip>
@@ -767,9 +772,14 @@ export default function PronunciationAssessment() {
                               <Label htmlFor={item.key}>{item.label}</Label>
                               <Tooltip>
                                 <TooltipTrigger asChild>
-                                  <Info className="w-3.5 h-3.5 text-muted-foreground/60 cursor-help" />
+                                  <Info
+                                  className="w-3.5 h-3.5 text-muted-foreground/60 cursor-help"
+                                  role="button"
+                                  tabIndex={0}
+                                  aria-label={`Eksplikasyon sou ${item.label}`}
+                                />
                                 </TooltipTrigger>
-                                <TooltipContent side="top">
+                                <TooltipContent side="top" className="px-3 py-1.5 rounded-md shadow-md">
                                   <p className="text-xs max-w-[200px]">{item.description}</p>
                                 </TooltipContent>
                               </Tooltip>
