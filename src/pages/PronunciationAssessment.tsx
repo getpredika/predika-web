@@ -327,6 +327,9 @@ export default function PronunciationAssessment() {
     assessMutation.mutate(
       { file: audioBlobRef, text: textValue, options: { asr: true } },
       {
+        onSuccess: (data) => {
+          console.log("Assessment response:", data);
+        },
         onError: (error) => {
           toast({
             title: "Evalyasyon echwe",
