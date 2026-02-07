@@ -30,6 +30,7 @@ const sampleTexts = [
   { id: 4, title: "Tan an", text: "Tan an bèl jodia! Solèy la ap klere, epi gen yon ti van fre." },
 ];
 
+
 const SCORE_TOOLTIPS = {
   accuracy: "Konbyen mo ou pwononse kòrèkteman konpare ak tèks la.",
   fluency: "Ki jan pawòl ou koule natirèlman san twòp poz oswa ezitasyon.",
