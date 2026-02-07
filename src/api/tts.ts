@@ -1,3 +1,4 @@
+import { apiFetch } from "@/lib/api-client";
 import type {
     TTSModel,
     TTSSpeaker,
@@ -5,12 +6,6 @@ import type {
     TTSGenerateResponse,
     TTSGenerateMetadata,
 } from "@/types/api";
-
-/**
- * TTS API Configuration
- * Uses the Predika Speech API
- */
-const TTS_API_URL = import.meta.env.VITE_API_URL || "https://api.predika.app";
 
 /**
  * Static list of available TTS models
@@ -71,25 +66,13 @@ export const TTS_SPEAKERS: TTSSpeaker[] = [
 export async function generateSpeech(
     request: TTSGenerateRequest
 ): Promise<TTSGenerateResponse> {
-    const response = await fetch(`${TTS_API_URL}/api/speech/tts`, {
+    const response = await apiFetch("/api/speech/tts", {
         method: "POST",
-        credentials: "include", 
-        headers: {
-            "Content-Type": "application/json",
-        },
         body: JSON.stringify(request),
     });
 
-    if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Echèk nan jenere lapawòl: ${errorText || response.statusText}`);
-    }
-
     // Get audio blob
     const audioBlob = await response.blob();
-
-    // Create object URL for audio playback
-    const audioUrl = URL.createObjectURL(audioBlob);
 
     // Extract metadata from response headers
     const metadata: TTSGenerateMetadata = {
@@ -102,7 +85,6 @@ export async function generateSpeech(
 
     return {
         audioBlob,
-        audioUrl,
         metadata,
     };
 }

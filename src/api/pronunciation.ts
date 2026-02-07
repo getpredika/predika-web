@@ -3,13 +3,12 @@
  * Uses the Predika Speech API for Haitian Creole pronunciation assessment
  */
 
+import { apiFetch } from "@/lib/api-client";
 import type {
     AssessmentResult,
     AssessmentError,
     AssessPronunciationOptions,
 } from "@/types/api";
-
-const API_URL = import.meta.env.VITE_API_URL || "https://api.predika.app";
 
 /**
  * Assess pronunciation by comparing audio against reference text
@@ -27,21 +26,22 @@ export async function assessPronunciation(
     const formData = new FormData();
     formData.append("file", file, file instanceof File ? file.name : "recording.webm");
 
-    const params = new URLSearchParams();
-    params.append("text", text);
-    if (options.method) params.append("method", options.method);
-    if (options.mode) params.append("mode", options.mode);
-    params.append("asr", String(options.asr ?? true));
+    const queryParams: Record<string, string | number | boolean | undefined> = {
+        text,
+        asr: options.asr ?? true,
+    };
+    if (options.method) queryParams.method = options.method;
+    if (options.mode) queryParams.mode = options.mode;
 
-    const response = await fetch(`${API_URL}/api/speech/assess?${params.toString()}`, {
+    const response = await apiFetch("/api/speech/assess", {
         method: "POST",
-        credentials: "include",
         body: formData,
+        params: queryParams,
     });
 
     const result = await response.json();
 
-    if (!response.ok || result.ok === false) {
+    if (result.ok === false) {
         const error = result as AssessmentError;
         throw new Error(
             error.message || error.detail || error.error || "Evalyasyon pwononsyasyon echwe"

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   BookOpen, Mic, Volume2, Brain, FileText, BarChart3,
   AudioLines, Loader2
@@ -92,6 +92,11 @@ function AppSidebar({
 export default function Studio() {
   const [activeTab, setActiveTab] = useState("progress");
   const { user, isLoading, isAuthenticated, logout } = useAuth();
+  const mainRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    mainRef.current?.scrollTo(0, 0);
+  }, [activeTab]);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -142,7 +147,7 @@ export default function Studio() {
               <h1 className="text-lg font-semibold">{activeLabel}</h1>
             </div>
           </header>
-          <main className="flex-1 overflow-y-auto">
+          <main ref={mainRef} className="flex-1 overflow-y-auto">
             <ActiveComponent />
           </main>
         </SidebarInset>

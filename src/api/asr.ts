@@ -3,7 +3,7 @@
  * Uses the Predika Speech API for Haitian Creole transcription
  */
 
-const API_URL = import.meta.env.VITE_API_URL || "https://api.predika.app";
+import { apiFetch } from "@/lib/api-client";
 
 /**
  * Available ASR models
@@ -102,15 +102,14 @@ export async function transcribeAudio(
         formData.append("timestamps", options.timestamps.toString());
     }
 
-    const response = await fetch(`${API_URL}/api/speech/transcribe`, {
+    const response = await apiFetch("/api/speech/transcribe", {
         method: "POST",
-        credentials: "include",
         body: formData,
     });
 
     const result = await response.json();
 
-    if (!response.ok || result.ok === false) {
+    if (result.ok === false) {
         const error = result as TranscribeError;
         throw new Error(
             error.message || error.detail || error.error || "Transkrisyon echwe"

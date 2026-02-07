@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Volume2, Loader2, Sparkles, Settings2, ChevronsUpDown, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import { VoicePicker, type Voice } from "@/components/ui/voice-picker";
 import { TTSAudioPlayer } from "@/components/ui/tts-audio-player";
 import { Orb } from "@/components/ui/orb";
 import { useGenerateSpeech, TTS_SPEAKERS, TTS_MODELS } from "@/hooks/use-tts";
+import { useObjectUrl } from "@/hooks/use-object-url";
 import { useToast } from "@/hooks/use-toast";
 import type { TTSGenerateResponse } from "@/types/api";
 import {
@@ -56,6 +57,7 @@ export default function TextToSpeech() {
     const { toast } = useToast();
 
     const generateSpeech = useGenerateSpeech();
+    const audioUrl = useObjectUrl(audioResult?.audioBlob);
     const maxChars = 500;
 
     // Convert TTS_SPEAKERS to Voice format for the picker
@@ -67,15 +69,6 @@ export default function TextToSpeech() {
         previewUrl: speaker.previewUrl,
     }));
 
-    // Cleanup audio URL on unmount
-    useEffect(() => {
-        return () => {
-            if (audioResult?.audioUrl) {
-                URL.revokeObjectURL(audioResult.audioUrl);
-            }
-        };
-    }, [audioResult]);
-
     const handleGenerate = async () => {
         if (!text.trim()) {
             toast({
@@ -86,11 +79,8 @@ export default function TextToSpeech() {
             return;
         }
 
-        // Cleanup previous audio URL
-        if (audioResult?.audioUrl) {
-            URL.revokeObjectURL(audioResult.audioUrl);
-            setAudioResult(null);
-        }
+        // Clear previous result
+        setAudioResult(null);
 
         try {
             const result = await generateSpeech.mutateAsync({
@@ -221,13 +211,13 @@ export default function TextToSpeech() {
                         </Card>
 
                         {/* Generated audio player */}
-                        {audioResult && (
+                        {audioResult && audioUrl && (
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                             >
                                 <TTSAudioPlayer
-                                    audioUrl={audioResult.audioUrl}
+                                    audioUrl={audioUrl}
                                     metadata={audioResult.metadata}
                                 />
                             </motion.div>

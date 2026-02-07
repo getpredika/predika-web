@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { useWords } from "@/hooks/use-words";
+import { useWords } from "@/hooks/use-dictionary";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";

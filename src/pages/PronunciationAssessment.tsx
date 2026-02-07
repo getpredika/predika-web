@@ -10,7 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useAssessPronunciation } from "@/hooks/use-pronunciation";
 import { useGenerateSpeech } from "@/hooks/use-tts";
-import type { AssessmentResult, AssessmentWord } from "@/types/api";
+import { useObjectUrl } from "@/hooks/use-object-url";
+import type { AssessmentResult, TranscriptItem } from "@/types/api";
 import {
   AudioPlayerProvider,
   AudioPlayerButton,
@@ -113,45 +114,47 @@ function ScoreBar({ label, score, delay = 0 }: { label: string; score: number; d
   );
 }
 
-function WordChip({ word }: { word: AssessmentWord }) {
-  const primaryError = word.error_types[0] || null;
-
+function TranscriptChip({ item }: { item: TranscriptItem }) {
   const getStyle = () => {
-    if (word.is_error && primaryError) {
-      switch (primaryError) {
-        case "mispronunciation":
-          return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 border-yellow-300";
-        case "unexpected_break":
-          return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border-red-300";
-        case "missing_break":
-          return "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300 border-gray-400";
-        case "monotone":
-          return "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300 border-purple-300";
-        case "omission":
-          return "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300 border-orange-300 line-through";
-        case "insertion":
-          return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border-blue-300 italic";
-        default:
-          return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border-red-300";
-      }
+    switch (item.type) {
+      case "correct":
+        return "text-foreground";
+      case "mispronunciation":
+        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 border-yellow-300";
+      case "omission":
+        return "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300 border-orange-300 line-through";
+      case "insertion":
+        return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border-blue-300 italic";
+      case "unexpected_break":
+        return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border-red-300";
+      case "missing_break":
+        return "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300 border-gray-400";
+      default:
+        return "text-foreground";
     }
-    // No error — color by score
-    if (word.score >= 80) return "bg-transparent text-foreground";
-    if (word.score >= 60) return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 border-yellow-300";
-    return "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300 border-orange-300";
   };
 
-  if (!word.is_error && word.score >= 80) {
-    return <span className="mx-0.5">{word.word}</span>;
+  if (item.type === "correct") {
+    return <span className="mx-0.5">{item.word}</span>;
+  }
+
+  if (item.type === "unexpected_break") {
+    return (
+      <span
+        className={`inline-block px-1.5 py-0.5 mx-0.5 rounded border text-xs cursor-default ${getStyle()}`}
+        title={`Poz inatandi: ${item.dur_sec?.toFixed(2)}s (${item.severity})`}
+      >
+        ⏸ {item.dur_sec?.toFixed(1)}s
+      </span>
+    );
   }
 
   return (
     <span
       className={`inline-block px-1.5 py-0.5 mx-0.5 rounded border text-sm cursor-default ${getStyle()}`}
-      title={`Nòt: ${Math.round(word.score)} — ${word.error_types.length > 0 ? word.error_types.join(", ") : "fèb"}`}
+      title={`${item.type}${item.severity ? ` (${item.severity})` : ""}`}
     >
-      {word.word}
-      <span className="ml-1 text-xs opacity-60">{Math.round(word.score)}</span>
+      {item.word}
     </span>
   );
 }
@@ -225,7 +228,8 @@ export default function PronunciationAssessment() {
   const [hasRecorded, setHasRecorded] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [audioBlobRef, setAudioBlob] = useState<Blob | null>(null);
-  const [referenceAudioUrl, setReferenceAudioUrl] = useState<string | null>(null);
+  const [referenceAudioBlob, setReferenceAudioBlob] = useState<Blob | null>(null);
+  const referenceAudioUrl = useObjectUrl(referenceAudioBlob);
   const [toggles, setToggles] = useState({
     mispronunciations: true,
     unexpectedBreaks: true,
@@ -265,15 +269,14 @@ export default function PronunciationAssessment() {
       { text: textValue, speaker: "conteuse" },
       {
         onSuccess: (response) => {
-          if (referenceAudioUrl) URL.revokeObjectURL(referenceAudioUrl);
-          setReferenceAudioUrl(response.audioUrl);
+          setReferenceAudioBlob(response.audioBlob);
         },
         onError: () => {
           toast({ title: "Echèk", description: "Pa kapab jenere odyo referans lan", variant: "destructive" });
         },
       }
     );
-  }, [textValue, ttsMutation, referenceAudioUrl, toast]);
+  }, [textValue, ttsMutation, toast]);
 
   const startRecording = useCallback(async () => {
     try {
@@ -322,7 +325,7 @@ export default function PronunciationAssessment() {
   const runEvaluation = useCallback(() => {
     if (!audioBlobRef || !textValue.trim()) return;
     assessMutation.mutate(
-      { file: audioBlobRef, text: textValue },
+      { file: audioBlobRef, text: textValue, options: { asr: true } },
       {
         onError: (error) => {
           toast({
@@ -586,7 +589,7 @@ export default function PronunciationAssessment() {
                   {result.flags.low_confidence && (
                     <div className="mt-4 flex items-center gap-2 p-2 rounded bg-yellow-50 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-300 text-xs">
                       <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                      Konfyans ba — eseye anrejistre ankò pi klè
+                      Nòt ou ba — eseye anrejistre ankò pi klè
                     </div>
                   )}
                 </CardContent>
@@ -620,15 +623,16 @@ export default function PronunciationAssessment() {
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-1.5 mb-4">
-                    <Badge variant="outline" className="text-xs bg-green-100 text-green-800 border-green-300">80+ Bon</Badge>
-                    <Badge variant="outline" className="text-xs bg-yellow-100 text-yellow-800 border-yellow-300">60-79 Pasab</Badge>
-                    <Badge variant="outline" className="text-xs bg-orange-100 text-orange-800 border-orange-300">40-59 Fèb</Badge>
-                    <Badge variant="outline" className="text-xs bg-red-100 text-red-800 border-red-300">Erè</Badge>
+                    <Badge variant="outline" className="text-xs">Kòrèk</Badge>
+                    <Badge variant="outline" className="text-xs bg-yellow-100 text-yellow-800 border-yellow-300">Mal pwononse</Badge>
+                    <Badge variant="outline" className="text-xs bg-orange-100 text-orange-800 border-orange-300">Omisyon</Badge>
+                    <Badge variant="outline" className="text-xs bg-blue-100 text-blue-800 border-blue-300">Ensèsyon</Badge>
+                    <Badge variant="outline" className="text-xs bg-red-100 text-red-800 border-red-300">Poz inatandi</Badge>
                   </div>
 
                   <div className="p-4 rounded-lg bg-muted/30 mb-4 leading-relaxed min-h-[100px]">
-                    {result.words.map((word, i) => (
-                      <WordChip key={i} word={word} />
+                    {result.transcript.map((item, i) => (
+                      <TranscriptChip key={i} item={item} />
                     ))}
                   </div>
 
@@ -651,7 +655,7 @@ export default function PronunciationAssessment() {
                   <div className="mt-4 pt-4 border-t grid grid-cols-2 gap-3 text-sm">
                     <div>
                       <span className="text-muted-foreground">Vitès pawòl:</span>{" "}
-                      <span className="font-medium">{result.prosody.speaking_rate.phones_per_sec.toFixed(1)} fon/s</span>
+                      <span className="font-medium">{result.scores.fluency.phones_per_sec.toFixed(1)} fon/s</span>
                     </div>
                     <div>
                       <span className="text-muted-foreground">Dire:</span>{" "}
@@ -701,18 +705,12 @@ export default function PronunciationAssessment() {
                   </div>
 
                   {/* ASR: what the user actually said */}
-                  {result.asr && result.asr.word_diffs.some((d) => !d.match) && (
+                  {result.metadata.asr_text && (
                     <div className="mt-6 pt-4 border-t">
-                      <h4 className="text-sm font-medium mb-3">Sa ou te di</h4>
-                      <div className="space-y-2">
-                        {result.asr.word_diffs.filter((d) => !d.match).map((diff, i) => (
-                          <div key={i} className="flex items-center gap-3 text-sm">
-                            <span className="line-through text-muted-foreground">{diff.hyp}</span>
-                            <span className="text-xs text-muted-foreground">→</span>
-                            <span className="font-medium">{diff.ref}</span>
-                          </div>
-                        ))}
-                      </div>
+                      <h4 className="text-sm font-medium mb-2">Sa ou te di</h4>
+                      <p className="text-sm text-muted-foreground italic p-3 rounded-lg bg-muted/30">
+                        &ldquo;{result.metadata.asr_text}&rdquo;
+                      </p>
                     </div>
                   )}
 

@@ -355,37 +355,24 @@ export interface TTSGenerateMetadata {
 
 export interface TTSGenerateResponse {
     audioBlob: Blob;
-    audioUrl: string;
     metadata: TTSGenerateMetadata;
 }
 
 // ============= Pronunciation Assessment Types =============
 
-export interface PhoneCompetitor {
-    phone: string;
-    phone_id: number;
-    score: number;
-    confidence: number;
-}
-
 export interface AssessmentPhone {
     phone: string;
     grapheme: string;
     phone_id: number;
-    phone_idx: number;
     gop: number;
     gop_z: number;
-    occupancy: number;
     reliable: boolean;
     start_sec: number;
     end_sec: number;
     dur_sec: number;
     is_error: boolean;
     severity: "mild" | "medium" | "severe" | null;
-    error_type: "mispronunciation" | null;
-    top_competitors: PhoneCompetitor[];
-    start_frame: number;
-    end_frame: number;
+    error_type: "mispronunciation" | "omission" | null;
 }
 
 export interface AssessmentWord {
@@ -397,6 +384,13 @@ export interface AssessmentWord {
     num_phones: number;
     num_errors: number;
     phones: AssessmentPhone[];
+}
+
+export interface TranscriptItem {
+    word: string;
+    type: "correct" | "mispronunciation" | "omission" | "insertion" | "unexpected_break" | "missing_break";
+    severity?: "mild" | "medium" | "severe";
+    dur_sec?: number;
 }
 
 export interface AssessmentBreakError {
@@ -431,6 +425,7 @@ export interface AssessmentResult {
             weights: { accuracy: number; fluency: number; completeness: number; prosody: number };
         };
     };
+    transcript: TranscriptItem[];
     errors: {
         summary: {
             mispronunciation: number;
@@ -446,31 +441,16 @@ export interface AssessmentResult {
     };
     words: AssessmentWord[];
     prosody: {
-        pitch: { f0_mean: number; f0_std: number; f0_range: number; voiced_fraction: number };
-        energy: { mean_db: number; std_db: number };
-        speaking_rate: { phones_per_sec: number; phones_per_sec_net: number; total_pause_sec: number; pause_ratio: number };
-        monotone: { is_monotone: boolean; severity: string | null; f0_std: number; f0_range: number };
+        is_monotone: boolean;
         n_pauses: number;
     };
     flags: { prompt_deviation: boolean; low_confidence: boolean };
     metadata: {
         audio_path: string | null;
         reference_text: string;
-        num_frames: number;
+        asr_text: string;
         duration_sec: number;
-        sequence_probability: number;
     };
-    asr?: {
-        transcription: string;
-        reference: string;
-        word_diffs: AsrWordDiff[];
-    };
-}
-
-export interface AsrWordDiff {
-    ref: string;
-    hyp: string;
-    match: boolean;
 }
 
 export interface AssessmentError {

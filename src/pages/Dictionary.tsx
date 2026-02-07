@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useWords } from "@/hooks/use-words";
-import { useWordOfTheDay } from "@/hooks/use-dictionary";
+import { useWords, useWordOfTheDay } from "@/hooks/use-dictionary";
 import { SearchBar } from "@/components/SearchBar";
 import { WordCard } from "@/components/WordCard";
 import { WordCardSkeleton } from "@/components/WordCardSkeleton";

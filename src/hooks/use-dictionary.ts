@@ -1,15 +1,19 @@
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery, type UseQueryOptions } from "@tanstack/react-query";
 import * as dictionaryApi from "@/api/dictionary";
-import type { WordsListParams, Word, CreateWordRequest, UpdateWordRequest } from "@/types/api";
+import type { WordsListParams, Word, WordsListResponse, CreateWordRequest, UpdateWordRequest } from "@/types/api";
 
 /**
  * Hook to fetch paginated list of words with optional search
  */
-export function useWords(params?: WordsListParams) {
+export function useWords(
+    params?: WordsListParams,
+    options?: Omit<UseQueryOptions<WordsListResponse>, "queryKey" | "queryFn">
+) {
     return useQuery({
         queryKey: ["words", params],
         queryFn: () => dictionaryApi.listWords(params),
         staleTime: 1000 * 60 * 5, // 5 minutes
+        ...options,
     });
 }
 

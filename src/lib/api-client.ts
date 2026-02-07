@@ -24,15 +24,12 @@ interface FetchOptions extends RequestInit {
 }
 
 /**
- * Base API client with automatic cookie handling and error parsing
+ * Build a full URL from endpoint + query params
  */
-export async function apiClient<T = unknown>(
+function buildUrl(
     endpoint: string,
-    options: FetchOptions = {}
-): Promise<T> {
-    const { params, ...fetchOptions } = options;
-
-    // Build URL with query parameters
+    params?: Record<string, string | number | boolean | undefined>
+): string {
     let url = `${API_BASE_URL}${endpoint}`;
     if (params) {
         const searchParams = new URLSearchParams();
@@ -46,57 +43,89 @@ export async function apiClient<T = unknown>(
             url += `?${queryString}`;
         }
     }
+    return url;
+}
 
-    // Default options
+/**
+ * Low-level fetch wrapper with shared auth, URL building, and error handling.
+ * Returns the raw Response so callers can handle blobs, headers, etc.
+ * Automatically skips Content-Type and JSON.stringify for FormData bodies.
+ */
+export async function apiFetch(
+    endpoint: string,
+    options: FetchOptions = {}
+): Promise<Response> {
+    const { params, ...fetchOptions } = options;
+    const url = buildUrl(endpoint, params);
+
+    const isFormData = fetchOptions.body instanceof FormData;
+
+    const headers: HeadersInit = isFormData
+        ? { ...fetchOptions.headers as Record<string, string> }
+        : { "Content-Type": "application/json", ...fetchOptions.headers as Record<string, string> };
+
     const config: RequestInit = {
-        credentials: "include", // Include cookies for session-based auth
-        headers: {
-            "Content-Type": "application/json",
-            ...fetchOptions.headers,
-        },
+        credentials: "include",
         ...fetchOptions,
+        headers,
     };
 
     try {
         const response = await fetch(url, config);
 
-        // Handle non-JSON responses or empty bodies
-        const contentType = response.headers.get("content-type");
-        const hasJsonContent = contentType?.includes("application/json");
-
-        // Parse response body
-        let data: ApiSuccessResponse<T> | ApiErrorResponse | null = null;
-        if (hasJsonContent) {
-            data = await response.json();
-        }
-
-        // Handle error responses
         if (!response.ok) {
-            const errorMessage =
-                (data as ApiErrorResponse)?.message ||
-                `HTTP ${response.status}: ${response.statusText}`;
+            // Try to parse error message from JSON body
+            let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+            try {
+                const contentType = response.headers.get("content-type");
+                if (contentType?.includes("application/json")) {
+                    const errorData = await response.json() as ApiErrorResponse;
+                    if (errorData?.message) {
+                        errorMessage = errorData.message;
+                    }
+                }
+            } catch {
+                // Ignore parse errors, use default message
+            }
             throw new ApiError(response.status, errorMessage, response);
         }
 
-        // Return the data property for successful responses
-        return (data as ApiSuccessResponse<T>)?.data ?? (null as T);
+        return response;
     } catch (error) {
-        // Re-throw ApiError instances
         if (error instanceof ApiError) {
             throw error;
         }
-
-        // Handle network errors
         if (error instanceof TypeError) {
             throw new ApiError(0, "Erè rezo. Tanpri verifye koneksyon w.");
         }
-
-        // Handle other errors
         throw new ApiError(
             500,
             error instanceof Error ? error.message : "Yon erè ki pa prevwa fèt"
         );
     }
+}
+
+/**
+ * High-level API client that returns parsed JSON data.
+ * Unwraps the { data: T } response envelope automatically.
+ */
+export async function apiClient<T = unknown>(
+    endpoint: string,
+    options: FetchOptions = {}
+): Promise<T> {
+    const response = await apiFetch(endpoint, options);
+
+    // Handle non-JSON responses or empty bodies
+    const contentType = response.headers.get("content-type");
+    const hasJsonContent = contentType?.includes("application/json");
+
+    let data: ApiSuccessResponse<T> | ApiErrorResponse | null = null;
+    if (hasJsonContent) {
+        data = await response.json();
+    }
+
+    // Return the data property for successful responses
+    return (data as ApiSuccessResponse<T>)?.data ?? (null as T);
 }
 
 /**
@@ -162,7 +191,7 @@ async function post<T = unknown>(
     params?: Record<string, string | number | boolean | undefined>
 ): Promise<T> {
     const options: FetchOptions = { method: "POST" };
-    if (body) options.body = JSON.stringify(body);
+    if (body) options.body = body instanceof FormData ? body : JSON.stringify(body);
     if (params) options.params = params;
     return apiClient<T>(endpoint, options);
 }
@@ -173,7 +202,7 @@ async function put<T = unknown>(
     params?: Record<string, string | number | boolean | undefined>
 ): Promise<T> {
     const options: FetchOptions = { method: "PUT" };
-    if (body) options.body = JSON.stringify(body);
+    if (body) options.body = body instanceof FormData ? body : JSON.stringify(body);
     if (params) options.params = params;
     return apiClient<T>(endpoint, options);
 }
@@ -184,7 +213,7 @@ async function patch<T = unknown>(
     params?: Record<string, string | number | boolean | undefined>
 ): Promise<T> {
     const options: FetchOptions = { method: "PATCH" };
-    if (body) options.body = JSON.stringify(body);
+    if (body) options.body = body instanceof FormData ? body : JSON.stringify(body);
     if (params) options.params = params;
     return apiClient<T>(endpoint, options);
 }
@@ -197,6 +226,7 @@ async function deleteRequest<T = unknown>(
 }
 
 export const api = {
+    fetch: apiFetch,
     get,
     post,
     put,
