@@ -23,10 +23,10 @@ import {
 } from "@/components/ui/audio-player-core";
 
 const sampleTexts = [
-  { id: 1, title: "Salitasyon", text: "Bonjou kijan ou ye jodia" },
-  { id: 2, title: "Prezantasyon", text: "Mwen rele Jan epi mwen ap aprann pale kreyòl ayisyen" },
-  { id: 3, title: "Woutinn", text: "Chak maten mwen leve bonè epi mwen manje" },
-  { id: 4, title: "Tan an", text: "Tan an bèl jodia solèy la ap klere epi gen yon ti van fre" },
+  { id: 1, title: "Salitasyon", text: "Bonjou, kijan ou ye jodia?" },
+  { id: 2, title: "Prezantasyon", text: "Mwen rele Jan, epi mwen ap aprann pale kreyòl ayisyen." },
+  { id: 3, title: "Woutinn", text: "Chak maten, mwen leve bonè epi mwen manje." },
+  { id: 4, title: "Tan an", text: "Tan an bèl jodia! Solèy la ap klere, epi gen yon ti van fre." },
 ];
 
 function getGrade(score: number): string {
