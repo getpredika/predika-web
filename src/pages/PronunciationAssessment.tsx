@@ -1,12 +1,13 @@
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Mic, Square, RotateCcw, Volume2, CheckCircle2, AlertCircle } from "lucide-react";
+import { Mic, Square, RotateCcw, Volume2, CheckCircle2, AlertCircle, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 import { useAssessPronunciation } from "@/hooks/use-pronunciation";
 import { useGenerateSpeech } from "@/hooks/use-tts";
@@ -28,6 +29,14 @@ const sampleTexts = [
   { id: 3, title: "Woutinn", text: "Chak maten, mwen leve bonè epi mwen manje." },
   { id: 4, title: "Tan an", text: "Tan an bèl jodia! Solèy la ap klere, epi gen yon ti van fre." },
 ];
+
+const SCORE_TOOLTIPS = {
+  accuracy: "Konbyen mo ou pwononse kòrèkteman konpare ak tèks la.",
+  fluency: "Ki jan pawòl ou koule natirèlman san twòp poz oswa ezitasyon.",
+  completeness: "Èske ou di tout mo ki te nan tèks la san sote.",
+  prosody: "Entonasyon, ritm, ak varyasyon vwa (pa pale monotòn).",
+};
+
 
 function getGrade(score: number): string {
   if (score >= 90) return "A";
@@ -89,7 +98,7 @@ function CircularProgress({ score, size = 120 }: { score: number; size?: number 
   );
 }
 
-function ScoreBar({ label, score, delay = 0 }: { label: string; score: number; delay?: number }) {
+function ScoreBar({ label, score, delay = 0, tooltip }: { label: string; score: number; delay?: number; tooltip?: string }) {
   const getColor = () => {
     if (score >= 80) return "bg-green-500";
     if (score >= 60) return "bg-yellow-500";
@@ -99,7 +108,19 @@ function ScoreBar({ label, score, delay = 0 }: { label: string; score: number; d
   return (
     <div className="space-y-1">
       <div className="flex justify-between gap-2 text-sm">
-        <span className="text-muted-foreground">{label}</span>
+        <span className="text-muted-foreground flex items-center gap-1.5">
+          {label}
+          {tooltip && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Info className="w-3.5 h-3.5 text-muted-foreground/60 cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent side="top">
+                <p className="text-xs max-w-[200px]">{tooltip}</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
+        </span>
         <span className="font-medium">{Math.round(score)} / 100</span>
       </div>
       <div className="h-2 bg-muted rounded-full overflow-hidden">
@@ -114,8 +135,21 @@ function ScoreBar({ label, score, delay = 0 }: { label: string; score: number; d
   );
 }
 
-function TranscriptChip({ item }: { item: TranscriptItem }) {
+const errorTypeToToggle: Record<string, string> = {
+  mispronunciation: "mispronunciations",
+  omission: "omissions",
+  insertion: "insertions",
+  unexpected_break: "unexpectedBreaks",
+  missing_break: "missingBreaks",
+  monotone: "monotone",
+};
+
+function TranscriptChip({ item, toggles }: { item: TranscriptItem; toggles: Record<string, boolean> }) {
+  const toggleKey = errorTypeToToggle[item.type];
+  const isHighlighted = item.type === "correct" || (toggleKey ? toggles[toggleKey] : true);
+
   const getStyle = () => {
+    if (!isHighlighted) return "text-foreground border-transparent";
     switch (item.type) {
       case "correct":
         return "text-foreground";
@@ -139,12 +173,25 @@ function TranscriptChip({ item }: { item: TranscriptItem }) {
   }
 
   if (item.type === "unexpected_break") {
+    if (!isHighlighted) return null;
     return (
       <span
         className={`inline-block px-1.5 py-0.5 mx-0.5 rounded border text-xs cursor-default ${getStyle()}`}
         title={`Poz inatandi: ${item.dur_sec?.toFixed(2)}s (${item.severity})`}
       >
         ⏸ {item.dur_sec?.toFixed(1)}s
+      </span>
+    );
+  }
+
+  if (item.type === "missing_break") {
+    if (!isHighlighted) return null;
+    return (
+      <span
+        className={`inline-block px-1.5 py-0.5 mx-0.5 rounded border text-xs cursor-default ${getStyle()}`}
+        title="Poz nesesè: ou te dwe fè yon poz isit la"
+      >
+        [poz nesesè]
       </span>
     );
   }
@@ -579,12 +626,35 @@ export default function PronunciationAssessment() {
                     </div>
                   </div>
 
-                  <div className="space-y-3">
-                    <ScoreBar label="Presizyon" score={result.scores.accuracy.score} delay={0.2} />
-                    <ScoreBar label="Fliyidite" score={result.scores.fluency.score} delay={0.4} />
-                    <ScoreBar label="Konplètman" score={result.scores.completeness.score} delay={0.6} />
-                    <ScoreBar label="Pwozodi" score={result.scores.prosody.score} delay={0.8} />
-                  </div>
+                  <TooltipProvider delayDuration={200}>
+                    <div className="space-y-3">
+                      <ScoreBar
+                        label="Presizyon"
+                        score={result.scores.accuracy.score}
+                        delay={0.2}
+                        tooltip={SCORE_TOOLTIPS.accuracy}
+                      />
+                      <ScoreBar
+                        label="Fliyidite"
+                        score={result.scores.fluency.score}
+                        delay={0.4}
+                        tooltip={SCORE_TOOLTIPS.fluency}
+                      />
+                      <ScoreBar
+                        label="Konplètman"
+                        score={result.scores.completeness.score}
+                        delay={0.6}
+                        tooltip={SCORE_TOOLTIPS.completeness}
+                      />
+                      <ScoreBar
+                        label="Pwozodi"
+                        score={result.scores.prosody.score}
+                        delay={0.8}
+                        tooltip={SCORE_TOOLTIPS.prosody}
+                      />
+                    </div>
+                  </TooltipProvider>
+
 
                   {result.flags.low_confidence && (
                     <div className="mt-4 flex items-center gap-2 p-2 rounded bg-yellow-50 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-300 text-xs">
@@ -619,7 +689,7 @@ export default function PronunciationAssessment() {
               <Card className="h-full">
                 <CardHeader>
                   <CardTitle>Fidbak mo pa mo</CardTitle>
-                  <CardDescription>Nòt chak mo — klike pou wè detay</CardDescription>
+                  <CardDescription>Nòt chak mo ou te di</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-1.5 mb-4">
@@ -632,7 +702,7 @@ export default function PronunciationAssessment() {
 
                   <div className="p-4 rounded-lg bg-muted/30 mb-4 leading-relaxed min-h-[100px]">
                     {result.transcript.map((item, i) => (
-                      <TranscriptChip key={i} item={item} />
+                      <TranscriptChip key={i} item={item} toggles={toggles} />
                     ))}
                   </div>
 
@@ -677,42 +747,57 @@ export default function PronunciationAssessment() {
                   <CardDescription>Kontwole ki tip erè ou vle wè</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    {[
-                      { key: "mispronunciations", label: "Mal pwononse", color: "bg-yellow-500", count: result.errors.summary.mispronunciation },
-                      { key: "unexpectedBreaks", label: "Poz inatandi", color: "bg-red-500", count: result.errors.summary.unexpected_break },
-                      { key: "missingBreaks", label: "Poz ki manke", color: "bg-gray-400", count: result.errors.summary.missing_break },
-                      { key: "monotone", label: "Monotòn", color: "bg-purple-500", count: result.errors.summary.monotone },
-                      { key: "omissions", label: "Omisyon", color: "bg-orange-500", count: result.errors.summary.omission },
-                      { key: "insertions", label: "Ensèsyon", color: "bg-blue-500", count: result.errors.summary.insertion },
-                    ].map((item) => (
-                      <div key={item.key} className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className={`w-3 h-3 rounded-full ${item.color}`} />
-                          <Label htmlFor={item.key}>{item.label}</Label>
-                          <span className="text-xs text-muted-foreground">({item.count})</span>
-                        </div>
-                        <Switch
-                          id={item.key}
-                          checked={toggles[item.key as keyof typeof toggles]}
-                          onCheckedChange={(checked) =>
-                            setToggles((prev) => ({ ...prev, [item.key]: checked }))
-                          }
-                          data-testid={`toggle-${item.key}`}
-                        />
-                      </div>
-                    ))}
-                  </div>
+                  <TooltipProvider delayDuration={200}>
+                    <div className="space-y-4">
+                      {[
+                        { key: "mispronunciations", label: "Mal pwononse", color: "bg-yellow-500", textColor: "text-yellow-900 dark:text-yellow-200", bgColor: "bg-yellow-100 dark:bg-yellow-900/40", count: result.errors.summary.mispronunciation, description: "Mo ou te di men pa t pwononse kòrèkteman" },
+                        { key: "omissions", label: "Omisyon", color: "bg-orange-500", textColor: "text-orange-900 dark:text-orange-200", bgColor: "bg-orange-100 dark:bg-orange-900/40", count: result.errors.summary.omission, description: "Mo ou te sote, ou pa t di li" },
+                        { key: "insertions", label: "Ensèsyon", color: "bg-blue-500", textColor: "text-blue-900 dark:text-blue-200", bgColor: "bg-blue-100 dark:bg-blue-900/40", count: result.errors.summary.insertion, description: "Mo ou te ajoute ki pa t nan tèks la" },
+                        { key: "unexpectedBreaks", label: "Poz inatandi", color: "bg-red-500", textColor: "text-red-900 dark:text-red-200", bgColor: "bg-red-100 dark:bg-red-900/40", count: result.errors.summary.unexpected_break, description: "Ou te fè yon poz kote ki pa t nesesè" },
+                        { key: "missingBreaks", label: "Poz ki manke", color: "bg-gray-400", textColor: "text-gray-900 dark:text-gray-200", bgColor: "bg-gray-100 dark:bg-gray-700/40", count: result.errors.summary.missing_break, description: "Ou te manke yon poz kote ki te nesesè" },
+                        { key: "monotone", label: "Monotòn", color: "bg-purple-500", textColor: "text-purple-900 dark:text-purple-200", bgColor: "bg-purple-100 dark:bg-purple-900/40", count: result.errors.summary.monotone, description: "Vwa ou te twò plat, san varyasyon" },
+                      ].map((item) => {
+                        const isActive = toggles[item.key as keyof typeof toggles];
+                        return (
+                          <div key={item.key} className="flex items-center justify-between">
+                            <div className="flex items-center gap-2.5">
+                              <span className={`inline-flex items-center justify-center w-6 h-6 rounded text-xs font-bold ${item.bgColor} ${item.textColor}`}>
+                                {item.count}
+                              </span>
+                              <Label htmlFor={item.key}>{item.label}</Label>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Info className="w-3.5 h-3.5 text-muted-foreground/60 cursor-help" />
+                                </TooltipTrigger>
+                                <TooltipContent side="top">
+                                  <p className="text-xs max-w-[200px]">{item.description}</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </div>
+                            <Switch
+                              id={item.key}
+                              checked={isActive}
+                              onCheckedChange={(checked) =>
+                                setToggles((prev) => ({ ...prev, [item.key]: checked }))
+                              }
+                              className="data-[state=unchecked]:bg-muted-foreground/30"
+                              data-testid={`toggle-${item.key}`}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </TooltipProvider>
 
                   {/* ASR: what the user actually said */}
-                  {result.metadata.asr_text && (
+                  {/* result.metadata.asr_text && (
                     <div className="mt-6 pt-4 border-t">
                       <h4 className="text-sm font-medium mb-2">Sa ou te di</h4>
                       <p className="text-sm text-muted-foreground italic p-3 rounded-lg bg-muted/30">
                         &ldquo;{result.metadata.asr_text}&rdquo;
                       </p>
                     </div>
-                  )}
+                  ) */}
 
                   {/* Letter-level detail for words with errors */}
                   {result.words.some((w) => w.is_error) && (
