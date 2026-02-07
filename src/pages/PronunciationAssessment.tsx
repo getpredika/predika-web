@@ -718,17 +718,22 @@ export default function PronunciationAssessment() {
                   {result.words.some((w) => w.is_error) && (
                     <div className="mt-6 pt-4 border-t">
                       <h4 className="text-sm font-medium mb-3">Detay lèt (mo ki gen erè)</h4>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex gap-2 overflow-x-auto pb-2">
                         {result.words
                           .filter((w) => w.is_error)
                           .map((word, wi) => (
-                            <div key={wi} className="inline-flex items-center gap-1.5 p-2 rounded-lg bg-muted/30 border">
-                              <span className="text-xs font-medium text-muted-foreground">{word.word}</span>
-                              <div className="flex gap-0.5">
+                            <div key={wi} className="p-3 rounded-lg bg-muted/30 shrink-0 min-w-[120px]">
+                              <div className="flex items-center justify-between gap-3 mb-2">
+                                <span className="font-medium text-sm">&ldquo;{word.word}&rdquo;</span>
+                                <Badge variant="outline" className="text-xs whitespace-nowrap">
+                                  {Math.round(word.score)} / 100
+                                </Badge>
+                              </div>
+                              <div className="flex gap-1">
                                 {word.phones.map((phone, pi) => (
                                   <span
                                     key={pi}
-                                    className={`text-xs px-1 py-0.5 rounded ${
+                                    className={`text-xs px-1.5 py-0.5 rounded ${
                                       phone.is_error
                                         ? phone.severity === "severe"
                                           ? "bg-red-200 text-red-900 dark:bg-red-900/40 dark:text-red-200"
@@ -741,7 +746,6 @@ export default function PronunciationAssessment() {
                                   </span>
                                 ))}
                               </div>
-                              <span className="text-[10px] text-muted-foreground">{Math.round(word.score)}</span>
                             </div>
                           ))}
                       </div>
