@@ -181,25 +181,25 @@ const faqs = [
     answer:
       "Evalyasyon pwononsyasyon nou an itilize rekonesèns lapawòl avanse pou analize mo ou pale yo epi konpare yo ak pwononsyasyon natif natal. Ou pral resevwa yon nòt ak kòmantè espesifik sou zòn pou amelyore.",
   },
-  {
-    question: "Èske mwen ka itilize aplikasyon sa a san entènèt?",
-    answer:
-      "Kèk fonksyonalite tankou diksyonè a ak quiz yo ka itilize san entènèt yon fwa done yo kache. Men, fonksyonalite ki mande tretèman AI tankou evalyasyon pwononsyasyon ak koreksyon gramè bezwen yon koneksyon entènèt.",
-  },
+  // {
+  //   question: "Èske mwen ka itilize aplikasyon sa a san entènèt?",
+  //   answer:
+  //     "Kèk fonksyonalite tankou diksyonè a ak quiz yo ka itilize san entènèt yon fwa done yo kache. Men, fonksyonalite ki mande tretèman AI tankou evalyasyon pwononsyasyon ak koreksyon gramè bezwen yon koneksyon entènèt.",
+  // },
   {
     question: "Èske done m yo prive epi sekirize?",
     answer:
-      "Absoliman. Nou pran konfidansyalite o seryè epi nou pa janm pataje done pèsonèl ou ak tyès pati. Tout anrejistreman odyo trete an sekirite epi yo pa estoke sof si ou ekspèsiteman sove yo.",
+      "Absoliman. Nou pran konfidansyalite o serye epi nou pa janm pataje done pèsonèl ou ak tyès pati. Tout anrejistreman odyo trete an sekirite epi yo pa estoke sof si ou ekspèsiteman sove yo.",
   },
   {
-    question: "Ki lang yo disponib sou platfòm nan?",
+    question: "Ki lang ki disponib sou platfòm nan?",
     answer:
       "Aktyèlman, nou sipòte Kreyòl Ayisyen. Nou ap travay pou ajoute plis lang nan tan ki ap vini pou ede plis moun aprann.",
   },
   {
     question: "Èske mwen bezwen mikwofòn espesyal pou evalyasyon pwononsyasyon?",
     answer:
-      "Non, mikwofòn smartphone oswa òdinatè regilye ou byen ase. Men, yon mikwofòn ki gen pi bon kalite ka bay rezilta pi plis egzak.",
+      "Non, mikwo telefòn entèlijan oswa òdinatè regilye ou sifi. Men, yon mikwofòn ki gen pi bon kalite ka bay pi bon rezilta.",
   },
 ];
 
@@ -591,13 +591,13 @@ export default function Landing() {
             <div className="flex flex-col items-center justify-center gap-2 mb-6">
               <LayoutTextFlip
                 text="Metrize Lang ak"
-                words={["Konfyans", "Fliditè", "Fasilite", "Siksè"]}
+                words={["Konfyans", "Flidite", "Fasilite", "Siksè"]}
                 duration={2500}
               />
             </div>
             <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Platfòm tout-nan-yon pou vokabilè, aprantisaj ak pwononsyasyon.
-              Chèche mo, pratike pale, pran quiz, epi swiv pwogrè ou.
+              Platfòm tout-nan-youn pou vokabilè, aprantisaj ak pwononsyasyon.
+              Chèche mo, lekti senkwonize, pran quiz, epi swiv pwogrè ou.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               {isAuthenticated ? (
@@ -815,7 +815,7 @@ export default function Landing() {
               </PointerHighlight>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Kat etap senp nou yo rann aprantisaj lang efikas ak agreab.
+              Kat etap senp nou yo rann aprantisaj lang Kreyòl la efikas ak agreab.
             </p>
           </motion.div>
 
