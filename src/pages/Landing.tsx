@@ -68,7 +68,7 @@ const features = [
     icon: MessageSquare,
     title: "Lapawòl an Tèks",
     description:
-      "Transkripsyon odyo ak tan pou chak mo ak lekti senkonize.",
+      "Transkripsyon odyo ak tan pou chak mo ak lekti senkwonize.",
   },
 ];
 
@@ -166,7 +166,7 @@ const pricingPlans = [
       "Jiska 25 itilizatè",
       "Tablo bò administè",
       "Analize itilizasyon",
-      "Lis mo pasonèl",
+      "Lis mo pèsonèl",
       "Aksè API",
       "Sipò dedye",
     ],
@@ -815,7 +815,7 @@ export default function Landing() {
               </PointerHighlight>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Kat etap senp nou yo rann aprantisaj lang Kreyòl la efikas ak agreab.
+              Kat etap senp nou yo rann aprantisaj lang Kreyòl la efikas epi agreyab.
             </p>
           </motion.div>
 
