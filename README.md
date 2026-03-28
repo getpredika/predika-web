@@ -1,39 +1,57 @@
 # Predika Web
 
-Predika is an online platform developed to enhance writing in Haitian Creole through intelligent spelling and grammar correction. 
+Predika is a Vite + React web app for Haitian Creole language learning. The current product includes authentication, a public landing experience, and an authenticated studio with dictionary, quiz, speech, grammar, and progress tools.
 
 ## Features
 
-- **User Authentication**: Secure login and signup functionalities.
-- **Text Editor**: A dedicated editor page where users can paste their text and receive spelling and grammar corrections.
-- **Responsive Design**: Optimized for both desktop and mobile devices.
+- User authentication with email/password, OTP verification, password reset, and Google OAuth
+- Public landing, privacy, and terms pages
+- Authenticated studio mounted at `/studio`
+- Dictionary search with word of the day, pronunciation, examples, synonyms, and antonyms
+- Quiz modes for vocabulary and listening practice
+- Text-to-speech generation with selectable voices and models
+- Speech-to-text transcription with timestamped segments
+- Pronunciation assessment with detailed scoring and transcript feedback
+- Grammar and spelling correction for Haitian Creole text
+- Progress dashboard backed by quiz history and stats
 
 ## Tech Stack
 
-- [React](https://reactjs.org/)
+- [React 18](https://react.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vite.dev/)
+- [Wouter](https://github.com/molefrog/wouter)
+- [@tanstack/react-query](https://tanstack.com/query/latest)
 - [Tailwind CSS](https://tailwindcss.com/)
-- [ShadCN](https://shadcn.dev/) 
-- [React Context API](https://react.dev/reference/react/useContext)
-- [React Router](https://reactrouter.com/) 
+- [shadcn/ui](https://ui.shadcn.com/)
+- [Radix UI](https://www.radix-ui.com/)
+- [Framer Motion](https://www.framer.com/motion/)
+- [Recharts](https://recharts.org/)
 
-## Installation
-
-To run the project locally, follow these steps:
+## Local Development
 
 1. Clone the repository:
    ```bash
    git clone https://github.com/getpredika/predika-web.git
    cd predika-web
    ```
-
-2. Install the dependencies:
+2. Install dependencies:
    ```bash
    npm install
    ```
-
 3. Start the development server:
    ```bash
    npm run dev
    ```
+4. Open `http://localhost:5173`.
 
-4. Open your browser and go to `http://localhost:5173`.
+## Configuration
+
+- `VITE_API_URL`: overrides the default API base URL. If omitted, the app uses `https://api.predika.app`.
+
+## Scripts
+
+- `npm run dev`: start the Vite development server
+- `npm run build`: build the production bundle
+- `npm run lint`: run ESLint
+- `npm run preview`: preview the production build locally

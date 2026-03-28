@@ -80,7 +80,7 @@ export default function VerifyEmail() {
         setLocation(`/reset-password?email=${encodeURIComponent(email)}`);
       } else {
         toast({ title: "Imèl verifye!", description: "Kont ou aktif kounye a." });
-        setLocation("/app");
+        setLocation("/studio");
       }
     } catch (error: any) {
       const message = error?.message || "Verifikasyon echwe. Tanpri eseye ankò.";

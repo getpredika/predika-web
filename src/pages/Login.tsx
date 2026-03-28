@@ -33,7 +33,7 @@ export default function Login() {
       }
 
       toast({ title: "Byenvini ankò!", description: "Ou konekte ak siksè." });
-      setLocation("/app");
+      setLocation("/studio");
     } catch (error: any) {
       const message = error?.message || "Koneksyon echwe. Tanpri eseye ankò.";
       setError(message);

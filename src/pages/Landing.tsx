@@ -995,7 +995,7 @@ export default function Landing() {
               Antre nan milye elèv k ap amelyore vokabilè yo ak pwononsyasyon yo chak jou.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/app">
+              <Link href="/studio">
                 <Button
                   size="lg"
                   variant="secondary"

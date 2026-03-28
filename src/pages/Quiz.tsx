@@ -801,7 +801,7 @@ export default function Quiz() {
           <XCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
           <h2 className="text-xl font-serif font-bold mb-2">Pa Gen Ase Mo</h2>
           <p className="text-muted-foreground mb-6">Nou bezwen omwen 4 mo nan diksyonè a pou kreye mòd quiz sa a.</p>
-          <Link href="/app"><Button data-testid="button-back-home"><Home className="w-4 h-4 mr-2" />Retounen nan Diksyonè</Button></Link>
+          <Link href="/studio"><Button data-testid="button-back-home"><Home className="w-4 h-4 mr-2" />Retounen nan Diksyonè</Button></Link>
         </Card>
       </div>
     );
