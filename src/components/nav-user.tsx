@@ -104,9 +104,10 @@ export function NavUser({
                 <Bell className="mr-2 size-4" />
                 Notifikasyon
               </DropdownMenuItem> 
-          </DropdownMenuGroup>*/}
+            </DropdownMenuGroup>*/}
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={onLogout} className="text-destructive focus:text-destructive" data-testid="menu-logout">
+            <DropdownMenuItem onClick={onLogout} className="text-destructive hover:text-white focus:text-white data-[highlighted]:text-white"
+              data-testid="menu-logout">
               <LogOut className="mr-2 size-4" />
               Dekonekte
             </DropdownMenuItem>

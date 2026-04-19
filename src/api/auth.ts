@@ -86,5 +86,8 @@ const API_BASE_URL =
   import.meta.env.VITE_API_URL || "https://api.predika.app";
 
 export function getGoogleOAuthUrl(): string {
-  return `${API_BASE_URL}/auth/google`;
+    const API_BASE_URL =
+        import.meta.env.VITE_API_URL ||
+        (import.meta.env.DEV ? "http://localhost:3333" : "https://api.predika.app");
+    return `${API_BASE_URL}/auth/google`;
 }

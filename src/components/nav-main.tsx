@@ -34,6 +34,12 @@ export function NavMain({
                 isActive={Boolean(item.isActive)}
                 onClick={item.onClick}
                 data-testid={`nav-${item.title.toLowerCase().replace(/\s+/g, '-')}`}
+                className={`
+                  transition-colors duration-200
+                  hover:bg-[#40c4a7] hover:text-white
+                  data-[active=true]:bg-[#40c4a7]
+                  data-[active=true]:text-white
+                 `}
               >
                 {Icon && <Icon className="size-4" />}
                 <span>{item.title}</span>

@@ -533,7 +533,8 @@ export default function Landing() {
               ) : isAuthenticated && user ? (
                 <>
                   <Link href="/studio">
-                    <Button variant="ghost" data-testid="button-dashboard">
+                    <Button variant="ghost" data-testid="button-dashboard" className=" hover:bg-[#40C4A7]/10
+                      hover:text-[#40C4A7] transition-colors">
                       Tablo Bò
                     </Button>
                   </Link>
