@@ -82,9 +82,9 @@ export async function resendOTP(data: ResendOTPRequest): Promise<null> {
  * Initiate Google OAuth flow (client should redirect to this URL)
  * GET /auth/google
  */
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "https://api.predika.app";
+
 export function getGoogleOAuthUrl(): string {
-    const API_BASE_URL =
-        import.meta.env.VITE_API_URL ||
-        (import.meta.env.DEV ? "http://localhost:3333" : "https://api.predika.app");
-    return `${API_BASE_URL}/auth/google`;
+  return `${API_BASE_URL}/auth/google`;
 }
