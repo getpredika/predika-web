@@ -72,6 +72,9 @@ const features = [
   },
 ];
 
+
+
+
 const stats = [
   { value: "10K+", label: "Mo nan Diksyonè" },
   { value: "50+", label: "Kategori Quiz" },

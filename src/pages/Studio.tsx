@@ -41,6 +41,32 @@ const navItems = [
   { id: "gec", label: "Verifye Gramè", icon: FileText, component: GrammarCorrector },
 ];
 
+const navGroups = [
+  {
+    label: "Aprantisaj",
+    items: [
+      { id: "progress", label: "Pwogrè", icon: BarChart3, component: Progress },
+      { id: "dictionary", label: "Diksyonè", icon: BookOpen, component: Dictionary },
+      { id: "quiz", label: "Quiz", icon: Brain, component: Quiz },
+    ],
+  },
+  {
+    label: "Lapawòl",
+    items: [
+      { id: "tts", label: "Tèks an Lapawòl", icon: Volume2, component: TextToSpeech },
+      { id: "stt", label: "Lapawòl an Tèks", icon: AudioLines, component: SpeechToText },
+      { id: "pronunciation", label: "Pwononsyasyon", icon: Mic, component: PronunciationAssessment },
+    ],
+  },
+  {
+    label: "AI Zouti",
+    items: [
+      { id: "gec", label: "Verifye Gramè", icon: FileText, component: GrammarCorrector },
+    ],
+  },
+];
+
+
 function AppSidebar({
   activeTab,
   setActiveTab,
@@ -78,9 +104,43 @@ function AppSidebar({
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
-        <NavMain items={mainNavItems} label="Fonksyon" />
-      </SidebarContent>
+     <SidebarContent>
+  {navGroups.map((group) => (
+    <div key={group.label} className="mb-4">
+      <div className="px-3 mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider group-data-[collapsible=icon]:hidden">
+        {group.label}
+      </div>
+
+      <SidebarMenu>
+        {group.items.map((item) => {
+          const Icon = item.icon;
+
+          return (
+            <SidebarMenuItem key={item.id}>
+              <SidebarMenuButton
+                isActive={activeTab === item.id}
+                onClick={() => setActiveTab(item.id)}
+                tooltip={item.label}
+                className="
+                  flex items-center gap-2
+                  transition-colors
+                  hover:bg-[#40c4a7]/10
+                  hover:text-[#40c4a7]
+                  data-[active=true]:bg-[#40c4a7]
+                  data-[active=true]:text-white
+                "
+              >
+                <Icon className="size-4" />
+                <span>{item.label}</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          );
+        })}
+      </SidebarMenu>
+    </div>
+  ))}
+</SidebarContent>
+
       <SidebarFooter>
         <NavUser user={user} onLogout={onLogout} />
       </SidebarFooter>
