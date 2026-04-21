@@ -27,7 +27,7 @@ entryPoints:
 certificatesResolvers:
   myresolver:
     acme:
-      email:
+      email: predika.ai@gmail.com
       storage: /letsencrypt/acme.json
       dnsChallenge:
         provider: cloudflare
