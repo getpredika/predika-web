@@ -104,7 +104,7 @@ function AppSidebar({
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-     <SidebarContent>
+     {/* <SidebarContent>
   {navGroups.map((group) => (
     <div key={group.label} className="mb-4">
       <div className="px-3 mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider group-data-[collapsible=icon]:hidden">
@@ -139,7 +139,11 @@ function AppSidebar({
       </SidebarMenu>
     </div>
   ))}
-</SidebarContent>
+</SidebarContent> */}
+
+      <SidebarContent>
+        
+      </SidebarContent>
 
       <SidebarFooter>
         <NavUser user={user} onLogout={onLogout} />
