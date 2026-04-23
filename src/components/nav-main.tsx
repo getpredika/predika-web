@@ -27,7 +27,7 @@ export function NavMain({
   return (
     <>
       {groups.map((group) => (
-        <SidebarGroup key={group.label} className="mb-4">
+        <SidebarGroup key={group.label}>
           <SidebarGroupLabel
             className="
               group-data-[collapsible=icon]:hidden

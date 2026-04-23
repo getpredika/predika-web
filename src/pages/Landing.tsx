@@ -531,8 +531,22 @@ export default function Landing() {
               ) : isAuthenticated && user ? (
                 <>
                   <Link href="/studio">
-                    <Button variant="ghost" data-testid="button-dashboard" className=" hover:bg-[#40C4A7]/10
-                      hover:text-[#40C4A7] transition-colors">
+                    <Button variant="ghost" data-testid="button-dashboard" className=" h-10
+                      px-4
+                      rounded-xl
+                      border border-transparent
+                      font-medium
+                      text-sm
+                      text-foreground
+                      transition-all duration-200
+
+                      hover:bg-[#40C4A7]/10
+                      hover:text-[#40C4A7]
+                      hover:border-[#40C4A7]/20
+
+                      focus-visible:ring-2
+                      focus-visible:ring-[#40C4A7]/30
+                      focus-visible:outline-none">
                       Tablo Bò
                     </Button>
                   </Link>
@@ -560,7 +574,24 @@ export default function Landing() {
                 </>
               ) : (
                 <>
-                  <Button asChild variant="ghost" data-testid="button-login">
+                  <Button asChild variant="ghost" data-testid="button-login" className="
+                      h-10
+                      px-4
+                      rounded-xl
+                      border border-transparent
+                      font-medium
+                      text-sm
+                      text-foreground
+                      transition-all duration-200
+
+                      hover:bg-[#40C4A7]/10
+                      hover:text-[#40C4A7]
+                      hover:border-[#40C4A7]/20
+
+                      focus-visible:ring-2
+                      focus-visible:ring-[#40C4A7]/30
+                      focus-visible:outline-none
+                    ">
                     <a href="/login">Konekte</a>
                   </Button>
                   <Button asChild data-testid="button-get-started">
