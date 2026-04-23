@@ -78,11 +78,14 @@ function AppSidebar({
   user: { name: string; email: string; avatar?: string };
   onLogout: () => void;
 }) {
-  const mainNavItems = navItems.map(item => ({
-    title: item.label,
-    icon: item.icon,
-    isActive: activeTab === item.id,
-    onClick: () => setActiveTab(item.id),
+  const mainNavGroups = navGroups.map(group => ({
+    label: group.label,
+    items: group.items.map((item) => ({
+      title: item.label,
+      icon: item.icon,
+      isActive: activeTab === item.id,
+      onClick: () => setActiveTab(item.id),
+    })),
   }));
 
   return (
@@ -104,7 +107,7 @@ function AppSidebar({
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-     {/* <SidebarContent>
+      {/* <SidebarContent>
   {navGroups.map((group) => (
     <div key={group.label} className="mb-4">
       <div className="px-3 mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider group-data-[collapsible=icon]:hidden">
@@ -142,7 +145,7 @@ function AppSidebar({
 </SidebarContent> */}
 
       <SidebarContent>
-        
+        <NavMain groups={ mainNavGroups} />
       </SidebarContent>
 
       <SidebarFooter>
