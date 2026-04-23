@@ -30,12 +30,12 @@ export function NavMain({
         <SidebarGroup key={group.label} className="mb-4">
           <SidebarGroupLabel
             className="
+              group-data-[collapsible=icon]:hidden
               text-xs
               font-semibold
               uppercase
               tracking-wider
               text-muted-foreground
-              group-data-[collapsible=icon]:hidden
             "
           >
             {group.label}
@@ -61,7 +61,7 @@ export function NavMain({
                     "
                   >
                     {Icon && <Icon className="size-4" />}
-                    <span>{item.title}</span>
+                    <span  className="group-data-[collapsible=icon]:hidden">{item.title}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               );

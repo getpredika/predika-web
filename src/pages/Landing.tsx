@@ -184,11 +184,6 @@ const faqs = [
     answer:
       "Evalyasyon pwononsyasyon nou an itilize rekonesèns lapawòl avanse pou analize mo ou pale yo epi konpare yo ak pwononsyasyon natif natal. Ou pral resevwa yon nòt ak kòmantè espesifik sou zòn pou amelyore.",
   },
-  // {
-  //   question: "Èske mwen ka itilize aplikasyon sa a san entènèt?",
-  //   answer:
-  //     "Kèk fonksyonalite tankou diksyonè a ak quiz yo ka itilize san entènèt yon fwa done yo kache. Men, fonksyonalite ki mande tretèman AI tankou evalyasyon pwononsyasyon ak koreksyon gramè bezwen yon koneksyon entènèt.",
-  // },
   {
     question: "Èske done m yo prive epi sekirize?",
     answer:
