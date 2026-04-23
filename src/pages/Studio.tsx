@@ -78,9 +78,9 @@ function AppSidebar({
   user: { name: string; email: string; avatar?: string };
   onLogout: () => void;
 }) {
-  const mainNavItems = navItems.map(item => ({
+  const mainNavItems = navGroups.map(item => ({
     title: item.label,
-    icon: item.icon,
+    icon: item.items.icon,
     isActive: activeTab === item.id,
     onClick: () => setActiveTab(item.id),
   }));
@@ -104,42 +104,44 @@ function AppSidebar({
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-     <SidebarContent>
-  {navGroups.map((group) => (
-    <div key={group.label} className="mb-4">
-      <div className="px-3 mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider group-data-[collapsible=icon]:hidden">
-        {group.label}
-      </div>
+      {/* <SidebarContent>
+        {navGroups.map((group) => (
+          <div key={group.label} className="mb-4">
+            <div className="px-3 mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider group-data-[collapsible=icon]:hidden">
+              {group.label}
+            </div>
 
-      <SidebarMenu>
-        {group.items.map((item) => {
-          const Icon = item.icon;
+            <SidebarMenu>
+              {group.items.map((item) => {
+                const Icon = item.icon;
 
-          return (
-            <SidebarMenuItem key={item.id}>
-              <SidebarMenuButton
-                isActive={activeTab === item.id}
-                onClick={() => setActiveTab(item.id)}
-                tooltip={item.label}
-                className="
-                  flex items-center gap-2
+                return (
+                  <SidebarMenuItem key={item.id}>
+                    <SidebarMenuButton
+                      isActive={activeTab === item.id}
+                      onClick={() => setActiveTab(item.id)}
+                      tooltip={item.label}
+                      className="
                   transition-colors
                   hover:bg-[#40c4a7]/10
                   hover:text-[#40c4a7]
                   data-[active=true]:bg-[#40c4a7]
                   data-[active=true]:text-white
                 "
-              >
-                <Icon className="size-4" />
-                <span>{item.label}</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          );
-        })}
-      </SidebarMenu>
-    </div>
-  ))}
-</SidebarContent>
+                    >
+                      <Icon className="size-4" />
+                      <span>{item.label}</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </div>
+        ))}
+      </SidebarContent> */}
+
+      <NavMain items={mainNavItems} label="" />
+
 
       <SidebarFooter>
         <NavUser user={user} onLogout={onLogout} />
