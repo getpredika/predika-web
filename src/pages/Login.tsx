@@ -201,15 +201,16 @@ export default function Login() {
         </Card>
 
         <p className="text-center text-xs text-muted-foreground mt-6">
-          By continuing, you agree to our{" "}
+          Lè w kontinye, ou dakò ak {" "}
           <Link href="/terms">
-            <span className="hover:underline cursor-pointer">Terms</span>
+            <span className="hover:underline cursor-pointer"> Kondisyon yo</span>
           </Link>{" "}
-          and{" "}
+          ak{" "}
           <Link href="/privacy">
-            <span className="hover:underline cursor-pointer">Privacy Policy</span>
+            <span className="hover:underline cursor-pointer">Règleman sou Konfidansyalite nou an.</span>
           </Link>
         </p>
+
       </motion.div>
     </div>
   );
