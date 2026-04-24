@@ -73,8 +73,6 @@ const features = [
 ];
 
 
-
-
 const stats = [
   { value: "10K+", label: "Mo nan Diksyonè" },
   { value: "50+", label: "Kategori Quiz" },
@@ -899,9 +897,9 @@ export default function Landing() {
               Temwanyaj
             </Badge>
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">
-              Renmen pa{" "}
+              Satisfaksyon{" "}
               <PointerHighlight pointerClassName="text-primary">
-                <span>Elèv</span>
+                <span>Itilizatè</span>
               </PointerHighlight>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
