@@ -235,10 +235,10 @@ export default function Dictionary() {
           )}
         </div>
 
-        {/* Footer */}
+        {/* Footer
         <footer className="mt-20 text-center text-sm text-muted-foreground py-6 border-t border-stone-100">
           <p>Konsepsyon ak chalè & atansyon</p>
-        </footer>
+        </footer> */}
       </main>
     </div>
   );
