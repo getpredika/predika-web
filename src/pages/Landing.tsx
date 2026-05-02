@@ -56,7 +56,7 @@ const features = [
     icon: Brain,
     title: "Quiz Vokabilè",
     description:
-      "Teste konesans ou ak quiz entèraktif epi swiv pwogrè ou ak tan.",
+      "Teste konesans ou ak quiz entèraktif epi swiv pwogrè ou a tan.",
   },
   {
     icon: Sparkles,
@@ -68,7 +68,7 @@ const features = [
     icon: MessageSquare,
     title: "Lapawòl an Tèks",
     description:
-      "Transkripsyon odyo ak tan pou chak mo ak lekti senkwonize.",
+      "Transkripsyon odyo a tan pou chak mo ak lekti senkwonize.",
   },
 ];
 
@@ -180,12 +180,12 @@ const faqs = [
   {
     question: "Ki jan evalyasyon pwononsyasyon an fonksyone?",
     answer:
-      "Evalyasyon pwononsyasyon nou an itilize rekonesèns lapawòl avanse pou analize mo ou pale yo epi konpare yo ak pwononsyasyon natif natal. Ou pral resevwa yon nòt ak kòmantè espesifik sou zòn pou amelyore.",
+      "Evalyasyon pwononsyasyon nou an itilize rekonesans lapawòl avanse pou analize mo ou pale yo epi konpare yo ak pwononsyasyon natif natal. Ou pral resevwa yon nòt ak kòmantè espesifik sou zòn pou amelyore.",
   },
   {
     question: "Èske done m yo prive epi sekirize?",
     answer:
-      "Absoliman. Nou pran konfidansyalite o serye epi nou pa janm pataje done pèsonèl ou ak tyès pati. Tout anrejistreman odyo trete an sekirite epi yo pa estoke sof si ou ekspèsiteman sove yo.",
+      "Absoliman. Nou pran konfidansyalite o serye epi nou pa janm pataje done pèsonèl ou ak tyès pati. Tout anrejistreman odyo trete an sekirite epi yo pa estoke sof si ou anrejistre yo ak pwòp volonte ou.",
   },
   {
     question: "Ki lang ki disponib sou platfòm nan?",
@@ -202,7 +202,7 @@ const faqs = [
 const howItWorks = [
   {
     step: "1",
-    title: "Chèche & Dekouvè",
+    title: "Chèche & Dekouvri",
     description:
       "Chèche nenpòt mo pou wè definisyon li, pwononsyasyon li, ak egzanp itilizasyon.",
   },
@@ -795,7 +795,7 @@ export default function Landing() {
               </PointerHighlight>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Yon konplè zouti pou konstwi vokabilè, pratike pwononsyasyon,
+              Yon zouti konplè pou konstwi vokabilè, pratike pwononsyasyon,
               ak metriz lang.
             </p>
           </motion.div>
